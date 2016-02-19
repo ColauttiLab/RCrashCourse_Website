@@ -81,7 +81,7 @@ SelData<-SelData[!is.na(SelData$s),]
 
 <br>
 
-# 2. *ggplot()*  vs  *qplot()
+# 2. *ggplot()*  vs  *qplot()*
 
 ## Histogram
 #### qplot

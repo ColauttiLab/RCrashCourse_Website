@@ -5,6 +5,12 @@ title: |-
 author: "Rob Colautti"
 ---
 
+# Reference
+
+All material available on GitHub:
+
+https://github.com/ColauttiLab/RCrashCourse
+
 # 1. Introduction
 
 ## Brief survey
