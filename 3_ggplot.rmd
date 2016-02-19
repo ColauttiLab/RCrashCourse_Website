@@ -1,0 +1,309 @@
+---
+title: |-
+  R Crash Course \
+   Part 3 -- Customizing *ggplot()*
+author: "Rob Colautti"
+---
+
+
+
+# 1. Setup
+
+## ppt slides
+  1. Graphical concepts
+
+  2. ggplot grammar
+  
+  3. Explanation of selection meta-analysis data
+
+  4. anatomy of a graph
+  
+  [Slides](Graphics_small.pdf)
+  
+## Load ggplot 2
+If you haven't already installed ggplot2, do it now:
+
+`install.packages("ggplot2")`
+```{r}
+library(ggplot2)
+```
+
+<br>
+
+## Import data
+
+Download selection dataset from Colautti & Lau (2015) -- this data is archived on Dryad:
+
+http://datadryad.org/
+
+```{r}
+SelData<-read.csv("http://datadryad.org/bitstream/handle/10255/dryad.82839/Selection_Data.csv?sequence=1",header=T)
+```
+
+#### Change column names 
+To make them more intuitive in R
+```{r}
+names(SelData)<-c("Collector","Author","Year","Journal","Vol","Species","Native","N","Fitness.measure","Trait","s","s.SE","s.P","B","B.SE","B.P")
+```
+
+#### Replace s with its absolute value 
+We are interested in magnitude, not direction in the meta-analysis
+```{r}
+SelData$s<-abs(SelData$s)
+```
+
+#### Add random variables
+We'll use these later to explore some additionall ggplot options
+```{r}
+SelData$Rpoint<-rnorm(nrow(SelData)) # Random, normally distributed
+SelData$Rgroup<-sample(c(0,1),nrow(SelData),replace=T) # Random binary value
+```
+
+#### A quick look at the data
+```{r}
+head(SelData)
+```
+
+#### One more thing...
+Note the missing data (denoted NA)
+```{r, eval=FALSE}
+print(SelData$s)
+```
+
+We can subset to remove mising data
+```{r}
+SelData<-SelData[!is.na(SelData$s),]
+```
+
+<br>
+
+***
+
+<br>
+
+# 2. *ggplot()*  vs  *qplot()
+
+## Histogram
+#### qplot
+```{r, error=TRUE}
+BarPlot<-qplot(s, data=SelData, fill=Native, geom="bar")
+print(BarPlot)
+```
+
+#### ggplot
+```{r, error=TRUE}
+BarPlot <-ggplot(aes(s, fill=Native), data=SelData) 
+print(BarPlot)
+```
+No layers! We only loaded in the data info for plotting
+
+We have to specify which geom(s) we want
+```{r}
+BarPlot<- BarPlot + geom_bar() # info from ggplot() passed to geom_bar()
+BarPlot
+```
+
+Explore the components of our BarPlot object:
+```{r}
+summary(BarPlot)
+```
+
+For more information on geom_bar()
+```{r, eval=FALSE}
+?geom_bar
+```
+
+### Bivariate geom
+```{r}
+BivPlot<-ggplot(data=SelData, aes(x=s, y=Rpoint)) + geom_point()
+print(BivPlot)
+```
+
+Add linear regression
+```{r}
+BivPlot + geom_smooth(method="lm",colour="steelblue",size=2)
+```
+
+Add separate regression lines for each group
+```{r}
+BivPlot + geom_smooth(method="lm",size=2,aes(group=Native,colour=Native))
+```
+
+<br>
+
+***
+
+<br>
+
+# 3. Full ggplot
+Recreate the selection histograms from Colautti & Lau:
+
+  1. Create separate data for native vs. introduced species
+
+  2. Use a bootstrap to estimate non-parametric mean and 95% confidence intervals
+  
+  3. Plot all of the components on a single graph
+
+## 1. Separate data
+```{r}
+NatSVals<-SelData$s[SelData$Native=="yes"] # s values for Native species
+IntSVals<-SelData$s[SelData$Native=="no"] # s values for Introduced species
+```
+
+## 2. Bootstrap
+### 2a. Setup
+```{r}
+IterN<-100 # Number of iterations
+NatSims<-{} # Dummy objects to hold output
+IntSims<-{}
+```
+
+### 2b. For loop
+  * Sample, with replacement and calculate average
+  
+  * Store average in NatSims or IntSims
+
+```{r}
+for (i in 1:IterN){
+  NatSims[i]<-mean(sample(NatSVals,length(NatSVals),replace=T))
+  IntSims[i]<-mean(sample(IntSVals,length(IntSVals),replace=T))
+}
+```
+
+### 2c. Calculate 95% confidence intervals
+
+Sort from low to high
+```{r}
+NatSims<-sort(NatSims)
+IntSims<-sort(IntSims)
+```
+
+Calculate 95%iles from simulations
+```{r}
+CIs<-c(sort(NatSims)[round(IterN*0.025,0)], # Native, lower 2.5%
+       sort(NatSims)[round(IterN*0.975,0)], # Native, upper 97.5%
+       sort(IntSims)[round(IterN*0.025,0)], # Intro, lower 2.5%
+       sort(IntSims)[round(IterN*0.975,0)]) # Intro, upper 97.5%
+```
+
+### 3. Plot components
+
+#### Combine output for plotting
+```{r}
+HistData<-data.frame(s=SelData$s,Native=SelData$Native)
+```
+*NOTE:* This creates a 'stacked' dataset for plotting
+
+```{r}
+p <- ggplot() + theme_classic()
+p <- p + geom_freqpoly(data=HistData[HistData$Native=="yes",], aes(s,y=(..count..)/sum(..count..)),alpha = 0.6,colour="#1fcebd",size=2)
+print(p) # native species histogram
+p <- p + geom_freqpoly(data=HistData[HistData$Native=="no",], aes(s,y=(..count..)/sum(..count..)),alpha = 0.5,colour="#f53751",size=2)
+print(p) # introduced species histogram
+p <- p + geom_rect(aes(xmin=CIs[1],xmax=CIs[2],ymin=0,ymax=0.01),colour="white",fill="#1fcebd88")
+print(p) # native species 95% CI bar
+p <- p + geom_line(aes(x=mean(NatSims),y=c(0,0.01)),colour="#1d76bf",size=1)
+print(p) # native species bootstrap mean
+p <- p + geom_rect(aes(xmin=CIs[3],xmax=CIs[4],ymin=0,ymax=0.01),colour="white",fill="#f5375188")
+print(p) # introduced species 95% CI bar
+p <- p + geom_line(aes(x=mean(IntSims),y=c(0,0.01)),colour="#f53751",size=1)
+print(p) # introduced species bootstrap mean
+p <- p + ylab("Frequency") + scale_x_continuous(limits = c(0, 1.5))
+print(p) # labels added, truncated x-axis
+```
+
+<br>
+
+***
+
+<br>
+
+# 4. Custom theme
+Customize various aspects such as font size, line widths, colours, etc.
+```{r}
+theme_custom<-function(base_size = 24, base_family = ""){
+  theme_bw(base_size = base_size, base_family = base_family) %+replace% 
+    theme(axis.text = element_text(size = rel(0.8),colour="black"),
+          axis.ticks = element_line(colour = "black"), 
+          legend.position = "none",
+          panel.border = element_rect(fill = NA, colour = NA), 
+          panel.grid.major = element_line(colour = NA,size = 0), 
+          panel.grid.minor = element_line(colour = NA,size = 0), 
+          axis.line = element_line(colour ="black")
+    )
+}
+p + theme_custom()
+```
+
+<br>
+
+***
+
+<br>
+
+# 5. Multi-graph
+
+## Setup
+Install 'gridExtra' if you haven't already
+`install.packages("gridExtra")`
+```{r}
+library(gridExtra)
+```
+
+## grid.arrange()
+#### Combine multiple plots
+Prints graphs in rows, then columns, from top left to bottom right
+
+Use ***nrow =*** and ***ncol =*** to control layout 
+```{r}
+grid.arrange(p,BivPlot,BarPlot,ncol=1)
+grid.arrange(p,BivPlot,BarPlot,nrow=2)
+```
+
+Apply consistent formatting
+```{r}
+HistPlot<-p + theme_custom()
+BarPlot<-BarPlot + theme_custom()
+BivPlot<-BivPlot + theme_custom()
+grid.arrange(HistPlot,BivPlot,BarPlot,HistPlot,nrow=2)
+```
+
+## viewport & newpage
+
+Install 'gridExtra' if you haven't already
+`install.packages("grid")`
+```{r}
+library(grid)
+```
+
+Control layout as a custom grid
+```{r}
+grid.newpage() # Open a new page on grid device
+pushViewport(viewport(layout = grid.layout(3, 2))) # Create 3x2 grid layout
+print(HistPlot, vp = viewport(layout.pos.row = 3, layout.pos.col = 1:2)) # Add fig in row 3 and across columns 1:2
+print(BivPlot, vp = viewport(layout.pos.row = 1:2, layout.pos.col = 1)) # add fig acros rows 1:3 in column 1
+print(BarPlot, vp = viewport(layout.pos.row = 1:2, layout.pos.col = 2))
+```
+
+Use viewport to add insets
+```{r}
+HistPlot
+pushViewport(viewport(layout = grid.layout(4, 4))) # Create 4x4 grid layout (number of cells, will determine size/location of graph)
+print(BivPlot, vp = viewport(layout.pos.row = 1:2, layout.pos.col = 3:4))
+```
+
+<br>
+
+***
+
+<br>
+
+# 6. Reference
+The comprehensive source for ggplot by Hadley Wickham:
+
+http://link.springer.com/book/10.1007%2F978-0-387-98141-3
+
+http://moderngraphics11.pbworks.com/f/ggplot2-Book09hWickham.pdf
+
+
+

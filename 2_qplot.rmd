@@ -1,0 +1,244 @@
+---
+title: |-
+  R Crash Course \
+   Part 2 -- *qplot()*
+author: "Rob Colautti"
+---
+
+# 1. Overview
+
+We will explore the *ggplot2* package for graphing.
+
+It was created by the same group that also made:
+
+*RStudio*, *RMarkdown*, *Shiny*, *ggvis*
+
+and many other cool packages. 
+
+https://www.rstudio.com/products/rpackages/
+
+### ggplot2 Documentation
+
+http://docs.ggplot2.org/current/
+
+***qplot()*** is a quick and simple yet versatile plotting function.
+
+It is much more intuitive than R's default graphics commands.
+
+### General format:
+`qplot(x=my.xVariable, y=my.yVariable, data=my.data.frame)`
+
+# 2. Setup
+
+## Load ggplot 2
+If you haven't already installed ggplot2, do it now:
+
+`install.packages("ggplot2")`
+```{r, echo=FALSE}
+library(ggplot2)
+```
+
+<br>
+
+## setwd() and import data
+```{r}
+setwd("C:/Users/Colautti/Documents/TEACHING/Software Carpentry Workshop")
+MyData<-read.csv("FallopiaData.csv",header=T)
+```
+
+<br>
+
+***
+
+<br>
+
+# 3. Basic Graphs
+## One continuous
+#### Produces a histogram by default
+```{r}
+qplot(x=Total,data=MyData)
+```
+
+## One categorical
+#### Bar graph of counts for each category
+```{r}
+qplot(x=Scenario,data=MyData)
+```
+
+## Two continuous
+#### Bivariate plot
+```{r}
+qplot(x=Silene,y=Total,data=MyData)
+```
+
+## Categorical by continuous
+#### Categorical scatter plot
+```{r}
+qplot(x=Nutrients,y=Total,data=MyData)
+```
+
+<br>
+
+***
+
+<br>
+
+# 4. Basic customization
+
+### *binwidth =*
+#### Change bin width of a histogram
+```{r}
+qplot(x=Total,data=MyData,binwidth=9)
+qplot(x=Total,data=MyData,binwidth=0.5)
+```
+
+### *position =* 
+#### Avoid stacking histogram bars
+```{r}
+qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients)
+qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients,position="dodge")
+```
+
+### *size =*
+#### Controls size of points, lines, etc.
+Google "pch shapes in R"
+http://vis.supstat.com/2013/04/plotting-symbols-and-color-palettes/
+```{r}
+qplot(x=Silene,y=Fallopia,data=MyData,size=Total) # Scale by a variable
+qplot(x=Silene,y=Total,data=MyData,size=I(5)) # Scale by a constant
+```
+**NOTE:** use of identity function: ***I()*** for constant
+
+Compare to:
+```{r}
+qplot(x=Silene,y=Total,data=MyData,size=5)
+```
+Without I(), 5 is interpreted as a factor
+
+### *colour =* or *color =*
+#### Colours points based on a factor or 
+Again, note use of ***I()*** for constants vs variables
+```{r}
+qplot(x=Silene,y=Fallopia,data=MyData,colour=Nutrients) # Categorical colour
+qplot(x=Silene,y=Fallopia,data=MyData,colour=Total) # Continuous colour
+qplot(x=Silene,y=Total,data=MyData,colour=I("purple")) # basic colour
+qplot(x=Silene,y=Total,data=MyData,colour=I(rgb(1,0,0))) # rgb = red/green/blue
+```
+
+#### Note for histograms:
+Colour applies to outlines, not so helpful
+```{r}
+qplot(x=Total,data=MyData,group=Nutrients,colour=Nutrients)
+```
+
+### *fill =* 
+#### More useful for histograms
+```{r}
+qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients)
+```
+
+### *alpha =*
+#### Adjust transparency for overlapping points
+```{r}
+qplot(x=Silene,y=Total,data=MyData,size=I(5),alpha=I(0.3))
+```
+
+### *shape =*
+#### Use different shapes 
+Most common shape codes: 0-25
+```{r}
+qplot(x=Silene,y=Total,data=MyData,size=I(5),shape=Nutrients)
+qplot(x=Silene,y=Total,data=MyData,size=I(5),shape=I(17))
+```
+
+#### Some shape types have outlines
+You can use ***fill =*** and ***colour =*** to customize
+```{r}
+qplot(x=Silene,y=Total,data=MyData,size=I(5),shape=I(21),fill=I("yellow"),colour=I("red"))
+```
+
+### *xlab =*  and   *ylab =*
+#### Custom axis labels
+```{r}
+qplot(x=Silene,y=Total,data=MyData,xlab="Silene Biomass",ylab="Total Biomass")
+```
+
+### *main =*
+#### Add a title
+```{r}
+qplot(x=Silene,y=Total,data=MyData,main="Biomass")
+```
+
+<br>
+
+***
+
+<br>
+
+# 5. Changing themes & Geoms
+### ***+ theme_NAME()***
+#### Modify basic format and appearance
+These can be completely customized, but there are several pre-cut options:
+```{r}
+qplot(x=Silene,data=MyData) + theme_grey() # default
+qplot(x=Silene,data=MyData) + theme_bw() # cleaner, better contrast
+qplot(x=Silene,data=MyData) + theme_linedraw() # thicker grid lines
+qplot(x=Silene,data=MyData) + theme_light() # fainter border and axis values
+qplot(x=Silene,data=MyData) + theme_minimal() # no borders
+qplot(x=Silene,data=MyData) + theme_classic() # x and y lines only, no tick marks
+```
+
+### ***geom =***
+See website for list of geoms
+
+http://docs.ggplot2.org/
+
+A couple of examples:
+```{r}
+qplot(x=Nutrients,y=Total,data=MyData) # Basic
+qplot(x=Nutrients,y=Total,data=MyData,geom="boxplot") # Geom
+qplot(Total,data=MyData) # Basic
+qplot(Total,data=MyData,geom="density") # Geom
+```
+
+<br>
+
+***
+
+<br>
+
+# 6. Multiple graphs
+
+### ***facets = ***
+#### General form: facets=Vertical~Horizontal
+```{r}
+qplot(x=Silene,data=MyData,facets=Nutrients~.) # Vertical stacking
+qplot(x=Silene,data=MyData,facets=.~Nutrients) # Horizontal stacking
+qplot(x=Silene,data=MyData,facets=Taxon~Nutrients) # Both (2 column stacking)
+```
+
+<br>
+
+***
+
+<br>
+
+# 7. Save output
+#### Saving graphs/images requires three steps
+
+  1. Open a file (e.g. pdf, svg, png)
+
+  2. Create the graph inside the file
+
+  3. Close the file 
+      + Important: If you don't close the file, it is unusable.
+
+```{r}
+pdf("SileneHist.pdf") # 1. Create and open a file
+  qplot(x=Silene,data=MyData,facets=Taxon~Nutrients) # 2. Write the graph info
+dev.off() # 3. Close the file
+```
+Note how the qplot command does not open in the plots window
+
+This is because the info is sent to "SileneHist.pdf" instead
+

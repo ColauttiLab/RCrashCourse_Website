@@ -1,0 +1,328 @@
+---
+title: |-
+  R Crash Course \
+   Part 5 -- Advanced Techniques
+author: "Rob Colautti"
+---
+
+# 1. Custom functions
+
+## General form:
+```{r,eval=FALSE}
+functionName<-function(var1=Default1,var2=Default2){
+  ## Meat and potatoes
+}
+```
+
+## Example function
+User inputs two objects; the function outputs a list of functions applied to the inputs
+```{r}
+my.function<-function(var1=0,var2=0){
+  # You can make new variables within a function
+  add<-var1+var2
+  subt<-var1-var2
+  mult<-var1*var2
+  div<-var1/var2  
+  outlist<-list(input1=var1,input2=var2,addition=add,subtraction=subt,multiplication=mult,division=div)
+  # So far, everything is contained within the function. 
+  # Use return() to generate output
+  return(outlist)
+}
+```
+Note: Nothing output when the funciton is run. This just loads the function into memory.
+
+### Run the function
+```{r}
+my.function(var1=10,var2=0.1)
+my.function(var1=c(1:10),var2=c(10:1))
+```
+
+#### Protip #1:
+Consider annotating long or complex script with cat() to help with troubleshooting
+
+Note: \n = new line
+```{r}
+my.function<-function(var1=0,var2=0,verbose=FALSE){
+  cat("\nInput variables:\nvar1 =",var1,"\nvar2 =",var2,"\n")
+  cat("\nCalculating functions...\n")
+  cat("\nAdding...\n")    
+
+  add<-var1+var2
+  
+  cat("\nSubtracting...\n")
+
+  subt<-var1-var2
+  
+  cat("\nMultiplying...\n")
+  
+  mult<-var1*var2
+  
+  cat("\nDividing...\n")
+  
+  div<-var1/var2  
+  
+  cat("\nGenerating output...\n\n")
+  
+  outlist<-list(input1=var1,input2=var2,addition=add,subtraction=subt,multiplication=mult,division=div)
+
+  return(outlist)
+}
+
+## Run
+my.function(var1=10,var2=0.1)
+```
+
+#### Better yet, make it an option:
+```{r}
+my.function<-function(var1=0,var2=0,verbose=FALSE){
+  if (verbose==T){
+    cat("\nInput variables:\nvar1 =",var1,"\nvar2 =",var2,"\n")
+    cat("\nCalculating functions...\n")
+    cat("\nAdding...\n")    
+  }
+  
+  add<-var1+var2
+  
+  if (verbose==T){
+    cat("\nSubtracting...\n")
+  }
+  
+  subt<-var1-var2
+  
+  if (verbose==T){
+    cat("\nMultiplying...\n")
+  }
+  
+  mult<-var1*var2
+  
+  if (verbose==T){
+    cat("\nDividing...\n")
+  }
+  
+  div<-var1/var2  
+  
+  if (verbose==T){
+    cat("\nGenerating output...\n")
+  }
+  
+  outlist<-list(input1=var1,input2=var2,addition=add,subtraction=subt,multiplication=mult,division=div)
+
+  return(outlist)
+}
+
+# Run
+my.function(var1=10,var2=0.1,verbose=FALSE)
+my.function(var1=10,var2=0.1,verbose=TRUE)
+```
+
+
+#### Protip #2:
+If you have a custom function, theme, script, etc., that you use repeatedly:
+
+  1. Save in a separate file
+  
+  * e.g. make new "myfunction.R" file containing just my.function
+  
+  2. Load using `source("PathName.FileName.R")`
+
+  * e.g. `source("C:/Users/Colautti/Documents/RFunctions/myfunction.R")` if save
+
+#### Protip #3:
+We have already been using functions that somebody else wrote in R.
+
+To see 'under the hood' type a function without the bracktes:
+
+```{r}
+my.function
+library(ggplot2)
+qplot
+```
+
+<br>
+
+***
+
+<br>
+
+# 2. R Markdown
+In RStudio: File->New->R Markdown
+Choose html or Word (trivial to switch later)
+PDF requires LaTeX
+
+#### NOTE:
+If you don't see an option for R Markdown, you may need to install it:
+```{r,eval=FALSE}
+install.packages("rmarkdown")
+```
+
+
+#### Very few elements are needed for a basic markdown file
+
+### Header generated automatically:
+```{r,eval=FALSE}
+---
+title: R Crash Course
+author: "Rob Colautti"
+date: "Thursday, February 18, 2016"
+output: word_document
+---
+```
+
+### Basic elements:
+
+embed R code inline using \` characters: \``embedded code`\`
+
+Or block code using:
+
+\`\`\`\{r\}
+```{r,eval=FALSE}
+block code
+```
+\`\`\`
+
+For formatting text, see:
+
+http://rmarkdown.rstudio.com/authoring_basics.html
+
+A quick cheat-sheet is nice to have printed out for reference:
+
+https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
+
+### Advanced features:
+
+Update to latest version of rmarkdown
+```{r}
+devtools::install_github("rstudio/rmarkdown")
+```
+
+## Options for header
+```{r eval=FALSE}
+output:
+  html_document: # Add options for html output
+    toc: true # Add table of contents (TOC)
+    number_sections: true # Add section numbers
+    toc_float: # Have TOC floating at the side, rather than at the beginning
+      collapsed: false # Expand subsections
+```
+
+## Content as tabs
+```{r eval=FALSE}
+## Quarterly Results {.tabset}
+
+### By Product
+
+(tab content)
+
+### By Region
+
+(tab content)
+```
+
+Looks like this:
+
+## Quarterly Results {.tabset}
+
+### By Product
+
+(tab content)
+
+### By Region
+
+(tab content)
+
+
+<br>
+
+***
+
+<br>
+
+# 3. Custom packages
+
+The comprehensive source on custom packages:
+
+http://r-pkgs.had.co.nz/
+
+(Hadley Wickham again)
+
+### Install latest version of R
+#### Important:
+Quit R Studio before installing latest version of R
+
+Download here:
+
+https://cran.r-project.org/bin/windows/base/
+
+### Install packages
+```{r, eval=FALSE}
+install.packages(c("devtools", "roxygen2", "testthat", "knitr"))
+```
+
+
+### Check installation
+Make sure you have installed the preview version of R Studio
+
+The following should return 'TRUE'
+```{r, eval=F}
+install.packages("rstudioapi")
+rstudioapi::isAvailable("0.99.149")
+```
+If you see 'FALSE', try re-installing the preview version
+
+http://www.rstudio.com/products/rstudio/download/preview/
+
+### Keep devtools up to date
+```{r, eval=F}
+install.packages("curl")
+devtools::install_github("hadley/devtools")
+```
+
+### Check library
+```{r, eval=F}
+library(devtools)
+has_devel()
+```
+
+### Use RStudio
+RStudio 'projects' make it easy to make a new package
+
+  1. File-->New Project
+
+  2. --> New Directory
+  
+  3. --> R Package
+  
+  4. --> Add files (data, scripts, function, theme, etc.)
+  
+  5. Give it a name: e.g. 'myFirstPackage'
+  
+### Modify files:
+See 'Files' tab of R Studio
+
+  1. myFirstPackage.proj
+  
+  2. DESCRIPTION
+  
+  3. Vignettes folder -- contains custom R markdown files
+      
+  4. Data in main folder; no need to setwd()
+  
+  
+### Basic package complete!
+
+#### Before going public:
+
+  1. Create a github repository
+  
+  2. Flesh out documentation and meta-data
+  
+  3. Error checking
+  
+  4. Other tips:  http://r-pkgs.had.co.nz/release.html
+
+
+
+
+
+
+

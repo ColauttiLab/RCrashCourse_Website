@@ -1,0 +1,496 @@
+---
+title: |-
+  R Crash Course \
+   Part 1 -- Fundamentals
+author: "Rob Colautti"
+---
+
+# 1. Introduction
+
+## Brief survey
+
+  1. Faculty vs. grad vs. undergrad (doing a thesis?)
+  
+  2. Departments - Biology, Life Sci? Comp Sci? others?
+  
+  3. Previous experience with R
+  
+    + never used R before?
+  
+    + used outside of classroom setting (e.g. data analysis for thesis)
+
+    + basic data manipulation
+    
+    + flow control (if/then, for loops, etc)
+    
+    + basic statistics
+    
+    + advanced statistics (i.e. install.packages())
+    
+    + ggplot2()
+    
+    + other advanced methods (e.g. QGIS, mixed models)
+    
+    + custom functions
+    
+    + custom packages
+
+## ppt slides
+Colautti Lab Research
+
+Bioinformatics at Queen's:
+
+Babak - Colautti - Duan - CRC in Bioinformatics job search
+
+[Slides](Introduction_small.pdf)
+
+<br>
+
+*** 
+
+<br>
+
+# 2. R Basics
+
+Use hashtags to make comments right in R. Very important!
+```{r}
+# Use hastags to make comments - not read by the R console
+# Use other characters and blank lines to improve readability:
+# ------------------------- 
+# My first R script 
+# Today's Date
+# -------------------------
+# Add a summary description of what the script does
+# This script will...
+# And annotate individual parts of the script
+```
+
+## Basic Math
+```{r}
+10+2 # add
+10-2 # subtract
+10*2 # multiply
+10/2 # divide
+10^2 # exponent
+abs(-10) # absolute value
+sqrt(10-1) # square root (with subtraction)
+log(10) # natural log
+log10(10) # log base 10
+exp(1) # power of e
+sin(pi/2) # sine function
+asin(1) # inverse sine
+cos(pi) # cosine
+acos(-1) # inverse cosine
+tan(0) # tangent
+atan(0) # inverse tangent
+```
+
+## Round/Truncate
+```{r}
+round(pi,digits=3) # standard rounding to 3 digits
+floor(pi) # round down to closest whole number
+ceiling(pi) # round up to closest whole number
+signif(pi,digits=2) # round to keep 2 significant digits
+```
+
+## Logic Operators
+
+Note: **!** is a negation/inverse operator
+```{r}
+1 > 2 # greater than
+1 < 2 # less than
+1 <= 2 # less than or equal to
+1 == 1 # equal to
+1 != 1 # not equal to
+1 == 2 | 1 # | means 'OR'
+1 == 2 & 1 # & means 'AND' 
+1 == 1 & 1
+```
+
+## Combining objects
+
+***c()*** to concatenate 
+```{r}
+c(1,2,5,"string")
+```
+
+**:** for a range of numbers
+```{r}
+1:10
+100:90
+-1:1
+```
+
+<br>
+
+*** 
+
+<br>
+
+
+# 3. Defining variables / objects
+
+## Cells
+
+The most basic object is a single number or string
+```{r}
+X<-"string"
+```
+
+#### Why no output? 
+
+When we wrote: `X<-"string"`
+
+R created the object called **X**, so no output is produced. 
+
+A few options To see the contents of **X**:
+```{r}
+print(X)
+paste(X)
+X
+```
+#### What's the difference?
+
+***print()*** Is most generic, useful for providing feedback from running scripts 
+
+(e.g. during loops, Bash scripts, etc)
+
+***paste()*** Converts objects to a string, we'll come back to this.
+
+Generally ***print()*** or ***paste()*** are preferred over calling the object directly.
+
+## A Vector 
+
+A one-dimensional array of cells
+
+Ordered from 1 to ?
+
+Can be all the same type or a mix
+```{r}
+Xvec<-c(X,1:10,"E", "Computational Biology", 100:90)
+Xvec
+```
+
+### Subset a vector with square brackets [loc]
+
+Requires a number or range of numbers
+```{r}
+Xvec[1]
+Xvec[13]
+```
+
+## Matrices 
+
+A 2-D array of cells
+
+With 1 to ? rows by columns
+```{r}
+Xmat<-matrix(Xvec,nrow=6)
+Xmat
+```
+**Notice** the square brackets along the top and left side?
+
+These show the 'address' of each element in the matrix
+
+### Subset with square brackets [row,col]
+
+Just like the vector, but now two numbers for a 2D array
+```{r}
+Xmat[1,3]
+```
+
+## Higher-order arrays
+
+Add as many dimensions as you need using ***array()***
+```{r}
+Xarray<-array(0, dim=c(3,3,2)) # 3 dimensions
+Xarray
+```
+Note how 3rd dimension is sliced to print out in 2D
+
+<br>
+
+Higher-order arrays are possible, ugly to print out
+```{r}
+Xarray<-array(rnorm(64), dim=c(2,2,2,2,2,2)) # 6 dimensions
+```
+
+But easy to subset:
+```{r}
+Xarray[1:2,1:2,1,1,1,1]
+Xarray[1:2,1,1,1:2,1,1]
+```
+Why are these numbers not the same?
+
+### Matrix Algebra Basics
+```{r}
+## Create some vectors to play with
+X<-c(1:10)
+X
+Y<-c(1:10*0.5)
+Y
+
+## Use pretty much any standard operator for element-by element calculations
+X*Y # Multiply corresponding element (e.g. X[1]*Y[1], then X[2]*Y[2], etc)
+X+Y
+X/Y
+X^Y
+log(X)
+exp(Y)
+
+## Some True matrix algebra
+X%*%Y # Matrix multiplication (e.g.  X[1]*Y[1]+X[2]*Y[2]...)
+sum(X*Y) == X%*%Y
+Z<-X[1:4]%o%Y[1:3] # Outer product
+Z
+t(Z) # Transpose
+crossprod(X[1:4],Z) # Cross product
+crossprod(Z) # Cross product of Z and t(Z) a.k.a. Z'Z
+diag(4) # Identity matrix, 4x4 in this case
+diag(Z) # Diagonal elements of Z 
+```
+
+### Principal components analysis
+
+Widely used in biology; from community ecology and metagenomics to gene expression
+
+***prcomp()***
+```{r}
+prcomp(Z) 
+```
+
+## Lists 
+
+A group of objects
+
+Can include cells, vectors, and higher-order arrays
+
+Each element has a name
+```{r}
+MyList<-list(name="SWC",potpourri=Xvec,numbers=1:10)
+MyList
+```
+
+### A few ways to subset a list
+```{r}
+MyList$numbers # Use $ to subset by name
+MyList[3] # A 'slice' of MyList
+MyList[[3]] # An 'extract' of MyList
+```
+
+<br>
+
+What's the difference between [] and [[]]?
+```{r, error=TRUE}
+2*MyList[[3]]
+Try: 2*MyList[3]
+```
+### Protip: 
+
+Many analysis functions in R output as lists (e.g. statistical packages)
+
+<br>
+
+For example, the output of prcomp:
+```{r}
+prcomp(Z) 
+names(prcomp(Z))
+prcomp(Z)$center
+prcomp(Z)$scale
+```
+
+## paste() 
+
+Versatile function for manipulating output
+```{r}
+paste("Hello World!") # Basic string
+paste("Hello","World!") # Concatenate two strings
+paste(1:10) # Paste numbers as strings
+paste(1:10)[4] # Note that each number is a separate cell in a vector of strings
+as.numeric(paste(1:10)) # Convert back to numbers
+paste(1:10,collapse=".") # Collapse separate cells to produce a single string
+```
+
+Note what happens if we combine objects of different length:
+```{r}
+paste("Hello",1:10,sep="-") # Note 
+```
+
+## ? for HELP
+
+Provides detailed information on functions 
+
+and their important parameters
+```{r eval=F}
+?paste
+```
+
+<br>
+
+*** 
+
+<br>
+
+
+# 4. Working with data
+
+## Working Directory
+Set your working directory
+```{r}
+setwd("C:/Users/Colautti/Documents/TEACHING/Software Carpentry Workshop")
+```
+
+Check current working directory
+```{r}
+getwd()
+```
+
+## Import data
+Import data from .csv file into an object called 'MyData'
+```{r}
+MyData<-read.csv("FallopiaData.csv",header=T) # Header=T tells read.csv to interpret first row as column labels
+```
+**Important**: objects created by **read.csv** and other **read.?** functions are special objects called ***data.frame*** objects.
+
+## ***data.frame***
+A ***data.frame*** is a special type of 2D matrix with additional indexing information for rows/columns of data
+
+This format is partly why R is so useful for data analysis
+
+<br>
+
+Inspecting your ***data.frame*** object
+```{r}
+names(MyData) # See column names
+head(MyData) #  Show first six rows of data
+tail(MyData) #  Show last six rows of data
+dim(MyData) #  Number of rows or 'dimension' of the data object
+str(MyData) #  Data 'structure' - types of variables
+```
+### Protip: 
+***str()*** is very important for functions that use data.frames including statistical analysis and plotting
+
+Pay careful attention to 'int' vs 'num' vs 'factor' 
+
+#### Example:
+in ANOVA, you want 'factor' as a predictor
+
+in regression, you want 'int' or 'num' as a predictor
+
+## Subset data
+```{r}
+MyData[1,] # Returns first row of data.frame
+MyData[,1] # Returns first value of data.frame
+MyData[,"PotNum"] # Returns values in "PotNum" column
+MyData$PotNum # Another way to get the same output
+subset(MyData,Scenario=="extreme") # Subset data where the Scenario column == 'extreme'
+levels(MyData$Scenario)
+```
+
+## Adding calculations
+e.g. add a new column that is the sum of others
+```{r}
+MyData$Total<-MyData$Symphytum+MyData$Silene+MyData$Urtica+MyData$Geranium+MyData$Geum+MyData$Fallopia
+names(MyData)
+print(MyData$Total)      
+```
+
+<br>
+
+*** 
+
+<br>
+
+
+# 5. Summary statistics
+Calculate means of Total column for each level of Nutrients column
+```{r}
+aggregate(MyData$Total,list(MyData$Nutrients),mean) 
+```
+
+OR to preserve column names:
+```{r}
+aggregate(Total~Nutrients,data=MyData,mean)
+```
+
+You can also use this to calculate means across different grouping variables
+```{r}
+aggregate(Total~Nutrients*Taxon*Scenario,data=MyData,mean)
+```
+
+Calculate standard deviations
+```{r}
+aggregate(Total~Nutrients,data=MyData,sd) 
+```
+
+tapply is like aggregate, but note the difference in output
+```{r}
+tapply(MyData$Total,list(MyData$Nutrients),mean) # calculate means
+tapply(MyData$Total,list(MyData$Nutrients),sd) # calculate standard deviation
+```
+
+<br>
+
+*** 
+
+<br>
+
+
+# 6. Save output
+
+## Saving Data:
+```{r}
+## Calulate means
+NutrientMeans<-tapply(MyData$Total,list(MyData$Nutrients),mean)
+## Save means as .csv file
+write.csv(NutrientMeans,"MyData_Nutrient_Means.csv")
+```
+
+<br>
+
+*** 
+
+<br>
+
+# 7. Flow control
+
+## Brief introduction
+Make up a couple of ojects to play with
+```{r}
+X<-21
+Xvec<-c(1:10,"string")
+```
+
+### *if(){}*
+```{r}
+if(X > 100){
+  print("X > 100")
+} else {
+  print("X <= 100")
+}
+```
+
+### *for(){}*
+```{r}
+# Loop through numbers from 1 to X
+for (i in 1:X){
+  paste(X,i,sep=":")
+}
+# Loop through elements of a vector directly
+for (i in Xvec){
+  print(i)
+}
+# Use an index to loop through the elements
+for (i in 1:length(Xvec)){
+  print(Xvec[i])
+}
+```
+
+### *while(){}*
+```{r}
+count<-0
+while (count < X){
+  print(count)
+  count<-count+1
+}
+```
