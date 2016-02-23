@@ -39,91 +39,91 @@ Species<-c("petiolata", "verticillatus", "salicaria", "minor")
 print(Species)
 ```
 
-__grep__ -- returns cell addresses matching query 
+### __grep__ -- returns cell addresses matching query 
 
 ```{r}
 grep("a",Species)
 ```
 
-__grepl__ -- returns T/F associated with 
+### __grepl__ -- returns T/F associated with 
 
 ```{r}
 grepl("a",Species)
 ```
 
-__sub__ -- replaces first match (in each cell)
+### __sub__ -- replaces first match (in each cell)
 
 ```{r}
 sub("l","L",Species)
 ```
 
-__gsub__  -- replaces all matches
+### __gsub__  -- replaces all matches
 
 ```{r}
 gsub("l","L",Species)
 ```
 
 
-## Wildcards
+# Wildcards
 
-__\\__ escape character
+### __\\__ escape character
 
-__\\\\__ in R, double-escape is usually needed (because first \\ is used to escape special characters in R, such as \\")
+### __\\\\__ in R, double-escape is usually needed (because first \\ is used to escape special characters in R, such as \\")
 
-__\\w__ = all letters, digits and _ 
+### __\\w__ = all letters, digits and _ 
 ```{r}
 gsub("w","*","...which 1-100 words get replaced?")
 gsub("\\w","*","...which 1-100 words get replaced?")
 ```
 
-__\\W__ = non-word and non-number (inverse of \\w)
+### __\\W__ = non-word and non-number (inverse of \\w)
 ```{r}
 gsub("\\w","*","...which 1-100  words get replaced?")
 ```
 
-__\\s__ = spaces
+### __\\s__ = spaces
 ```{r}
 gsub("\\s","*","...which 1-100  words get replaced?")
 ```
 
-__\\t__ = tab character (useful for tab-delimited data)
+### __\\t__ = tab character (useful for tab-delimited data)
 ```{r}
 gsub("\\t","*","...which 1-100  words get replaced?")
 ```
 
-__\\d__ = digits
+### __\\d__ = digits
 ```{r}
 gsub("\\d","*","...which 1-100  words get replaced?")
 ```
 
-__\\D__ = non-digits
+### __\\D__ = non-digits
 ```{r}
 gsub("\\D","*","...which 1-100  words get replaced?")
 ```
 
->__Two more special wildcards:__
->
->__\\r__ = carriage return
->
->__\\n__ = newline character
->
->Unix/Mac files -- lines usually end with __\\n__
->
->Windows/DOS files -- lines usually end with __\\r\\n__
->
->--> We'll come back to these later
+### __Two more special wildcards:__
+
+### __\\r__ = carriage return
+
+### __\\n__ = newline character
+
+Unix/Mac files -- lines usually end with __\\n__
+
+Windows/DOS files -- lines usually end with __\\r\\n__
+
+--> We'll come back to these later
 
 
 ## Special characters: . and |
 
-__|__ = or
+### __|__ = or
 
 Example, look for w or e
 ```{r}
 gsub("w|e","*","...which 1-100  words get replaced?")
 ```
 
-__.__ = any character except new line
+### __.__ = any character except new line
 ```{r}
 gsub(".","*","...which 1-100  words get replaced?")
 ```
@@ -142,32 +142,32 @@ gsub("\\.","*","...which 1-100  words get replaced?")
 sub("\\w","*","...which 1-100 words get replaced?")
 ```
 
-__?__ = 0 or 1 matches
+### __?__ = 0 or 1 matches
 ```{r}
 sub("\\w?","*","...which 1-100 words get replaced?")
 ```
 
-__*__ = 0 or more matches
+### __*__ = 0 or more matches
 ```{r}
 gsub("\\w*","*","...which 1-100 words get replaced?")
 ```
 
-__+__ = 1 or more matches
+### __+__ = 1 or more matches
 ```{r}
 gsub("\\w+","*","...which 1-100 words get replaced?")
 ```
 
-__{n,m}__ = between n to m matches
+### __{n,m}__ = between n to m matches
 ```{r}
 gsub("\\w{3,5}","*","...which 1-100 words get replaced?")
 ```
 
-__{n}__ = exactly n matches
+### __{n}__ = exactly n matches
 ```{r}
 sub("\\w{3}","*","...which 1-100 words get replaced?")
 ```
 
-__{n,}__ = n or more matches
+### __{n,}__ = n or more matches
 ```{r}
 sub("\\w{3,}","*","...which 1-100 words get replaced?")
 ```
@@ -188,10 +188,14 @@ gsub("[aceihw-z]+","*","...which 1-100 words get replaced?")
 
 ## ^Start and end of line$
 
+### ^
+
 Find species starting with "s"
 ```{r}
 grep("^s",Species)
 ```
+
+### $
 
 Find species ending with "a"
 ```{r}
@@ -199,7 +203,7 @@ grep("a$",Species)
 ```
 
 
-## ^ Also 'negates' when used with []
+^ Also 'negates' when used with []
 
 Find species containing any letter other than s
 ```{r}
@@ -212,7 +216,9 @@ gsub("[^a]","*",Species)
 ```
 
 
-## Capture text using () and reprint using \\1 \\2 etc
+## Capture text
+
+Capture text using () and reprint using \\1 \\2 etc
 
 Replace each word with its first letter
 ```{r}
@@ -224,8 +230,7 @@ Reverse first two letters of each word
 gsub("(\\w)(\\w)(\\w+)","\\2\\1\\3","...which 1-100 words get replaced?")
 ```
 
-
-# EXAMPLE: Longer strings
+# EXAMPLE 1: Longer strings
 ```{r,echo=F}
 Lythrum.18S<-"LOCUS       AF206955                1740 bp    DNA     linear   PLN 18-APR-2003
 DEFINITION  Lythrum salicaria 18S ribosomal RNA gene, complete sequence.
@@ -328,18 +333,18 @@ gsub("ATG","-->START<--",Seq)
 
 Open reading frames?
 ```{r}
-gsub("(ATG\\w+(TAA|TAG|TGA))","-->\\1<--",Seq)
+gsub("(ATG([ATGC]{3})+(TAA|TAG|TGA))","-->\\1<--",Seq)
 ```
 
-Or go back, and keep non-reading fram in lower case
+Or go back, and keep non-reading frame in lower case
 ```{r}
 Seq<-gsub(".*ORIGIN","",Lythrum.18S)
 Seq<-gsub("[\n0-9 /]+","",Seq) ## Note the single \ in this case since it is inside the square brackets
-gsub("(atg\\w+(taa|tag|tga))","\\U\\1",Seq,perl=T)
+gsub("(atg([atgc]{3})+(taa|tag|tga))","\\U\\1",Seq,perl=T)
 ```
 
 
-# EXAMPLE: Organizing Data
+# EXAMPLE 2: Organizing Data
 Imagine you have a repeated measures design. 3 transects (A-C) and 3 positions along each transect (1-3)
 ```{r}
 Transect<-data.frame(Species=1:20,A1=rnorm(20),A2=rnorm(20),A3=rnorm(20),B1=rnorm(20),B2=rnorm(20),B3=rnorm(20),C1=rnorm(20),C2=rnorm(20),C3=rnorm(20))
