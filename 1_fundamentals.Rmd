@@ -41,16 +41,7 @@ https://github.com/ColauttiLab/RCrashCourse
     
     + custom packages
 
-## ppt slides
-Colautti Lab Research
 
-Bioinformatics at Queen's:
-
-Babak - Colautti - Duan - CRC in Bioinformatics job search
-
-[Slides](Introduction_small.pdf)
-
-<br>
 
 *** 
 
