@@ -1,7 +1,5 @@
 <img src="ColauttiLabLogo.png" width="250">
 # RCrashCourse
-<<<<<<< HEAD
-![ColauttiLab](ColauttiLab.png)
 A Crash Course in R for new students in the Colautti Lab and anyone else who might be interested. Written in RMarkdown (mostly).
 =======
 
@@ -51,4 +49,3 @@ Written in RMarkdown (mostly).
   * R Markdown
   * Custom Packages
 
->>>>>>> e21ef29a1f930b5bc70f7b6c78b3997862b9e450
