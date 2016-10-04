@@ -3,6 +3,7 @@ title: |-
   R Crash Course \
    Part 1 -- Fundamentals
 author: "Rob Colautti"
+output: html_document
 ---
 
 # Reference
@@ -40,15 +41,6 @@ https://github.com/ColauttiLab/RCrashCourse
     + custom functions
     
     + custom packages
-
-## ppt slides
-Colautti Lab Research
-
-Bioinformatics at Queen's:
-
-Babak - Colautti - Duan - CRC in Bioinformatics job search
-
-[Slides](Introduction_small.pdf)
 
 <br>
 
@@ -343,7 +335,7 @@ and their important parameters
 ## Working Directory
 Set your working directory
 ```{r}
-setwd("C:/Users/Colautti/Documents/TEACHING/Software Carpentry Workshop")
+setwd("C:/Users/rob_c/Documents/OLD FILES (pre 2016)/My Documents Backup/TEACHING/R CrashCourse Git/RCrashCourse")
 ```
 
 Check current working directory
