@@ -1,0 +1,75 @@
+---
+title: "Exploring multiple regression and residuals"
+author: "Robert I. Colautti"
+date: "March 29, 2017"
+output: html_document
+---
+
+# Problem:
+
+Read the statistical note by Amy [Iler et al (2017)](IlerEtAl2017Ecology) about statistically testing associations between phenology and temperature over time. Let's examine using some toy data
+
+# Parameter set-up
+
+```{r}
+## Define years
+year<-1900:2017
+## Make temperature a function of year + random normal error
+temp<-year-mean(year)+rnorm(length(year))
+## Plot year by temp
+plot(year,temp)
+## Make phenology a function of temperature + random normal error
+phen<-temp+rnorm(length(temp))
+## Plot phenology by year
+plot(phen,year)
+## Plot phenology by temperature
+plot(phen,temp)
+```
+
+# Multiple regression 
+
+We should use a multiple regression to account for effects of temperature and time separately. This model includes both temperature and year as predictor variables:
+
+```{r}
+mod1<-lm(phen~temp+year)
+anova(mod1)
+summary(mod1)
+## Note the slope of phenology vs temperature:
+(coef1<-coefficients(mod1)[2])
+```
+
+# Incorrect Method:
+
+The paper (incorrectly) implies that we can simply do two separate linear regressions. This model first regresses phenology on year, then takes the residuals to estimate effect of temperature on phenology:
+
+```{r}
+# Take residuals of phenology by year
+phen.res<-lm(phen~year)$residuals
+# Regress residuals of phenology-by-year model against temperature
+mod2<-lm(phen.res~temp)
+anova(mod2)
+summary(mod2)
+# Note slope of phen.res vs temperature (way smaller than coef1)
+(coef2<-coefficients(mod2)[2])
+# Compare to coef1
+coef1
+```
+
+# Correct Method:
+
+If you look at the method used in supplementary code provided by Iler et al. (Ecology, 2017), it is different than what is shown above. This model regresses phenology on year AND temperature on year, then regresses the residuals:
+
+```{r}
+# Take the residuals of temperature by year
+temp.res<-lm(temp~year)$residuals
+# Regress residuals of phenology-by-year against residuals of temperature-by-year
+mod3<-lm(phen.res~temp.res)
+anova(mod3)
+summary(mod3)
+# Note slope of phen.res vs temp.res
+(coef3<-coefficients(mod3)[2])
+# Compare to coef1
+coef1
+```
+
+In summary, the third method and the first method produce the same coefficients.
