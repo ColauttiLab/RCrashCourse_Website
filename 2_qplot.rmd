@@ -41,8 +41,10 @@ library(ggplot2)
 <br>
 
 ## setwd() and import data
+For example, a software carpentry folder in the default directory in Windows 10
+'setwd("C:/Users/Colautti/Documents/SWC")'
+```
 ```{r}
-setwd("C:/Users/Colautti/Documents/TEACHING/Software Carpentry Workshop")
 MyData<-read.csv("FallopiaData.csv",header=T)
 ```
 
@@ -189,7 +191,7 @@ qplot(x=Silene,data=MyData) + theme_classic() # x and y lines only, no tick mark
 ```
 
 ### Or create your own custom theme:
-#### Simplified/clean theme more suitable for presentation or publication:
+#### Simplified/clean version of theme_classic with bigger axis labels more suitable for presentation or publication:
 ```{r}
 theme_pubworthy <- function (base_size = 12, base_family = "") {
   theme_classic(base_size = base_size, base_family = base_family) %+replace% 
@@ -210,7 +212,8 @@ theme_pubworthy <- function (base_size = 12, base_family = "") {
 
 #### What it looks like:
 ```{r}
-qplot(x=Silene,data=MyData) + theme_pubworth() # A clean format with bigger axis labels for publication
+qplot(x=Silene,data=MyData) + theme_pubworthy() # A clean format with bigger axis labels for publication
+qplot(x=Pct_Fallopia,y=Silene,data=MyData) + theme_pubworthy() # Bivariate plot
 ```
 
 ### ***geom =***
