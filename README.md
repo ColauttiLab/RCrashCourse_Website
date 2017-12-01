@@ -11,7 +11,7 @@ Written for new students in the Colautti Lab
 
 Written in RMarkdown (mostly).
 
-See final rendered html files at [http://post.queensu.ca/~rc91](http://post.queensu.ca/~rc91)
+See final rendered html files at [http://post.queensu.ca/~rc91/R](http://post.queensu.ca/~rc91/R)
 
 # Modules:
 
