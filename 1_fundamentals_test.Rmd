@@ -1,0 +1,645 @@
+---
+title: |-
+  R Crash Course \
+   Part 1 -- Fundamentals TEST
+author: "Rob Colautti"
+---
+
+<script src="_hidecode.js"></script>
+
+# Test your understanding of R Fundamentals
+
+*** 
+
+# 2. R Basics
+
+Make comments inside your code. Very important (unless you are using R markdown or R notebooks)!
+<div class="fold s o">
+```{r}
+# Use hastags to make comments - not read by the R console
+# Use other characters and blank lines to improve readability:
+# ------------------------- 
+# My first R script 
+# Today's Date
+# -------------------------
+# Add a summary description of what the script does
+# This script will...
+# And annotate individual parts of the script
+```
+</div>
+
+## Basic Math
+
+add, subtract, multiply, divide, exponent
+<div class="fold s o">
+```{r, eval=F}
+10+2 # add
+10-2 # subtract
+10*2 # multiply
+10/2 # divide
+10^2 # exponent
+```
+</div>
+
+absolute value, square root, natural log (ln), log base 10, e to the power of 6
+<div class="fold s o">
+```{r, eval=F}
+abs(-10) # absolute value
+sqrt(10-1) # square root (with subtraction)
+log(10) # natural log
+log10(10) # log base 10
+exp(6) # power of e
+```
+</div>
+
+
+sine, cosine, tangent and their inverse
+<div class="fold s o">
+```{r, eval=F}
+sin(pi/2) # sine function
+asin(1) # inverse sine
+cos(pi) # cosine
+acos(-1) # inverse cosine
+tan(0) # tangent
+atan(0) # inverse tangent
+```
+</div>
+
+## Round/Truncate
+round to 3 decimal places; round down; round up; keep 2 significant digits
+<div class="fold s o">
+```{r, eval=F}
+round(pi,digits=3) # standard rounding to 3 digits
+floor(pi) # round down to closest whole number
+ceiling(pi) # round up to closest whole number
+signif(pi,digits=2) # round to keep 2 significant digits
+```
+</div>
+
+## Logic Operators
+
+greater, less, equal, not equal, 'OR' 'AND'
+<div class="fold s o">
+```{r, eval=F}
+1 > 2 # greater than
+1 < 2 # less than
+1 <= 2 # less than or equal to
+1 == 1 # equal to
+1 != 1 # not equal to
+1 == 2 | 1 # | means 'OR'
+1 == 2 & 1 # & means 'AND' 
+```
+</div>
+
+## Random Number Generators
+
+Generate 10 numbers from each of the following:
+
+Uniform distribution
+<div class="fold s">
+```{r}
+runif(10,min=0,max=1) 
+```
+</div>
+
+Normal distribution with a mean of 10 and standard deviation of 5
+<div class="fold s">
+```{r}
+rnorm(10,mean=0,sd=1)
+```
+</div>
+
+Poisson distribution with a lambda of 100
+<div class="fold s">
+```{r}
+rpois(10,lambda=10)
+```
+</div>
+
+Bernoulli variable (Binomial distribution) to model a coin toss (one coin, 10 separate trials)
+<div class="fold s">
+```{r}
+rbinom(10,size=1,prob=0.5)
+```
+</div>
+
+Bernoulli variable (Binomial distribution) to model the number of Adenine nucleotides found in a stretch of 100bp of DNA (assuming equal representation of the 4 base pairs) -- repeated for 10 independent strands of DNA
+<div class="fold s">
+```{r}
+rbinom(10,size=100,prob=0.25)
+```
+</div>
+
+## Combining objects
+
+Make a vector of 3 letters
+<div class="fold s">
+```{r}
+c('a','b','c')
+```
+</div>
+
+Make a vector of numbers 1 to 100
+<div class="fold s">
+```{r}
+c(1:100)
+```
+</div>
+
+Make a vector of numbers counting from 1.1 to 10.1 by 0.1
+<div class="fold s">
+```{r}
+c(11:101)/10
+```
+</div>
+
+<br>
+
+*** 
+
+<br>
+
+# 3. Defining variables / objects
+
+## Cells
+
+Define an object $X$ as the word $string$
+<div class="fold s">
+```{r}
+X<-"string"
+```
+</div>
+
+A few options To see the contents of **X**:
+<div class="fold s">
+```{r, eval=F}
+# Any of these will work:
+print(X)
+paste(X)
+X
+```
+</div>
+
+#### What's the difference?
+
+What is the difference between `X`, `print(X)` and `paste(X)`? 
+<div class="fold s">
+```{r eval=F}
+# print() Is most generic, useful for providing feedback from running scripts (e.g. during loops, Bash scripts, etc)
+
+# paste() Converts objects to a string, we'll come back to this.
+
+# Generally print() or paste() are preferred over calling the object directly.
+```
+</div>
+
+### Subsetting objects 
+
+Make a vector of numbers 1 to 3.6 by 0.1 called `Xvec` 
+
+<div class="fold s">
+```{r}
+Xvec<-c(1:36)*0.1
+```
+</div>
+
+Print the 1st, 3rd and 9th elements of `Xvec` as a single string
+
+<div class="fold s">
+```{r}
+Xvec[c(1,3,9)]
+```
+</div>
+
+## Matrices 
+
+Make a matrix called `Xmat` by converting the 1x36 `Xvec` vector to a 6x6 matrix
+<div class="fold s">
+```{r}
+Xmat<-matrix(Xvec,nrow=6)
+```
+</div>
+
+### Subset a matrix
+
+Print the number from the 1st row, 3rd column of the matrix object `Xmat`
+<div class="fold s">
+```{r}
+Xmat[1,3]
+```
+</div>
+
+## Higher-order arrays
+
+Make an object containing 2 3x3 matrices (i.e. 3-dimensional array)
+<div class="fold s o">
+```{r}
+Xarray<-array(0, dim=c(3,3,2)) # 3 dimensions
+Xarray
+```
+</div>
+
+### Matrix Algebra Basics
+
+Start with a couple of vectors
+```{r}
+X<-c(1:10)
+Y<-c(10:1)
+```
+
+Multiply each element of the vector X by its corresponding element in vector Y
+i.e. `X[1]` x `Y[1]`, `X[2]` x `Y[2]`, etc.
+<div class="fold s">
+```{r}
+X*Y 
+```
+</div>
+
+Take every element of Y and raise it to the exponent $e^Y$
+<div class="fold s">
+```{r}
+exp(Y)
+## Remember: you can use pretty much any standard operator for element-by element calculations
+```
+</div>
+
+## More advanced matrix algebra
+
+Standard ('proper') matrix multiplication of vector `X` by vector `Y`. 
+
+i.e. `X[1]*Y[1]+X[2]*Y[2]`
+
+What will the output be?
+
+<div class="fold s o">
+```{r}
+X%*%Y
+```
+</div>
+
+Outer product of `X` and `Y`.
+
+What will the output be?
+<div class="fold s o">
+```{r}
+Z<-X%o%Y
+Z
+```
+</div>
+
+### Principal components analysis
+
+Do a principal components analysis of the matrix `Z` from the previous step
+<div class="fold s o">
+```{r}
+prcomp(Z) # or princomp(Z)
+```
+</div>
+
+## Lists 
+
+Make a list called _MyList_ containing the following elements:
+
+1. A string called _name_ that contains your name  
+2. A vector called _Xvec_ that all the elements of the vector X, defined in section 3  
+3. A vector called _numbers_ that contains 10 random numbers
+
+What will the output look like?
+
+<div class="fold s o">
+```{r}
+MyList<-list(name="Rob",Xvec=X,numbers=runif(10)) # if your name is 'Rob'
+MyList
+```
+</div>
+
+Print the _numbers_ element from the MyList list that you created
+<div class="fold s">
+```{r}
+MyList$numbers # Use $ to subset by name
+```
+</div>
+<br>
+
+What's the difference between `$`, `[]` and `[[]]`?
+
+What will the ouput look like (predict all 6 before revealing)?
+<div class="fold o">
+```{r, error=TRUE}
+MyList$numbers
+```
+</div>
+
+<div class="fold o">
+```{r, error=TRUE}
+MyList[3]
+2*MyList[3]
+```
+</div>
+
+<div class="fold o">
+```{r, error=TRUE}
+MyList[[3]]
+2*MyList[[3]]
+```
+</div>
+
+Describe the above in words:
+<div class="fold s">
+```{r, eval=F}
+# The [] his the whole 'slice' including the title $numbers
+# The [[]] includes only the values, similar to $
+```
+</div>
+
+### Protip: 
+
+Don't forget: many analysis functions in R output as lists (e.g. statistical packages)
+
+<br>
+
+For example, the output of prcomp is a list that can be sliced:
+```{r}
+prcomp(Z) 
+names(prcomp(Z))
+prcomp(Z)$center
+prcomp(Z)$scale
+```
+
+## paste() function
+
+A very versatile function for manipulating strings, including output from other functions
+
+Paste two strings _Hello_ and _World!_
+<div class="fold s">
+```{r}
+paste("Hello","World!")
+```
+</div>
+
+Paste a vector of numbers c(1:10) as strings
+<div class="fold s">
+```{r}
+paste(c(1:10))
+```
+</div>
+
+Paste a vector of numbers c(1:10) as a single string, separated by a comma and a space
+<div class="fold s">
+```{r}
+paste(c(1:10),collapse=". ")
+```
+</div>
+
+# 4. Working with data
+
+## Working Directory
+Tell R which directory you want to work from
+<div class="fold s">
+```{r, eval=F}
+setwd("C:/Users/ColauttiLab/Documents")
+```
+</div>
+
+Ask R which directory it is currently working in
+<div class="fold s">
+```{r, eval=F}
+getwd()
+```
+</div>
+
+## Import data
+
+Import data from _FallopiaData.csv_ file into an object called _MyData_
+<div class="fold s">
+```{r}
+MyData<-read.csv("FallopiaData.csv",header=T)
+```
+</div>
+
+## **`data.frame`**
+
+What is a **`data.frame`** object, how is it different from other objects?
+
+<div class="fold s">
+```{r}
+# A data.frame is a special type of 2D matrix with additional indexing information for rows/columns of data
+```
+</div>
+
+Inspecting your **`data.frame`** object:
+
+Print the names of the columns in your `data.frame` called _MyData_
+<div class="fold s">
+```{r}
+names(MyData) # See column names
+```
+</div>
+
+Inspect the first few rows of _MyData_
+<div class="fold s">
+```{r}
+head(MyData) #  Show first six rows of data
+```
+</div>
+
+Inspect the last few rows
+<div class="fold s">
+```{r}
+tail(MyData) #  Show last six rows of data
+```
+</div>
+
+Find the number of rows and columns of _MyData_  
+<div class="fold s">
+```{r}
+dim(MyData) #  Number of rows x columns (or 'dimension') of the data object; nrow(MyData) and ncol(MyData) also would work
+```
+</div>
+
+Figure out what class of variables you have for each column of _MyData_  
+
+<div class="fold s">
+```{r}
+str(MyData) #  Data 'structure' - types of variables
+```
+</div>
+
+Why is it important to check the class (e.g. integer, numeric, string, factor) of your `data.frame` object?
+
+<div class="fold s">
+```{r}
+# str() is very important for functions that use data.frames including statistical analysis and plotting. For example if you have two treatment groups coded as 1 and 2, this should be a FACTOR, but R will default to an INTEGER. This could be a problem if your analysis treats INTEGERS as continusous variables.
+
+# Another common problem is when you have a typo in a measurement column (e.g. you accidentally press o instead of 0 for one of your measurements). Since there is one letter in the column, R will treat it as a string or factor, rather than a continuous measurement.
+```
+
+How would you convert the __PotNum__ column in __MyData__ from an integer to a factor?
+<div class="fold s">
+```{r eval=F}
+# Just replace the column
+MyData$PotNum<-as.factor(MyData$PotNum)
+```
+</div>
+
+
+## Adding calculations
+
+Add a new column in __MyData__ called __Total__ that is the sum of __Symphtum__, __Silene__, __Urtica__, __Geranium__, __Geum__ and __Fallopia__
+<div class="fold s">
+```{r eval=F}
+MyData$Total<-MyData$Symphytum+MyData$Silene+MyData$Urtica+MyData$Geranium+MyData$Geum+MyData$Fallopia
+```
+</div>
+
+<br>
+
+*** 
+
+<br>
+
+# 5. Summary statistics
+
+Working with the __MyData__ **`data.frame`** 
+
+Calculate means of the __Total__ column you created above, but for each level of __Nutrients__ column
+<div class="fold s">
+```{r}
+aggregate(Total~Nutrients,data=MyData,mean)
+```
+</div>
+
+Calculate standard deviations instead of means
+<div class="fold s">
+```{r}
+aggregate(Total~Nutrients,data=MyData,sd) 
+```
+</div>
+
+Calculate means but separately for each combination of factors in the __Nutrients__, __Taxon__ and __Scenario__ columns
+<div class="fold s">
+```{r}
+aggregate(Total~Nutrients*Taxon*Scenario,data=MyData,mean)
+```
+</div>
+
+Alternative answers to the above (note difference in output)
+<div class="fold s o">
+```{r}
+tapply(MyData$Total,list(MyData$Nutrients),mean) # calculate means
+tapply(MyData$Total,list(MyData$Nutrients),sd) # calculate standard deviation
+```
+</div>
+
+<br>
+
+*** 
+
+<br>
+
+# 6. Save output
+
+
+Create new object containing the means of __Total__ for each level of __Nutrients__
+
+Then save it as a csv file called "**MyData_Nutrients_Means.csv**"
+
+<div class="fold s">
+```{r}
+## Calulate means
+NutrientMeans<-tapply(MyData$Total,list(MyData$Nutrients),mean)
+## Save means as .csv file
+write.csv(NutrientMeans,"MyData_Nutrient_Means.csv")
+```
+</div>
+
+<br>
+
+*** 
+
+<br>
+
+# 7. Flow control
+
+## Brief exampes
+
+Make up a couple of ojects to play with
+```{r}
+X<-21
+Xvec<-c(1:10,"string")
+```
+
+### **`if(){}`**
+
+Asses the object __X__ and if it is greater than 100, tell the user "X > 100", but if it not, then tell the use "X <= 100"
+
+<div class="fold s">
+```{r, eval=F}
+if(X > 100){
+  print("X > 100")
+} else {
+  print("X <= 100")
+}
+```
+</div>
+
+### **`for(){}`**
+
+Create a loop that will repeat __X__ times, and in each loop, tell the user which iteration it is on.
+<div class="fold s">
+```{r}
+# Loop through numbers from 1 to X
+for (i in 1:X){
+  print(paste(i,X,sep=" of "))
+}
+```
+</div>
+
+Create a loop that will read each element of Xvec and tell the user which element is being read.
+<div class="fold s">
+```{r}
+# Loop through elements of a vector directly
+for (i in Xvec){
+  print(i)
+}
+```
+</div>
+
+Create a nested loop that will first cycle through the first 3 columns of __MyData__ and then for each column, cycle through the the first 4 rows. Keep track of the total number of iterations. For each iteration, tell the user:
+
+1. What iteration it is on: 'Iteration X of Y'
+2. What row of __MyData__ is being read
+3. What column is being read
+4. The element (value) in that particular row x col
+<div class="fold s">
+```{r}
+# Use an index to loop through the elements
+iter<-1
+for (i in 1:3){
+  for (j in 1:4){
+  print(paste("Iteration:",iter,"of",3*4))
+  print(paste("Element =",MyData[j,i],"at row:",j,"and col:",i))
+  iter<-iter+1
+  }
+}
+```
+</div>
+
+### **`while(){}`**
+
+Randomly sample values for 2 variables, each drawn from a random normal distribution with mean = 0 and sd = 1.
+Repeat until the product is a value greater than 1, and output the number of iterations it took.
+
+```{r,echo=F}
+set.seed(2)
+```
+
+<div class="fold s">
+```{r}
+count<-0
+while (rnorm(1)*rnorm(1)<=1){
+  count<-count+1
+}
+print(paste("It took",count,"iterations to reach a value > 1"))
+```
+</div>
