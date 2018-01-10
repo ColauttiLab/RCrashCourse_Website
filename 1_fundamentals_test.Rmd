@@ -9,7 +9,11 @@ author: "Rob Colautti"
 
 # Test your understanding of R Fundamentals
 
-*** 
+<br>
+
+***
+
+<br>
 
 # 2. R Basics
 
