@@ -4,7 +4,8 @@
     toc: true
     toc_float: true
     toc_depth: 3
-    theme: sandstone
-    highlight: zenburn
-  word_document:
-    reference_docx: Custom_Template.docx
+    theme: cerulean
+    highlight: haddock
+    css: _hidecode.css
+# Theme options (*favorites): "default", *"cerulean", "journal", "flatly", "readable", "spacelab", "united", "cosmo",  "lumen", "paper", *"sandstone", "simplex", and "yeti"
+# hightlight options (*favorites): "default", "tango", "pygments", *"kate",  "monochrome", *"espresso", *"zenburn", *"haddock", and "textmate"
