@@ -1,0 +1,29 @@
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 100px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
+}
+
+hr {
+margin-left: auto;
+margin-right: auto;
+height: 3px;
+background-color:#999999;
+color:#999999;
+border: 0 none;
+}
