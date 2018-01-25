@@ -120,9 +120,16 @@ Note: **!** is a negation/inverse operator
 1 <= 2 # less than or equal to
 1 == 1 # equal to
 1 != 1 # not equal to
-1 == 2 | 1 # | means 'OR'
-1 == 2 & 1 # & means 'AND' 
-1 == 1 & 1
+1 == 2 | 1 == 1 # | means 'OR'
+1 == 2 & 1 == 1 # & means 'AND' 
+1 == 1 & 1 == 1
+```
+
+### Protip:
+
+Instead of `|`, you can us `%in%` with `c()` to check a large number of values:
+```{r}
+1 %in% c(1,2,3,4,5,6,7,8,9,10)
 ```
 
 ## Random Numbers

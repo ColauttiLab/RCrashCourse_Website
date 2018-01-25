@@ -95,6 +95,13 @@ greater, less, equal, not equal, 'OR' 'AND'
 ```
 </div>
 
+what can you use instead of `|` to check for a value in a large number of items/objects?
+<div class="fold s">
+```{r, eval=F}
+6 %in% c(1,2,3,4,5,6,7,8,9,10)
+```
+</div>
+
 ## Random Number Generators
 
 Generate 10 numbers from each of the following:
