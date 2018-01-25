@@ -94,11 +94,11 @@ qplot(x=Total,data=MyData,binwidth=9)
 qplot(x=Total,data=MyData,binwidth=0.5)
 ```
 
-### *position =* 
+### *posit =* 
 #### Avoid stacking histogram bars
 ```{r}
 qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients)
-qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients,position="dodge")
+qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients,posit="dodge")
 ```
 
 ### *size =*
@@ -193,6 +193,7 @@ qplot(x=Silene,data=MyData) + theme_classic() # x and y lines only, no tick mark
 ### Or create your own custom theme:
 #### Simplified/clean version of theme_classic with bigger axis labels more suitable for presentation or publication:
 ```{r}
+# Clean theme for presentations & publications used in the Colautti Lab
 theme_pubworthy <- function (base_size = 12, base_family = "") {
   theme_classic(base_size = base_size, base_family = base_family) %+replace% 
     theme(
