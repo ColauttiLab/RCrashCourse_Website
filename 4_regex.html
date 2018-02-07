@@ -413,9 +413,9 @@ Part 4 – Intro to Regex</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">D&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100  words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;*********1*100*********************&quot;</code></pre>
 </div>
+<div id="two-more-special-wildcards" class="section level2">
+<h2><strong>Two more special wildcards:</strong></h2>
 </div>
-<div id="two-more-special-wildcards" class="section level1">
-<h1><strong>Two more special wildcards:</strong></h1>
 <div id="r-carriage-return" class="section level2">
 <h2><code>\\r</code> = carriage return</h2>
 </div>
@@ -426,7 +426,7 @@ Part 4 – Intro to Regex</h1>
 </div>
 </div>
 <div id="special-characters" class="section level1">
-<h1>Special characters:</h1>
+<h1>4. Special characters:</h1>
 <div id="or" class="section level2">
 <h2><code>|</code>= ‘or’</h2>
 <p>Example, look for w or e</p>
@@ -441,9 +441,9 @@ Part 4 – Intro to Regex</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100  words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;***which 1-100  words get replaced?&quot;</code></pre>
 </div>
+<div id="use-and-for-1-character" class="section level2">
+<h2>Use *, ? + and {} for &gt;1 character</h2>
 </div>
-<div id="use-and-for-1-character" class="section level1">
-<h1>Use *, ? + and {} for &gt;1 character</h1>
 <div id="look-at-these-examples-carefully" class="section level2">
 <h2>Look at these examples carefully</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
@@ -489,7 +489,7 @@ Part 4 – Intro to Regex</h1>
 </div>
 </div>
 <div id="list-range-of-options-using" class="section level1">
-<h1>List range of options using []</h1>
+<h1>5. List range of options using []</h1>
 <div id="find-everything-in-square-brackets" class="section level2">
 <h2>Find everything in square brackets</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;[aceihw-z]&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
@@ -502,7 +502,7 @@ Part 4 – Intro to Regex</h1>
 </div>
 </div>
 <div id="start-and-end-of-line" class="section level1">
-<h1>^Start and end of line$</h1>
+<h1>6. ^Start and end of line$</h1>
 <div id="start-of-line" class="section level2">
 <h2>^ Start of line</h2>
 <p>Find species starting with “s”</p>
@@ -525,8 +525,8 @@ Part 4 – Intro to Regex</h1>
 <pre><code>## [1] 1 3</code></pre>
 </div>
 </div>
-<div id="capture-text" class="section level1">
-<h1>Capture text</h1>
+<div id="capture-text-with-brackets" class="section level1">
+<h1>7. Capture text with brackets <code>()</code></h1>
 <p>Capture text using <code>()</code> and reprint using <code>\\1</code>, <code>\\2</code>, etc</p>
 <p>Replace each word with its first letter</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;(</span><span class="ch">\\</span><span class="st">w)</span><span class="ch">\\</span><span class="st">w+&quot;</span>,<span class="st">&quot;</span><span class="ch">\\</span><span class="st">1&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
@@ -538,12 +538,18 @@ Part 4 – Intro to Regex</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;(</span><span class="ch">\\</span><span class="st">w)(</span><span class="ch">\\</span><span class="st">w)(</span><span class="ch">\\</span><span class="st">w+)&quot;</span>,<span class="st">&quot;</span><span class="ch">\\</span><span class="st">2</span><span class="ch">\\</span><span class="st">1</span><span class="ch">\\</span><span class="st">3&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;...hwich 1-010 owrds egt erplaced?&quot;</code></pre>
 </div>
-<div id="use-curl-with-gsub-to-scrape-data-from-the-internet" class="section level1">
-<h1>4. Use <code>curl()</code> with <code>gsub()</code> to ‘scrape’ data from the internet:</h1>
+<div id="use-readlines-with-curl-to-scrape-data-from-the-internet-then-grep-and-gsub-into-useful-structure" class="section level1">
+<h1>8. Use <code>readLines</code> with <code>curl()</code> to ‘scrape’ data from the internet, then <code>grep()</code> and <code>gsub()</code> into useful structure:</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(curl)</code></pre></div>
+<pre><code>## Warning: package 'curl' was built under R version 3.3.3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Prot&lt;-<span class="kw">readLines</span>(<span class="kw">curl</span>(<span class="st">&quot;http://www.rcsb.org/pdb/files/1ema.pdb&quot;</span>))
+Prot[<span class="kw">grep</span>(<span class="st">&quot;TITLE&quot;</span>,Prot)]</code></pre></div>
+<pre><code>## [1] &quot;TITLE     GREEN FLUORESCENT PROTEIN FROM AEQUOREA VICTORIA                      &quot;</code></pre>
 </div>
-<div id="example-1-longer-strings" class="section level1">
-<h1>EXAMPLE 1: Longer strings</h1>
-<p>Consider the 18S Sequence for Lythrum salicaria (from Genbank)</p>
+<div id="example-1-genbank-record" class="section level1">
+<h1>EXAMPLE 1: Genbank Record</h1>
+<p>Download the <a href="https://www.ncbi.nlm.nih.gov/nuccore/7595475/">Lythrum 18S rRNA gene</a> as a text file, and read it into an object called Lythrum.18S</p>
+<p>The 18S Sequence for Lythrum salicaria (from Genbank)</p>
 <pre><code>## LOCUS       AF206955                1740 bp    DNA     linear   PLN 18-APR-2003
 ## DEFINITION  Lythrum salicaria 18S ribosomal RNA gene, complete sequence.
 ## ACCESSION   AF206955
@@ -598,7 +604,7 @@ Part 4 – Intro to Regex</h1>
 ##      1621 cgcccgtcgc tcctaccgat tgaatggtcc ggtgaaatgt tcggatcgcg gcgacgtggg
 ##      1681 cgcttcgtcg ccgacgacgt cgcgagaagt ccattgaacc ttatcattta gaggaaggag
 ## //</code></pre>
-<p>Remember our \n newline? Let’s use it to delete everything after the first line</p>
+<p>Remember our <code>\\n</code> newline? Let’s use it to delete everything after the first line</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">n.*&quot;</span>,<span class="st">&quot;&quot;</span>,Lythrum.18S)</code></pre></div>
 <pre><code>## [1] &quot;LOCUS       AF206955                1740 bp    DNA     linear   PLN 18-APR-2003&quot;</code></pre>
 <p>Or use the field names to isolate them:</p>
@@ -647,7 +653,7 @@ Seq&lt;-<span class="kw">gsub</span>(<span class="st">&quot;.*ORIGIN&quot;</span
 Seq&lt;-<span class="kw">gsub</span>(<span class="st">&quot;[</span><span class="ch">\n</span><span class="st">0-9 /]+&quot;</span>,<span class="st">&quot;&quot;</span>,Seq) ## Note the single \ in this case since it is inside the square brackets
 <span class="kw">print</span>(Seq)</code></pre></div>
 <pre><code>## [1] &quot;gtcatatgcttgtctcaaagattaagccatgcatgtgtaagtatgaacaaattcagactgtgaaactgcgaatggctcattaaatcagttatagtttgtttgatggtatctgctactcggataaccgtagtaattctagagctaatacgtgcaacaaaccccgacttctggaagggacgcatttattagataaaaggtcgacgcgggctttgcccgatgctctgatgattcatgataacttgacggatcgcacggccatcgtgccggcgacgcatcattcaaatttctgccctatcaactttcgatggtaggatagtggcctaccatggtgtttacgggtaacggagaattagggttcgattccggagagggagcctgagaaacggctaccacatccaaggaaggcagcaggcgcgcaaattacccaatcctgacacggggaggtagtgacaataaataacaatactgggctctttgagtctggtaattggaatgagtacaatctaaatcccttaacgaggatccattggagggcaagtctggtgccagcagccgcggtaattccagctccaatagcgtatatttaagttgttgcagttaaaaagctcgtagttggaccttgggttgggtcgaccggtccgcctttggtgtgcaccgatcggctcgtcccttctaccggcgatgcgcgcctggccttaattggccgggtcgttcctccggtgctgttactttgaagaaattagagtgctcaaagcaagcattagctatgaatacattagcatgggataacattataggattccgatcctattatgttggccttcgggatcggagtaatgattaacagggacagtcgggggcattcgtatttcatagtcagaggtgaaattcttggatttatgaaagacgaacaactgcgaaagcatttgccaaggatgttttcattaatcaagaacgaaagttgggggctcgaagacgatcagataccgtcctagtctcaaccataaacgatgccgaccagggatcagcgaatgttacttttaggacttcgctggcaccttatgagaaatcaaagtttttgggttccggggggagtatggtcgcaaggctgaaacttaaaggaattgacggaagggcaccaccaggagtggagcctgcggcttaatttgactcaacacggggaaacttaccaggtccagacatagtaaggattgacagactgagagctctttcttgattctatgggtggtggtgcatggccgttcttagttggtggagcgatttgtctggttaattccgttaacgaacgagacctcagcctgctaactagctatgtggaggtacacctccacggccagcttcttagagggactatggccgcttaggccaaggaagtttgaggcaataacaggtctgtgatgcccttagatgttctgggccgcacgcgcgctacactgatgtattcaacgagtctatagccttggccgacaggcccgggtaatctttgaaatttcatcgtgatggggatagatcattgcaattgttggtcttcaacgaggaattcctagtaagcgcgagtcatcagctcgcgttgactacgtccctgccctttgtacacaccgcccgtcgctcctaccgattgaatggtccggtgaaatgttcggatcgcggcgacgtgggcgcttcgtcgccgacgacgtcgcgagaagtccattgaaccttatcatttagaggaaggag&quot;</code></pre>
-<p>Capital letters look nicer, but requires a PERL qualifier \U that is not standard in R</p>
+<p>Capital letters look nicer, but requires a PERL qualifier <code>\\U</code> that is not standard in R</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Seq&lt;-<span class="kw">gsub</span>(<span class="st">&quot;([actg])&quot;</span>,<span class="st">&quot;</span><span class="ch">\\</span><span class="st">U</span><span class="ch">\\</span><span class="st">1&quot;</span>,Seq,<span class="dt">perl=</span>T)
 <span class="kw">print</span>(Seq)</code></pre></div>
 <pre><code>## [1] &quot;GTCATATGCTTGTCTCAAAGATTAAGCCATGCATGTGTAAGTATGAACAAATTCAGACTGTGAAACTGCGAATGGCTCATTAAATCAGTTATAGTTTGTTTGATGGTATCTGCTACTCGGATAACCGTAGTAATTCTAGAGCTAATACGTGCAACAAACCCCGACTTCTGGAAGGGACGCATTTATTAGATAAAAGGTCGACGCGGGCTTTGCCCGATGCTCTGATGATTCATGATAACTTGACGGATCGCACGGCCATCGTGCCGGCGACGCATCATTCAAATTTCTGCCCTATCAACTTTCGATGGTAGGATAGTGGCCTACCATGGTGTTTACGGGTAACGGAGAATTAGGGTTCGATTCCGGAGAGGGAGCCTGAGAAACGGCTACCACATCCAAGGAAGGCAGCAGGCGCGCAAATTACCCAATCCTGACACGGGGAGGTAGTGACAATAAATAACAATACTGGGCTCTTTGAGTCTGGTAATTGGAATGAGTACAATCTAAATCCCTTAACGAGGATCCATTGGAGGGCAAGTCTGGTGCCAGCAGCCGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGTTAAAAAGCTCGTAGTTGGACCTTGGGTTGGGTCGACCGGTCCGCCTTTGGTGTGCACCGATCGGCTCGTCCCTTCTACCGGCGATGCGCGCCTGGCCTTAATTGGCCGGGTCGTTCCTCCGGTGCTGTTACTTTGAAGAAATTAGAGTGCTCAAAGCAAGCATTAGCTATGAATACATTAGCATGGGATAACATTATAGGATTCCGATCCTATTATGTTGGCCTTCGGGATCGGAGTAATGATTAACAGGGACAGTCGGGGGCATTCGTATTTCATAGTCAGAGGTGAAATTCTTGGATTTATGAAAGACGAACAACTGCGAAAGCATTTGCCAAGGATGTTTTCATTAATCAAGAACGAAAGTTGGGGGCTCGAAGACGATCAGATACCGTCCTAGTCTCAACCATAAACGATGCCGACCAGGGATCAGCGAATGTTACTTTTAGGACTTCGCTGGCACCTTATGAGAAATCAAAGTTTTTGGGTTCCGGGGGGAGTATGGTCGCAAGGCTGAAACTTAAAGGAATTGACGGAAGGGCACCACCAGGAGTGGAGCCTGCGGCTTAATTTGACTCAACACGGGGAAACTTACCAGGTCCAGACATAGTAAGGATTGACAGACTGAGAGCTCTTTCTTGATTCTATGGGTGGTGGTGCATGGCCGTTCTTAGTTGGTGGAGCGATTTGTCTGGTTAATTCCGTTAACGAACGAGACCTCAGCCTGCTAACTAGCTATGTGGAGGTACACCTCCACGGCCAGCTTCTTAGAGGGACTATGGCCGCTTAGGCCAAGGAAGTTTGAGGCAATAACAGGTCTGTGATGCCCTTAGATGTTCTGGGCCGCACGCGCGCTACACTGATGTATTCAACGAGTCTATAGCCTTGGCCGACAGGCCCGGGTAATCTTTGAAATTTCATCGTGATGGGGATAGATCATTGCAATTGTTGGTCTTCAACGAGGAATTCCTAGTAAGCGCGAGTCATCAGCTCGCGTTGACTACGTCCCTGCCCTTTGTACACACCGCCCGTCGCTCCTACCGATTGAATGGTCCGGTGAAATGTTCGGATCGCGGCGACGTGGGCGCTTCGTCGCCGACGACGTCGCGAGAAGTCCATTGAACCTTATCATTTAGAGGAAGGAG&quot;</code></pre>
@@ -668,42 +674,69 @@ Seq&lt;-<span class="kw">gsub</span>(<span class="st">&quot;[</span><span class=
 <p>Imagine you have a repeated measures design. 3 transects (A-C) and 3 positions along each transect (1-3)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect&lt;-<span class="kw">data.frame</span>(<span class="dt">Species=</span><span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,<span class="dt">A1=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">A2=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">A3=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">B1=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">B2=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">B3=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">C1=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">C2=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">C3=</span><span class="kw">rnorm</span>(<span class="dv">20</span>))
 <span class="kw">head</span>(Transect)</code></pre></div>
-<pre><code>##   Species         A1         A2         A3          B1          B2
-## 1       1  1.8912211 -1.3924420 -0.4337503 -0.10952544  0.02200002
-## 2       2 -0.5242861 -0.2847960 -0.8866124  1.22312930 -0.33394093
-## 3       3  0.3246121  0.4030772 -0.4716589  0.41091555  1.33334249
-## 4       4  0.8562933  0.6324506  0.9092408 -1.00966915  0.12054374
-## 5       5 -0.4799953 -0.6874889 -0.9595662  0.02784778  0.41595825
-## 6       6 -0.1298207  0.1429106  0.5544458  0.04822520 -0.43166452
-##           B3          C1         C2         C3
-## 1 -0.6772450 -0.15044963  1.3756609 -0.6211567
-## 2 -0.6405430  1.34792365 -0.6104388 -0.3381222
-## 3  0.2562417 -0.16512420 -1.2898548  0.4278392
-## 4 -1.0303838  1.32498638 -0.2399778 -0.4302788
-## 5 -0.5328813  1.65331388  0.4507676  0.3030568
-## 6 -0.4116669  0.03556535 -0.2088005 -0.4275821</code></pre>
+<pre><code>##   Species         A1         A2         A3         B1         B2
+## 1       1  1.4264587  1.1923506 -0.5631728  0.6275075 -0.4224590
+## 2       2  0.8966717  1.3278330  0.0245411 -0.1673880  0.4054526
+## 3       3 -0.6689831  0.9207228  0.1292354  1.6228447  0.3689496
+## 4       4 -0.6740715 -0.7202413 -0.6423443 -0.9498380  0.5933878
+## 5       5  0.1145973  0.2932683  0.8106897 -1.1140329 -1.0664410
+## 6       6  0.8519921 -0.2547615 -0.5164155 -1.2126210 -1.2081535
+##           B3         C1         C2          C3
+## 1  2.0527631  1.4317154 -0.7590181 -2.41291056
+## 2  0.2288862  0.3861780 -1.5239797  0.37413801
+## 3 -0.4621942  0.6300604  0.4916855 -0.02586869
+## 4  1.1502910 -0.6709382 -1.0335986  1.72422806
+## 5  0.6442029 -0.3167430 -0.3588958  0.99910040
+## 6 -0.8728585 -1.1309390  0.3145562  0.51167745</code></pre>
 <p>You want to look at only transect A for the first 3 species</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="kw">grep</span>(<span class="st">&quot;A&quot;</span>,<span class="kw">names</span>(Transect))]</code></pre></div>
-<pre><code>##           A1         A2         A3
-## 1  1.8912211 -1.3924420 -0.4337503
-## 2 -0.5242861 -0.2847960 -0.8866124
-## 3  0.3246121  0.4030772 -0.4716589</code></pre>
+<pre><code>##           A1        A2         A3
+## 1  1.4264587 1.1923506 -0.5631728
+## 2  0.8966717 1.3278330  0.0245411
+## 3 -0.6689831 0.9207228  0.1292354</code></pre>
 <p>Or look at the first position of each transect for the first 3 species</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="kw">grep</span>(<span class="st">&quot;1&quot;</span>,<span class="kw">names</span>(Transect))]</code></pre></div>
-<pre><code>##           A1         B1         C1
-## 1  1.8912211 -0.1095254 -0.1504496
-## 2 -0.5242861  1.2231293  1.3479236
-## 3  0.3246121  0.4109155 -0.1651242</code></pre>
+<pre><code>##           A1         B1        C1
+## 1  1.4264587  0.6275075 1.4317154
+## 2  0.8966717 -0.1673880 0.3861780
+## 3 -0.6689831  1.6228447 0.6300604</code></pre>
 <p>Or rows with species IDs containing the number 2</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect[<span class="kw">grep</span>(<span class="st">&quot;2&quot;</span>,Transect<span class="op">$</span>Species),]</code></pre></div>
-<pre><code>##    Species         A1         A2         A3         B1          B2
-## 2        2 -0.5242861 -0.2847960 -0.8866124  1.2231293 -0.33394093
-## 12      12  0.4455638  1.0330787  0.4746326 -0.2494941  0.68907893
-## 20      20  0.7283960 -0.0126946  0.9016406  0.8791261 -0.03350021
-##            B3         C1         C2          C3
-## 2  -0.6405430  1.3479236 -0.6104388 -0.33812219
-## 12 -0.8256849 -0.3988825 -1.2302743 -0.04172974
-## 20  0.1995427  1.8775840  1.8290058  0.04904583</code></pre>
+<pre><code>##    Species         A1         A2          A3        B1         B2
+## 2        2 0.89667173  1.3278330  0.02454110 -0.167388  0.4054526
+## 12      12 0.25388070  0.2698534  0.09704944  2.611622 -0.7064956
+## 20      20 0.04660004 -0.7269342 -2.01292580  1.389992 -0.5078161
+##           B3        C1        C2       C3
+## 2  0.2288862 0.3861780 -1.523980 0.374138
+## 12 0.1454214 0.7240776  1.399982 2.831181
+## 20 0.9543531 1.1139937  1.097766 2.214162</code></pre>
+</div>
+<div id="practice-exercises" class="section level1">
+<h1>PRACTICE EXERCISES</h1>
+<div id="consider-a-vector-of-email-addresses-scraped-from-the-internet" class="section level2">
+<h2>1. Consider a vector of email addresses scraped from the internet:</h2>
+<ul>
+<li>robert ‘dot’ colautti ‘at’ queensu ‘dot’ ca</li>
+<li>chris.eckert[at]queensu.ca</li>
+<li>lonnie.aarssen at queensu.ca</li>
+</ul>
+<p>Use regular expressions to convert all email addresses to the standard format: <a href="mailto:name@queensu.ca">name@queensu.ca</a></p>
+</div>
+<div id="create-a-random-sequence-of-dna" class="section level2">
+<h2>2. Create a random sequence of DNA:</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">My.Seq&lt;-<span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;T&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;C&quot;</span>),<span class="dv">1000</span>,<span class="dt">replace=</span>T)</code></pre></div>
+<pre><code>* Replace T with U
+* Find all start codons (ATG) and stop codons (TAA, TAG, TGA)
+* Count the length of bp for all open reading frames</code></pre>
+</div>
+<div id="more-online-examples" class="section level2">
+<h2>3. More online examples</h2>
+<p><a href="http://regex.sketchengine.co.uk/extra_regexps.html" class="uri">http://regex.sketchengine.co.uk/extra_regexps.html</a></p>
+</div>
+<div id="regex-golf" class="section level2">
+<h2>4. Regex Golf</h2>
+<p>Have fun! <a href="https://alf.nu/RegexGolf">LINK</a></p>
+</div>
 </div>
 
 
