@@ -19,111 +19,108 @@ Regular Expressions
 * requires patience and lots of **practice**
 
 
-# 2. Basic Regex in R
+# 2. Basic Regex Functions in R
 
-### Four main Regex functions in R:
+## Four main Regex functions in R:
 
-__grep__ and __grepl__ are equivalent to 'find'
+`grep()` and `grepl()` are equivalent to 'find' in your favorite word processor
 
-* General form: _grep("find this", in.this.object)_
+* General form: `grep("find this", in.this.object)`
 
-__sub__ and __gsub__ are equivalent to 'find and replace'
+`sub()` and `gsub()` are equivalent to 'find and replace'
 
-* General form: _grep("find this", "replace with this", in.this.object)_
+* General form: `grep("find this", "replace with this", in.this.object`
 
-
-Start with a simple data frame of species names:
+## Start with a simple data frame of species names:
 
 ```{r}
 Species<-c("petiolata", "verticillatus", "salicaria", "minor")
 print(Species)
 ```
 
-### __grep__ -- returns cell addresses matching query 
+## `grep()` -- returns cell addresses matching query 
 
 ```{r}
 grep("a",Species)
 ```
 
-### __grepl__ -- returns T/F associated with 
+## `grepl()` -- returns T/F associated with 
 
 ```{r}
 grepl("a",Species)
 ```
 
-### __sub__ -- replaces first match (in each cell)
+## `sub()` -- replaces first match (in each cell)
 
 ```{r}
 sub("l","L",Species)
 ```
 
-### __gsub__  -- replaces all matches
+## `gsub()`  -- replaces all matches
 
 ```{r}
 gsub("l","L",Species)
 ```
 
 
-# Wildcards
+# 3. Wildcards
 
-### __\\__ escape character
+## `\` escape character
 
-### __\\\\__ in R, double-escape is usually needed (because first \\ is used to escape special characters in R, such as \\")
+## `\\` in R, double-escape is usually needed (because first `\` is used to escape special characters in R, and `\` is itself a special character that needs to be escaped to pass through the function")
 
-### __\\w__ = all letters, digits and _ 
+## `\\w`= all letters and digits (aka 'words')
 ```{r}
 gsub("w","*","...which 1-100 words get replaced?")
 gsub("\\w","*","...which 1-100 words get replaced?")
 ```
 
-### __\\W__ = non-word and non-number (inverse of \\w)
+## `\\W` = non-word and non-number (inverse of `\\w`)
 ```{r}
-gsub("\\w","*","...which 1-100  words get replaced?")
+gsub("\\W","*","...which 1-100  words get replaced?")
 ```
 
-### __\\s__ = spaces
+## `\\s` = spaces
 ```{r}
 gsub("\\s","*","...which 1-100  words get replaced?")
 ```
 
-### __\\t__ = tab character (useful for tab-delimited data)
+## `\\t` = tab character (useful for tab-delimited data)
 ```{r}
 gsub("\\t","*","...which 1-100  words get replaced?")
 ```
 
-### __\\d__ = digits
+## `\\d` = digits
 ```{r}
 gsub("\\d","*","...which 1-100  words get replaced?")
 ```
 
-### __\\D__ = non-digits
+## `\\D` = non-digits
 ```{r}
 gsub("\\D","*","...which 1-100  words get replaced?")
 ```
 
-### __Two more special wildcards:__
+## __Two more special wildcards:__
 
-### __\\r__ = carriage return
+## `\\r` = carriage return
 
-### __\\n__ = newline character
+## `\\n` = newline character
 
-Unix/Mac files -- lines usually end with __\\n__
+Unix/Mac files -- lines usually end with `\\n` only
 
-Windows/DOS files -- lines usually end with __\\r\\n__
-
---> We'll come back to these later
+Windows/DOS files -- lines usually end with `\\r\\n`
 
 
-## Special characters: . and |
+# 4. Special characters:
 
-### __|__ = or
+## `|`= 'or'
 
 Example, look for w or e
 ```{r}
 gsub("w|e","*","...which 1-100  words get replaced?")
 ```
 
-### __.__ = any character except new line
+## `.` = any character except new line
 ```{r}
 gsub(".","*","...which 1-100  words get replaced?")
 ```
@@ -133,77 +130,70 @@ So how to search for a period? Use the escape character
 gsub("\\.","*","...which 1-100  words get replaced?")
 ```
 
-
-
 ## Use *, ? + and {} for >1 character
 
-(look at these examples carefully)
+## Look at these examples carefully
 ```{r}
 sub("\\w","*","...which 1-100 words get replaced?")
+gsub("\\w","*","...which 1-100 words get replaced?")
 ```
 
-### __?__ = 0 or 1 matches
+## `?` = 0 or 1 matches
 ```{r}
 sub("\\w?","*","...which 1-100 words get replaced?")
+gsub("\\w?","*","...which 1-100 words get replaced?")
 ```
 
-### __*__ = 0 or more matches
+## `*` = 0 or more matches
 ```{r}
+sub("\\w*","*","...which 1-100 words get replaced?")
 gsub("\\w*","*","...which 1-100 words get replaced?")
 ```
 
-### __+__ = 1 or more matches
+## `+` = 1 or more matches
 ```{r}
+sub("\\w+","*","...which 1-100 words get replaced?")
 gsub("\\w+","*","...which 1-100 words get replaced?")
 ```
 
-### __{n,m}__ = between n to m matches
+## `{n,m}` = between n to m matches
 ```{r}
-gsub("\\w{3,5}","*","...which 1-100 words get replaced?")
+gsub("\\w{3,4}","*","...which 1-100 words get replaced?")
 ```
 
-### __{n}__ = exactly n matches
+## `{n}` = exactly n matches
 ```{r}
-sub("\\w{3}","*","...which 1-100 words get replaced?")
+gsub("\\w{3}","*","...which 1-100 words get replaced?")
 ```
 
-### __{n,}__ = n or more matches
+## `{n,}`= n or more matches
 ```{r}
-sub("\\w{3,}","*","...which 1-100 words get replaced?")
+gsub("\\w{4,}","*","...which 1-100 words get replaced?")
 ```
 
 
-## List range of options using []
+# 5. List range of options using []
 
-Find everything in square brackets
+## Find everything in square brackets
 ```{r}
 gsub("[aceihw-z]","*","...which 1-100 words get replaced?")
 ```
 
-Find everything in square brackets occurring 1 or more times
+## Find everything in square brackets occurring 1 or more times
 ```{r}
 gsub("[aceihw-z]+","*","...which 1-100 words get replaced?")
 ```
 
+# 6. ^Start and end of line$
 
-## ^Start and end of line$
-
-### ^
+## ^ Start of line
 
 Find species starting with "s"
 ```{r}
 grep("^s",Species)
 ```
 
-### $
-
-Find species ending with "a"
-```{r}
-grep("a$",Species)
-```
-
-
-^ Also 'negates' when used with []
+### IMPORTANT: ^ Also 'negates' when used within []
 
 Find species containing any letter other than s
 ```{r}
@@ -215,14 +205,26 @@ Replace every letter except s
 gsub("[^a]","*",Species)
 ```
 
+## $ End of line
 
-## Capture text
+Find species ending with "a"
+```{r}
+grep("a$",Species)
+```
 
-Capture text using () and reprint using \\1 \\2 etc
+
+# 7. Capture text with brackets `()`
+
+Capture text using `()` and reprint using `\\1`, `\\2`, etc
 
 Replace each word with its first letter
 ```{r}
 gsub("(\\w)\\w+","\\1","...which 1-100 words get replaced?")
+```
+
+Pull out only the numbers and reverse their order
+```{r}
+gsub(".*([0-9]+)-([0-9]+).*","\\2-\\1","...which 1-100 words get replaced?")
 ```
 
 Reverse first two letters of each word
@@ -230,7 +232,15 @@ Reverse first two letters of each word
 gsub("(\\w)(\\w)(\\w+)","\\2\\1\\3","...which 1-100 words get replaced?")
 ```
 
-# EXAMPLE 1: Longer strings
+# 8. Use `readLines` with `curl()` to 'scrape' data from the internet, then `grep()` and `gsub()` into useful structure:
+```{r}
+Prot<-readLines(curl("http://www.rcsb.org/pdb/files/1ema.pdb"))
+Prot[grep("TITLE",Prot)]
+```
+
+
+# EXAMPLE 1: Genbank Record
+Download the [Lythrum 18S rRNA gene](https://www.ncbi.nlm.nih.gov/nuccore/7595475/) as a text file, and read it into an object called Lythrum.18S
 ```{r,echo=F}
 Lythrum.18S<-"LOCUS       AF206955                1740 bp    DNA     linear   PLN 18-APR-2003
 DEFINITION  Lythrum salicaria 18S ribosomal RNA gene, complete sequence.
@@ -288,12 +298,12 @@ ORIGIN
 //"
 ```
 
-Consider the 18S Sequence for Lythrum salicaria (from Genbank)
+The 18S Sequence for Lythrum salicaria (from Genbank)
 ```{r,echo=FALSE}
 cat(Lythrum.18S)
 ```
 
-Remember our \\n newline? Let's use it to delete everything after the first line
+Remember our `\\n` newline? Let's use it to delete everything after the first line
 ```{r}
 gsub("\\n.*","",Lythrum.18S)
 ```
@@ -320,7 +330,7 @@ Seq<-gsub("[\n0-9 /]+","",Seq) ## Note the single \ in this case since it is ins
 print(Seq)
 ```
 
-Capital letters look nicer, but requires a PERL qualifier \\U that is not standard in R
+Capital letters look nicer, but requires a PERL qualifier `\\U` that is not standard in R
 ```{r}
 Seq<-gsub("([actg])","\\U\\1",Seq,perl=T)
 print(Seq)
@@ -366,3 +376,28 @@ Or rows with species IDs containing the number 2
 Transect[grep("2",Transect$Species),]
 ```
 
+# PRACTICE EXERCISES
+
+## 1. Consider a vector of email addresses scraped from the internet:
+robert'dot'colautti'at'queensu'dot'ca
+chris.eckert[at]queensu.ca
+lonnie.aarssen at queensu.ca
+
+Use regular expressions to convert all email addresses to the standard format: name@queensu.ca
+
+## 2. Create a random sequence of DNA:
+```{r,results="hide"}
+My.Seq<-sample(c("A","T","G","C"),1000,replace=T)
+```
+
+    * Replace T with U
+    * Find all start codons (ATG) and stop codons (TAA, TAG, TGA)
+    * Count the length of bp for all open reading frames
+
+## 3. Regex Golf
+
+Have fun! [LINK](https://alf.nu/RegexGolf)
+
+## 4. Even more online examples
+
+[http://regex.sketchengine.co.uk/extra_regexps.html](http://regex.sketchengine.co.uk/extra_regexps.html)
