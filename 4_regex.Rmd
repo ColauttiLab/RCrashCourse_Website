@@ -233,7 +233,9 @@ Reverse first two letters of each word
 gsub("(\\w)(\\w)(\\w+)","\\2\\1\\3","...which 1-100 words get replaced?")
 ```
 
-# 8. Use `readLines` with `curl()` to 'scrape' data from the internet, then `grep()` and `gsub()` into useful structure:
+# 8. 'Scraping' data from online sources
+
+Use `readLines` with `curl()` to 'scrape' data from the internet, then `grep()` and `gsub()` into useful structure:
 ```{r}
 library(curl)
 Prot<-readLines(curl("http://www.rcsb.org/pdb/files/1ema.pdb"))
@@ -345,14 +347,14 @@ gsub("ATG","-->START<--",Seq)
 
 Open reading frames?
 ```{r}
-gsub("(ATG([ATGC]{3})+?(TAA|TAG|TGA))","-->\\1<--",Seq)
+gsub("(ATG([ATGC]{3})+?(TAA|TAG|TGA)+?)","-->\\1<--",Seq)
 ```
 
 Or go back, and keep non-reading frame in lower case
 ```{r}
 Seq<-gsub(".*ORIGIN","",Lythrum.18S)
 Seq<-gsub("[\n0-9 /]+","",Seq) ## Note the single \ in this case since it is inside the square brackets
-gsub("(atg([atgc]{3})+?(taa|tag|tga))","\\U\\1",Seq,perl=T)
+gsub("(atg([atgc]{3})+?(taa|tag|tga)+?)","\\U\\1",Seq,perl=T)
 ```
 
 
