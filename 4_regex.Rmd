@@ -130,7 +130,7 @@ So how to search for a period? Use the escape character
 gsub("\\.","*","...which 1-100  words get replaced?")
 ```
 
-## Use *, ? + and {} for >1 character
+## Use *, ? + and {} for more complicated searches
 
 ## Look at these examples carefully
 ```{r}
@@ -138,22 +138,23 @@ sub("\\w","*","...which 1-100 words get replaced?")
 gsub("\\w","*","...which 1-100 words get replaced?")
 ```
 
-## `?` = 0 or 1 matches
+## `+` = 1 or more matches
+```{r}
+sub("\\w+","*","...which 1-100 words get replaced?")
+gsub("\\w+","*","...which 1-100 words get replaced?")
+```
+
+
+## `?` is a 'lazy' search (find the first occurrance)
 ```{r}
 sub("\\w?","*","...which 1-100 words get replaced?")
 gsub("\\w?","*","...which 1-100 words get replaced?")
 ```
 
-## `*` = 0 or more matches
+## `*` is a 'greedy' search (find the last occurrence)
 ```{r}
 sub("\\w*","*","...which 1-100 words get replaced?")
 gsub("\\w*","*","...which 1-100 words get replaced?")
-```
-
-## `+` = 1 or more matches
-```{r}
-sub("\\w+","*","...which 1-100 words get replaced?")
-gsub("\\w+","*","...which 1-100 words get replaced?")
 ```
 
 ## `{n,m}` = between n to m matches
@@ -344,14 +345,14 @@ gsub("ATG","-->START<--",Seq)
 
 Open reading frames?
 ```{r}
-gsub("(ATG([ATGC]{3})+(TAA|TAG|TGA))","-->\\1<--",Seq)
+gsub("(ATG([ATGC]{3})+?(TAA|TAG|TGA))","-->\\1<--",Seq)
 ```
 
 Or go back, and keep non-reading frame in lower case
 ```{r}
 Seq<-gsub(".*ORIGIN","",Lythrum.18S)
 Seq<-gsub("[\n0-9 /]+","",Seq) ## Note the single \ in this case since it is inside the square brackets
-gsub("(atg([atgc]{3})+(taa|tag|tga))","\\U\\1",Seq,perl=T)
+gsub("(atg([atgc]{3})+?(taa|tag|tga))","\\U\\1",Seq,perl=T)
 ```
 
 
@@ -393,7 +394,8 @@ My.Seq<-sample(c("A","T","G","C"),1000,replace=T)
 ```
 
     * Replace T with U
-    * Find all start codons (ATG) and stop codons (TAA, TAG, TGA)
+    * Find all start codons (AUG) and stop codons (UAA, UAG, UGA)
+    * Find all open reading frames (hint: consider each sequence beginning with AUG and ending with a stop codon; how do you know if both sequences are in the same reading frame?)
     * Count the length of bp for all open reading frames
 
 ## 3. More online examples

@@ -441,8 +441,8 @@ Part 4 – Intro to Regex</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100  words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;***which 1-100  words get replaced?&quot;</code></pre>
 </div>
-<div id="use-and-for-1-character" class="section level2">
-<h2>Use *, ? + and {} for &gt;1 character</h2>
+<div id="use-and-for-more-complicated-searches" class="section level2">
+<h2>Use *, ? + and {} for more complicated searches</h2>
 </div>
 <div id="look-at-these-examples-carefully" class="section level2">
 <h2>Look at these examples carefully</h2>
@@ -451,26 +451,26 @@ Part 4 – Intro to Regex</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;...***** *-*** ***** *** ********?&quot;</code></pre>
 </div>
-<div id="or-1-matches" class="section level2">
-<h2><code>?</code> = 0 or 1 matches</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w?&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;*...which 1-100 words get replaced?&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w?&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;*.*.*.***** *-*** ***** *** ********?*&quot;</code></pre>
-</div>
 <div id="or-more-matches" class="section level2">
-<h2><code>*</code> = 0 or more matches</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w*&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;*...which 1-100 words get replaced?&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w*&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;*.*.*.* *-* * * *?*&quot;</code></pre>
-</div>
-<div id="or-more-matches-1" class="section level2">
 <h2><code>+</code> = 1 or more matches</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;...* 1-100 words get replaced?&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;...* *-* * * *?&quot;</code></pre>
+</div>
+<div id="is-a-lazy-search-find-the-first-occurrance" class="section level2">
+<h2><code>?</code> is a ‘lazy’ search (find the first occurrance)</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w?&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;*...which 1-100 words get replaced?&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w?&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;*.*.*.***** *-*** ***** *** ********?*&quot;</code></pre>
+</div>
+<div id="is-a-greedy-search-find-the-last-occurrence" class="section level2">
+<h2><code>*</code> is a ‘greedy’ search (find the last occurrence)</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w*&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;*...which 1-100 words get replaced?&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w*&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;*.*.*.* *-* * * *?*&quot;</code></pre>
 </div>
 <div id="nm-between-n-to-m-matches" class="section level2">
 <h2><code>{n,m}</code> = between n to m matches</h2>
@@ -544,6 +544,8 @@ Part 4 – Intro to Regex</h1>
 <pre><code>## Warning: package 'curl' was built under R version 3.3.3</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Prot&lt;-<span class="kw">readLines</span>(<span class="kw">curl</span>(<span class="st">&quot;http://www.rcsb.org/pdb/files/1ema.pdb&quot;</span>))
 Prot[<span class="kw">grep</span>(<span class="st">&quot;TITLE&quot;</span>,Prot)]</code></pre></div>
+<pre><code>## Warning: closing unused connection 5 (http://www.rcsb.org/pdb/files/
+## 1ema.pdb)</code></pre>
 <pre><code>## [1] &quot;TITLE     GREEN FLUORESCENT PROTEIN FROM AEQUOREA VICTORIA                      &quot;</code></pre>
 </div>
 <div id="example-1-genbank-record" class="section level1">
@@ -661,55 +663,55 @@ Seq&lt;-<span class="kw">gsub</span>(<span class="st">&quot;[</span><span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;ATG&quot;</span>,<span class="st">&quot;--&gt;START&lt;--&quot;</span>,Seq)</code></pre></div>
 <pre><code>## [1] &quot;GTCAT--&gt;START&lt;--CTTGTCTCAAAGATTAAGCC--&gt;START&lt;--C--&gt;START&lt;--TGTAAGT--&gt;START&lt;--AACAAATTCAGACTGTGAAACTGCGA--&gt;START&lt;--GCTCATTAAATCAGTTATAGTTTGTTTG--&gt;START&lt;--GTATCTGCTACTCGGATAACCGTAGTAATTCTAGAGCTAATACGTGCAACAAACCCCGACTTCTGGAAGGGACGCATTTATTAGATAAAAGGTCGACGCGGGCTTTGCCCG--&gt;START&lt;--CTCTG--&gt;START&lt;--ATTC--&gt;START&lt;--ATAACTTGACGGATCGCACGGCCATCGTGCCGGCGACGCATCATTCAAATTTCTGCCCTATCAACTTTCG--&gt;START&lt;--GTAGGATAGTGGCCTACC--&gt;START&lt;--GTGTTTACGGGTAACGGAGAATTAGGGTTCGATTCCGGAGAGGGAGCCTGAGAAACGGCTACCACATCCAAGGAAGGCAGCAGGCGCGCAAATTACCCAATCCTGACACGGGGAGGTAGTGACAATAAATAACAATACTGGGCTCTTTGAGTCTGGTAATTGGA--&gt;START&lt;--AGTACAATCTAAATCCCTTAACGAGGATCCATTGGAGGGCAAGTCTGGTGCCAGCAGCCGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGTTAAAAAGCTCGTAGTTGGACCTTGGGTTGGGTCGACCGGTCCGCCTTTGGTGTGCACCGATCGGCTCGTCCCTTCTACCGGCG--&gt;START&lt;--CGCGCCTGGCCTTAATTGGCCGGGTCGTTCCTCCGGTGCTGTTACTTTGAAGAAATTAGAGTGCTCAAAGCAAGCATTAGCT--&gt;START&lt;--AATACATTAGC--&gt;START&lt;--GGATAACATTATAGGATTCCGATCCTATT--&gt;START&lt;--TTGGCCTTCGGGATCGGAGTA--&gt;START&lt;--ATTAACAGGGACAGTCGGGGGCATTCGTATTTCATAGTCAGAGGTGAAATTCTTGGATTT--&gt;START&lt;--AAAGACGAACAACTGCGAAAGCATTTGCCAAGG--&gt;START&lt;--TTTTCATTAATCAAGAACGAAAGTTGGGGGCTCGAAGACGATCAGATACCGTCCTAGTCTCAACCATAAACG--&gt;START&lt;--CCGACCAGGGATCAGCGA--&gt;START&lt;--TTACTTTTAGGACTTCGCTGGCACCTT--&gt;START&lt;--AGAAATCAAAGTTTTTGGGTTCCGGGGGGAGT--&gt;START&lt;--GTCGCAAGGCTGAAACTTAAAGGAATTGACGGAAGGGCACCACCAGGAGTGGAGCCTGCGGCTTAATTTGACTCAACACGGGGAAACTTACCAGGTCCAGACATAGTAAGGATTGACAGACTGAGAGCTCTTTCTTGATTCT--&gt;START&lt;--GGTGGTGGTGC--&gt;START&lt;--GCCGTTCTTAGTTGGTGGAGCGATTTGTCTGGTTAATTCCGTTAACGAACGAGACCTCAGCCTGCTAACTAGCT--&gt;START&lt;--TGGAGGTACACCTCCACGGCCAGCTTCTTAGAGGGACT--&gt;START&lt;--GCCGCTTAGGCCAAGGAAGTTTGAGGCAATAACAGGTCTGTG--&gt;START&lt;--CCCTTAG--&gt;START&lt;--TTCTGGGCCGCACGCGCGCTACACTG--&gt;START&lt;--TATTCAACGAGTCTATAGCCTTGGCCGACAGGCCCGGGTAATCTTTGAAATTTCATCGTG--&gt;START&lt;--GGGATAGATCATTGCAATTGTTGGTCTTCAACGAGGAATTCCTAGTAAGCGCGAGTCATCAGCTCGCGTTGACTACGTCCCTGCCCTTTGTACACACCGCCCGTCGCTCCTACCGATTGA--&gt;START&lt;--GTCCGGTGAA--&gt;START&lt;--TTCGGATCGCGGCGACGTGGGCGCTTCGTCGCCGACGACGTCGCGAGAAGTCCATTGAACCTTATCATTTAGAGGAAGGAG&quot;</code></pre>
 <p>Open reading frames?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;(ATG([ATGC]{3})+(TAA|TAG|TGA))&quot;</span>,<span class="st">&quot;--&gt;</span><span class="ch">\\</span><span class="st">1&lt;--&quot;</span>,Seq)</code></pre></div>
-<pre><code>## [1] &quot;GTCAT--&gt;ATGCTTGTCTCAAAGATTAAGCCATGCATGTGTAAGTATGAACAAATTCAGACTGTGAAACTGCGAATGGCTCATTAAATCAGTTATAGTTTGTTTGATGGTATCTGCTACTCGGATAACCGTAGTAATTCTAGAGCTAATACGTGCAACAAACCCCGACTTCTGGAAGGGACGCATTTATTAGATAAAAGGTCGACGCGGGCTTTGCCCGATGCTCTGATGATTCATGATAACTTGACGGATCGCACGGCCATCGTGCCGGCGACGCATCATTCAAATTTCTGCCCTATCAACTTTCGATGGTAGGATAGTGGCCTACCATGGTGTTTACGGGTAACGGAGAATTAGGGTTCGATTCCGGAGAGGGAGCCTGAGAAACGGCTACCACATCCAAGGAAGGCAGCAGGCGCGCAAATTACCCAATCCTGACACGGGGAGGTAGTGACAATAAATAACAATACTGGGCTCTTTGAGTCTGGTAATTGGAATGAGTACAATCTAAATCCCTTAACGAGGATCCATTGGAGGGCAAGTCTGGTGCCAGCAGCCGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGTTAAAAAGCTCGTAGTTGGACCTTGGGTTGGGTCGACCGGTCCGCCTTTGGTGTGCACCGATCGGCTCGTCCCTTCTACCGGCGATGCGCGCCTGGCCTTAATTGGCCGGGTCGTTCCTCCGGTGCTGTTACTTTGAAGAAATTAGAGTGCTCAAAGCAAGCATTAGCTATGAATACATTAGCATGGGATAACATTATAGGATTCCGATCCTATTATGTTGGCCTTCGGGATCGGAGTAATGATTAACAGGGACAGTCGGGGGCATTCGTATTTCATAGTCAGAGGTGAAATTCTTGGATTTATGAAAGACGAACAACTGCGAAAGCATTTGCCAAGGATGTTTTCATTAATCAAGAACGAAAGTTGGGGGCTCGAAGACGATCAGATACCGTCCTAGTCTCAACCATAAACGATGCCGACCAGGGATCAGCGAATGTTACTTTTAGGACTTCGCTGGCACCTTATGAGAAATCAAAGTTTTTGGGTTCCGGGGGGAGTATGGTCGCAAGGCTGAAACTTAAAGGAATTGACGGAAGGGCACCACCAGGAGTGGAGCCTGCGGCTTAATTTGACTCAACACGGGGAAACTTACCAGGTCCAGACATAGTAAGGATTGACAGACTGAGAGCTCTTTCTTGATTCTATGGGTGGTGGTGCATGGCCGTTCTTAGTTGGTGGAGCGATTTGTCTGGTTAATTCCGTTAACGAACGAGACCTCAGCCTGCTAACTAGCTATGTGGAGGTACACCTCCACGGCCAGCTTCTTAGAGGGACTATGGCCGCTTAGGCCAAGGAAGTTTGAGGCAATAACAGGTCTGTGATGCCCTTAGATGTTCTGGGCCGCACGCGCGCTACACTGATGTATTCAACGAGTCTATAGCCTTGGCCGACAGGCCCGGGTAATCTTTGAAATTTCATCGTGATGGGGATAGATCATTGCAATTGTTGGTCTTCAACGAGGAATTCCTAGTAAGCGCGAGTCATCAGCTCGCGTTGACTACGTCCCTGCCCTTTGTACACACCGCCCGTCGCTCCTACCGATTGAATGGTCCGGTGA&lt;--A--&gt;ATGTTCGGATCGCGGCGACGTGGGCGCTTCGTCGCCGACGACGTCGCGAGAAGTCCATTGAACCTTATCATTTAG&lt;--AGGAAGGAG&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;(ATG([ATGC]{3})+?(TAA|TAG|TGA))&quot;</span>,<span class="st">&quot;--&gt;</span><span class="ch">\\</span><span class="st">1&lt;--&quot;</span>,Seq)</code></pre></div>
+<pre><code>## [1] &quot;GTCAT--&gt;ATGCTTGTCTCAAAGATTAAGCCATGCATGTGTAAGTATGAACAAATTCAGACTGTGAAACTGCGAATGGCTCATTAA&lt;--ATCAGTTATAGTTTGTTTG--&gt;ATGGTATCTGCTACTCGGATAACCGTAGTAATTCTAGAGCTAATACGTGCAACAAACCCCGACTTCTGGAAGGGACGCATTTATTAG&lt;--ATAAAAGGTCGACGCGGGCTTTGCCCG--&gt;ATGCTCTGATGA&lt;--TTC--&gt;ATGATAACTTGA&lt;--CGGATCGCACGGCCATCGTGCCGGCGACGCATCATTCAAATTTCTGCCCTATCAACTTTCG--&gt;ATGGTAGGATAG&lt;--TGGCCTACC--&gt;ATGGTGTTTACGGGTAACGGAGAATTAGGGTTCGATTCCGGAGAGGGAGCCTGA&lt;--GAAACGGCTACCACATCCAAGGAAGGCAGCAGGCGCGCAAATTACCCAATCCTGACACGGGGAGGTAGTGACAATAAATAACAATACTGGGCTCTTTGAGTCTGGTAATTGGA--&gt;ATGAGTACAATCTAA&lt;--ATCCCTTAACGAGGATCCATTGGAGGGCAAGTCTGGTGCCAGCAGCCGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGTTAAAAAGCTCGTAGTTGGACCTTGGGTTGGGTCGACCGGTCCGCCTTTGGTGTGCACCGATCGGCTCGTCCCTTCTACCGGCG--&gt;ATGCGCGCCTGGCCTTAA&lt;--TTGGCCGGGTCGTTCCTCCGGTGCTGTTACTTTGAAGAAATTAGAGTGCTCAAAGCAAGCATTAGCT--&gt;ATGAATACATTAGCATGGGATAACATTATAGGATTCCGATCCTATTATGTTGGCCTTCGGGATCGGAGTAATGATTAA&lt;--CAGGGACAGTCGGGGGCATTCGTATTTCATAGTCAGAGGTGAAATTCTTGGATTT--&gt;ATGAAAGACGAACAACTGCGAAAGCATTTGCCAAGGATGTTTTCATTAATCAAGAACGAAAGTTGGGGGCTCGAAGACGATCAGATACCGTCCTAG&lt;--TCTCAACCATAAACG--&gt;ATGCCGACCAGGGATCAGCGAATGTTACTTTTAGGACTTCGCTGGCACCTTATGAGAAATCAAAGTTTTTGGGTTCCGGGGGGAGTATGGTCGCAAGGCTGA&lt;--AACTTAAAGGAATTGACGGAAGGGCACCACCAGGAGTGGAGCCTGCGGCTTAATTTGACTCAACACGGGGAAACTTACCAGGTCCAGACATAGTAAGGATTGACAGACTGAGAGCTCTTTCTTGATTCT--&gt;ATGGGTGGTGGTGCATGGCCGTTCTTAGTTGGTGGAGCGATTTGTCTGGTTAATTCCGTTAACGAACGAGACCTCAGCCTGCTAACTAGCTATGTGGAGGTACACCTCCACGGCCAGCTTCTTAGAGGGACTATGGCCGCTTAG&lt;--GCCAAGGAAGTTTGAGGCAATAACAGGTCTGTG--&gt;ATGCCCTTAGATGTTCTGGGCCGCACGCGCGCTACACTGATGTATTCAACGAGTCTATAG&lt;--CCTTGGCCGACAGGCCCGGGTAATCTTTGAAATTTCATCGTG--&gt;ATGGGGATAGATCATTGCAATTGTTGGTCTTCAACGAGGAATTCCTAGTAA&lt;--GCGCGAGTCATCAGCTCGCGTTGACTACGTCCCTGCCCTTTGTACACACCGCCCGTCGCTCCTACCGATTGA--&gt;ATGGTCCGGTGA&lt;--A--&gt;ATGTTCGGATCGCGGCGACGTGGGCGCTTCGTCGCCGACGACGTCGCGAGAAGTCCATTGAACCTTATCATTTAG&lt;--AGGAAGGAG&quot;</code></pre>
 <p>Or go back, and keep non-reading frame in lower case</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Seq&lt;-<span class="kw">gsub</span>(<span class="st">&quot;.*ORIGIN&quot;</span>,<span class="st">&quot;&quot;</span>,Lythrum.18S)
 Seq&lt;-<span class="kw">gsub</span>(<span class="st">&quot;[</span><span class="ch">\n</span><span class="st">0-9 /]+&quot;</span>,<span class="st">&quot;&quot;</span>,Seq) ## Note the single \ in this case since it is inside the square brackets
-<span class="kw">gsub</span>(<span class="st">&quot;(atg([atgc]{3})+(taa|tag|tga))&quot;</span>,<span class="st">&quot;</span><span class="ch">\\</span><span class="st">U</span><span class="ch">\\</span><span class="st">1&quot;</span>,Seq,<span class="dt">perl=</span>T)</code></pre></div>
-<pre><code>## [1] &quot;gtcatATGCTTGTCTCAAAGATTAAGCCATGCATGTGTAAGTATGAACAAATTCAGACTGTGAAACTGCGAATGGCTCATTAAATCAGTTATAGTTTGTTTGATGGTATCTGCTACTCGGATAACCGTAGTAATTCTAGAGCTAATACGTGCAACAAACCCCGACTTCTGGAAGGGACGCATTTATTAGATAAAAGGTCGACGCGGGCTTTGCCCGATGCTCTGATGATTCATGATAACTTGACGGATCGCACGGCCATCGTGCCGGCGACGCATCATTCAAATTTCTGCCCTATCAACTTTCGATGGTAGGATAGTGGCCTACCATGGTGTTTACGGGTAACGGAGAATTAGGGTTCGATTCCGGAGAGGGAGCCTGAGAAACGGCTACCACATCCAAGGAAGGCAGCAGGCGCGCAAATTACCCAATCCTGACACGGGGAGGTAGTGACAATAAATAACAATACTGGGCTCTTTGAGTCTGGTAATTGGAATGAGTACAATCTAAATCCCTTAACGAGGATCCATTGGAGGGCAAGTCTGGTGCCAGCAGCCGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGTTAAAAAGCTCGTAGTTGGACCTTGGGTTGGGTCGACCGGTCCGCCTTTGGTGTGCACCGATCGGCTCGTCCCTTCTACCGGCGATGCGCGCCTGGCCTTAATTGGCCGGGTCGTTCCTCCGGTGCTGTTACTTTGAAGAAATTAGAGTGCTCAAAGCAAGCATTAGCTATGAATACATTAGCATGGGATAACATTATAGGATTCCGATCCTATTATGTTGGCCTTCGGGATCGGAGTAATGATTAACAGGGACAGTCGGGGGCATTCGTATTTCATAGTCAGAGGTGAAATTCTTGGATTTATGAAAGACGAACAACTGCGAAAGCATTTGCCAAGGATGTTTTCATTAATCAAGAACGAAAGTTGGGGGCTCGAAGACGATCAGATACCGTCCTAGTCTCAACCATAAACGATGCCGACCAGGGATCAGCGAATGTTACTTTTAGGACTTCGCTGGCACCTTATGAGAAATCAAAGTTTTTGGGTTCCGGGGGGAGTATGGTCGCAAGGCTGAAACTTAAAGGAATTGACGGAAGGGCACCACCAGGAGTGGAGCCTGCGGCTTAATTTGACTCAACACGGGGAAACTTACCAGGTCCAGACATAGTAAGGATTGACAGACTGAGAGCTCTTTCTTGATTCTATGGGTGGTGGTGCATGGCCGTTCTTAGTTGGTGGAGCGATTTGTCTGGTTAATTCCGTTAACGAACGAGACCTCAGCCTGCTAACTAGCTATGTGGAGGTACACCTCCACGGCCAGCTTCTTAGAGGGACTATGGCCGCTTAGGCCAAGGAAGTTTGAGGCAATAACAGGTCTGTGATGCCCTTAGATGTTCTGGGCCGCACGCGCGCTACACTGATGTATTCAACGAGTCTATAGCCTTGGCCGACAGGCCCGGGTAATCTTTGAAATTTCATCGTGATGGGGATAGATCATTGCAATTGTTGGTCTTCAACGAGGAATTCCTAGTAAGCGCGAGTCATCAGCTCGCGTTGACTACGTCCCTGCCCTTTGTACACACCGCCCGTCGCTCCTACCGATTGAATGGTCCGGTGAaATGTTCGGATCGCGGCGACGTGGGCGCTTCGTCGCCGACGACGTCGCGAGAAGTCCATTGAACCTTATCATTTAGaggaaggag&quot;</code></pre>
+<span class="kw">gsub</span>(<span class="st">&quot;(atg([atgc]{3})+?(taa|tag|tga))&quot;</span>,<span class="st">&quot;</span><span class="ch">\\</span><span class="st">U</span><span class="ch">\\</span><span class="st">1&quot;</span>,Seq,<span class="dt">perl=</span>T)</code></pre></div>
+<pre><code>## [1] &quot;gtcatATGCTTGTCTCAAAGATTAAGCCATGCATGTGTAAGTATGAACAAATTCAGACTGTGAAACTGCGAATGGCTCATTAAatcagttatagtttgtttgATGGTATCTGCTACTCGGATAACCGTAGTAATTCTAGAGCTAATACGTGCAACAAACCCCGACTTCTGGAAGGGACGCATTTATTAGataaaaggtcgacgcgggctttgcccgATGCTCTGAtgattcATGATAACTTGAcggatcgcacggccatcgtgccggcgacgcatcattcaaatttctgccctatcaactttcgATGGTAGGATAGtggcctaccATGGTGTTTACGGGTAACGGAGAATTAGGGTTCGATTCCGGAGAGGGAGCCTGAgaaacggctaccacatccaaggaaggcagcaggcgcgcaaattacccaatcctgacacggggaggtagtgacaataaataacaatactgggctctttgagtctggtaattggaATGAGTACAATCTAAatcccttaacgaggatccattggagggcaagtctggtgccagcagccgcggtaattccagctccaatagcgtatatttaagttgttgcagttaaaaagctcgtagttggaccttgggttgggtcgaccggtccgcctttggtgtgcaccgatcggctcgtcccttctaccggcgATGCGCGCCTGGCCTTAAttggccgggtcgttcctccggtgctgttactttgaagaaattagagtgctcaaagcaagcattagctATGAATACATTAGCATGGGATAACATTATAGGATTCCGATCCTATTATGTTGGCCTTCGGGATCGGAGTAATGATTAAcagggacagtcgggggcattcgtatttcatagtcagaggtgaaattcttggatttATGAAAGACGAACAACTGCGAAAGCATTTGCCAAGGATGTTTTCATTAATCAAGAACGAAAGTTGGGGGCTCGAAGACGATCAGATACCGTCCTAGtctcaaccataaacgATGCCGACCAGGGATCAGCGAATGTTACTTTTAGGACTTCGCTGGCACCTTATGAGAAATCAAAGTTTTTGGGTTCCGGGGGGAGTATGGTCGCAAGGCTGAaacttaaaggaattgacggaagggcaccaccaggagtggagcctgcggcttaatttgactcaacacggggaaacttaccaggtccagacatagtaaggattgacagactgagagctctttcttgattctATGGGTGGTGGTGCATGGCCGTTCTTAGTTGGTGGAGCGATTTGTCTGGTTAATTCCGTTAACGAACGAGACCTCAGCCTGCTAACTAGCTATGTGGAGGTACACCTCCACGGCCAGCTTCTTAGAGGGACTATGGCCGCTTAGgccaaggaagtttgaggcaataacaggtctgtgATGCCCTTAGATGTTCTGGGCCGCACGCGCGCTACACTGATGTATTCAACGAGTCTATAGccttggccgacaggcccgggtaatctttgaaatttcatcgtgATGGGGATAGATCATTGCAATTGTTGGTCTTCAACGAGGAATTCCTAGtaagcgcgagtcatcagctcgcgttgactacgtccctgccctttgtacacaccgcccgtcgctcctaccgattgaATGGTCCGGTGAaATGTTCGGATCGCGGCGACGTGGGCGCTTCGTCGCCGACGACGTCGCGAGAAGTCCATTGAACCTTATCATTTAGaggaaggag&quot;</code></pre>
 </div>
 <div id="example-2-organizing-data" class="section level1">
 <h1>EXAMPLE 2: Organizing Data</h1>
 <p>Imagine you have a repeated measures design. 3 transects (A-C) and 3 positions along each transect (1-3)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect&lt;-<span class="kw">data.frame</span>(<span class="dt">Species=</span><span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,<span class="dt">A1=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">A2=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">A3=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">B1=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">B2=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">B3=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">C1=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">C2=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">C3=</span><span class="kw">rnorm</span>(<span class="dv">20</span>))
 <span class="kw">head</span>(Transect)</code></pre></div>
-<pre><code>##   Species         A1         A2         A3         B1         B2
-## 1       1  1.4264587  1.1923506 -0.5631728  0.6275075 -0.4224590
-## 2       2  0.8966717  1.3278330  0.0245411 -0.1673880  0.4054526
-## 3       3 -0.6689831  0.9207228  0.1292354  1.6228447  0.3689496
-## 4       4 -0.6740715 -0.7202413 -0.6423443 -0.9498380  0.5933878
-## 5       5  0.1145973  0.2932683  0.8106897 -1.1140329 -1.0664410
-## 6       6  0.8519921 -0.2547615 -0.5164155 -1.2126210 -1.2081535
-##           B3         C1         C2          C3
-## 1  2.0527631  1.4317154 -0.7590181 -2.41291056
-## 2  0.2288862  0.3861780 -1.5239797  0.37413801
-## 3 -0.4621942  0.6300604  0.4916855 -0.02586869
-## 4  1.1502910 -0.6709382 -1.0335986  1.72422806
-## 5  0.6442029 -0.3167430 -0.3588958  0.99910040
-## 6 -0.8728585 -1.1309390  0.3145562  0.51167745</code></pre>
+<pre><code>##   Species         A1           A2          A3         B1         B2
+## 1       1 -0.7402635  1.252855238 -1.53539963 -1.3326929  0.6970998
+## 2       2 -0.1081777 -0.849052580  0.09963883 -0.1042834  1.0280625
+## 3       3 -0.9225717  0.013322878 -1.26270441 -0.1916141  0.7770934
+## 4       4 -0.5908283 -0.625738303 -0.52094592 -0.1732502 -0.6443535
+## 5       5 -1.1220483  0.097468390 -0.10485825  0.9421393  1.0554571
+## 6       6  0.2458817  0.001363484 -1.54655024  1.6628774 -1.1391484
+##           B3          C1          C2          C3
+## 1 -0.4706412  1.55855785 -0.05511847  0.95043353
+## 2 -0.5065599 -0.43511054  0.19803840  1.04576947
+## 3 -0.2702739  0.05077147  0.40828311  0.32054980
+## 4 -1.0057886 -0.18204911 -0.52277637 -0.32958539
+## 5  0.3178597  0.59735346  0.46286988 -1.33907606
+## 6 -0.6389805 -0.02261771  0.15173000  0.01718498</code></pre>
 <p>You want to look at only transect A for the first 3 species</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="kw">grep</span>(<span class="st">&quot;A&quot;</span>,<span class="kw">names</span>(Transect))]</code></pre></div>
-<pre><code>##           A1        A2         A3
-## 1  1.4264587 1.1923506 -0.5631728
-## 2  0.8966717 1.3278330  0.0245411
-## 3 -0.6689831 0.9207228  0.1292354</code></pre>
+<pre><code>##           A1          A2          A3
+## 1 -0.7402635  1.25285524 -1.53539963
+## 2 -0.1081777 -0.84905258  0.09963883
+## 3 -0.9225717  0.01332288 -1.26270441</code></pre>
 <p>Or look at the first position of each transect for the first 3 species</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="kw">grep</span>(<span class="st">&quot;1&quot;</span>,<span class="kw">names</span>(Transect))]</code></pre></div>
-<pre><code>##           A1         B1        C1
-## 1  1.4264587  0.6275075 1.4317154
-## 2  0.8966717 -0.1673880 0.3861780
-## 3 -0.6689831  1.6228447 0.6300604</code></pre>
+<pre><code>##           A1         B1          C1
+## 1 -0.7402635 -1.3326929  1.55855785
+## 2 -0.1081777 -0.1042834 -0.43511054
+## 3 -0.9225717 -0.1916141  0.05077147</code></pre>
 <p>Or rows with species IDs containing the number 2</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect[<span class="kw">grep</span>(<span class="st">&quot;2&quot;</span>,Transect<span class="op">$</span>Species),]</code></pre></div>
-<pre><code>##    Species         A1         A2          A3        B1         B2
-## 2        2 0.89667173  1.3278330  0.02454110 -0.167388  0.4054526
-## 12      12 0.25388070  0.2698534  0.09704944  2.611622 -0.7064956
-## 20      20 0.04660004 -0.7269342 -2.01292580  1.389992 -0.5078161
-##           B3        C1        C2       C3
-## 2  0.2288862 0.3861780 -1.523980 0.374138
-## 12 0.1454214 0.7240776  1.399982 2.831181
-## 20 0.9543531 1.1139937  1.097766 2.214162</code></pre>
+<pre><code>##    Species         A1         A2          A3         B1         B2
+## 2        2 -0.1081777 -0.8490526  0.09963883 -0.1042834  1.0280625
+## 12      12  1.7075924 -0.5474010 -0.69065068 -0.7494972  1.1069008
+## 20      20  1.0820989  1.5330618 -1.06952568 -0.9767584 -0.2449293
+##             B3         C1         C2         C3
+## 2  -0.50655986 -0.4351105  0.1980384  1.0457695
+## 12 -1.26003068 -1.4350148 -1.4435753 -1.2248160
+## 20  0.07695961  0.9112749 -0.7122321  0.2269866</code></pre>
 </div>
 <div id="practice-exercises" class="section level1">
 <h1>PRACTICE EXERCISES</h1>
