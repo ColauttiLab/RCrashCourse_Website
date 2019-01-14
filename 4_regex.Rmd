@@ -21,7 +21,7 @@ Regular Expressions
 
 # 2. Basic Regex Functions in R
 
-## Four main Regex functions in R:
+## Four Basic Regex Functions in R:
 
 `grep()` and `grepl()` are equivalent to 'find' in your favorite word processor
 
@@ -29,7 +29,15 @@ Regular Expressions
 
 `sub()` and `gsub()` are equivalent to 'find and replace'
 
-* General form: `grep("find this", "replace with this", in.this.object`
+* General form: `grep("find this", "replace with this", in.this.object)`
+
+## Three Advanced Regex Functions in R:
+
+`regexpr()` provides more detailed info about the first match
+
+`gregexpr()` provides more detailed results about all matches
+
+More examples [here](https://bioinfomagician.wordpress.com/2013/11/03/regular-expression-tutorial-2-commands-in-r/)
 
 ## Start with a simple data frame of species names:
 

@@ -9,6 +9,12 @@ author: "Rob Colautti"
 
 # Test your understanding of R Fundamentals
 
+Learning R takes patience and practice.
+
+![](Rcurve.jpg)
+
+Practice writing code for the examples below. Then reveal the code and compare to what you have written. It's okay if your code does not match exactly -- there is often more than one way to get to an answer!
+
 <br>
 
 ***

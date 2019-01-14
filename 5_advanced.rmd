@@ -10,7 +10,7 @@ author: "Rob Colautti"
 ## General form:
 ```{r,eval=FALSE}
 functionName<-function(var1=Default1,var2=Default2){
-  ## Meat and potatoes
+  ## Meat and potatoes script
 }
 ```
 
@@ -145,20 +145,23 @@ qplot
 <br>
 
 # 2. R Markdown
+
 In RStudio: File->New->R Markdown
 Choose html or Word (trivial to switch later)
 PDF requires LaTeX
 
-#### NOTE:
-If you don't see an option for R Markdown, you may need to install it:
+> NOTE: If you don't see an option for R Markdown, you may need to install it:
+
 ```{r,eval=FALSE}
 install.packages("rmarkdown")
 ```
 
 
-#### Very few elements are needed for a basic markdown file
+Very few elements are needed for a basic markdown file
 
-### Header generated automatically:
+## YAML Header 
+
+This generated automatically when you make a new .Rmd file in RStudio. 
 ```{r,eval=FALSE}
 ---
 title: R Crash Course
@@ -168,7 +171,7 @@ output: word_document
 ---
 ```
 
-### Basic elements:
+## Basic elements:
 
 embed R code inline using \` characters: \``embedded code`\`
 
@@ -188,10 +191,10 @@ A quick cheat-sheet is nice to have printed out for reference:
 
 https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
 
-### Advanced features:
+## Updates:
 
 Update to latest version of rmarkdown
-```{r}
+```{r, eval=FALSE}
 devtools::install_github("rstudio/rmarkdown")
 ```
 
@@ -230,6 +233,28 @@ Looks like this:
 
 (tab content)
 
+
+## Equations
+
+Insert equations using LaTeX. Here is a handy [cheat sheet](./latexsheet.pdf)
+
+For example:
+```{r eval=FALSE}
+$$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k$$ 
+$$\sum_{n=1}^{\infty} 2^{-n} = 1$$ 
+```
+
+$$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k$$ 
+
+$$\sum_{n=1}^{\infty} 2^{-n} = 1$$ 
+
+Or inline:
+
+```{r eval=FALSE}
+Product $\prod_{i=a}^{b} f(i)$ inside text
+```
+
+Product $\prod_{i=a}^{b} f(i)$ inline with text
 
 <br>
 

@@ -52,15 +52,9 @@ https://github.com/ColauttiLab/RCrashCourse
     5. Read other people's code carefully
     6. Study, read, listen
     7. Try something new, fail, error correct, repeat
+    8. __EMBRACE FAILURE__ -- even after 10+ years of programming experience, most of my algorithms do not work on the first try (typos, mis-specified objects, etc.)!
 </div>
 
-
-## Class introductions
-
-  1. Name, education background, department
-  2. Research interests
-  3. Previous experience with programming?
-  4. After completing this course, I would like to be able to:
 
 <br> 
 
@@ -403,6 +397,9 @@ getwd()
 ```
 
 ## Import data
+
+Download [this dataset](./FallopiaData.csv) and save in your current working directory -- for example your project folder or whatever directory is shown when you run the command `getwd()`
+
 Import data from .csv file into an object called 'MyData'
 ```{r}
 MyData<-read.csv("FallopiaData.csv",header=T) # Header=T tells read.csv to interpret first row as column labels
