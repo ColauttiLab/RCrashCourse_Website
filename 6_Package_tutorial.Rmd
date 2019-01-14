@@ -1,0 +1,276 @@
+---
+title: "R Package Tutorial"
+author: |-
+  Written by Yihan Wu \
+    Edited by Rob Colautti
+date: "March 15, 2018"
+output: html_document
+---
+
+Most of the general content can be found in Hadley Wickham's [R Packages book](http://r-pkgs.had.co.nz/). It goes into detail on almost everything you would need to know to make a package. 
+
+For a quick tutorial, see Hilary Parker's [post](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/) on a "cat" function. 
+
+
+Install packages first and then read on.
+
+```
+install.packages(c("devtools", "roxygen2", "testthat", "knitr"))
+```
+
+
+Tutorial objectives:
+
+  1) Make a basic package in RStudio and make 1 function.
+  2) Make documentation for the function.
+  3) Installing the package and input checking. 
+
+# Introduction
+
+When should you use a function vs write a package?
+
+Start with a piece of code, and be sure to add a comment to explain what the code does.
+```
+# take x, square it and add one to it
+y <- x^2 + 1
+
+```
+
+If you are going to use that piece of code multiple times, it's easier to make it into a function and call it, rather than copying and pasting the same cod multiple times. (See functions tutorial [LINK](./5_advanced.html))
+
+```{r}
+square_plus<-function(x){
+  # take x, square it and add one to it
+  y <-x^2 + 1
+  return(y)
+}
+square_plus(2)
+square_plus(4)
+square_plus(1:10)
+```
+
+If you want to use the function across many scripts, you can save the function in its own .R file, and then load it into each script
+
+```
+source("/Path/To/CustomScript/Script.R")
+```
+
+
+When you have many functions that you use frequently, you might want to make your own R package so that you can load all the functions easily and quickly. This also makes it easy to share the functions.
+
+```
+square_plus<-function(x){
+  # take x, square it and add one to it
+  y <- x^2 + 1
+  return(y)
+}
+
+cube_plus<-function(x){
+  # take x, cube it and add one to it
+  y <-x^3 + 1
+  return(y)
+}
+
+quartic_plus<-function(x){
+  # raise x to the power of 4 and add one to it
+  y <-x^4 + 1
+  return(y)
+}
+```
+
+# Getting started
+
+R Studio makes it easy to create your own packages for R. Once you have installed devtools (see above), create a new R package in R Studio
+
+    File -> New Project -> New Directory -> R Package 
+    
+You can also use the "R Package" option but delete the NAMESPACE file as it will be automatically generated later.
+Give the package a name and then click create. 
+
+RStudio should load and there will be a file structure with several files and two folders, "R" and "man".
+
+The "R" folder is for code, and there is a hello.R file in it. Save all of your custom functions here.
+
+The "man" folder is for manual pages, the documents that show up when you use the ? for help `?some_function`.
+
+
+## Add functions
+
+We are going to make a function to get public references from the Crossref API. 
+Crossref is one of the organizations for Digital Object Identifiers and is frequently the one used for scientific journals. 
+Crossref has "metadata" on digital objects such as type of object, author, dates etc etc.
+
+We can access this information through the Crossref page. 
+
+For example, the link below shows the result of a search for the title of a paper by Primack and Miller-Rushing (2011).
+
+[https://search.crossref.org/?q=Broadening+the+study+of+phenology+and+climate+change](https://search.crossref.org/?q=Broadening+the+study+of+phenology+and+climate+change)
+
+The DOI for the first paper (by Primack & Miller-Rushing) is "10.1111/j.1469-8137.2011.03773.x"
+
+Clicking on the "Actions" button for this paper, and then "Metadata as JSON", brings up a json file including citation information, and also citations for the papers referenced in the paper. 
+
+There's been times where we read a paper and then go through the references of the paper, especially for literature reviews/meta-analyses. Automating the extraction of references from a paper of interest might be useful.
+
+We can access the json file in R using the doi and using the Crossref api (documentation [LINK](https://github.com/CrossRef/rest-api-doc)).
+
+Doing this will give us a list of the citations:
+```{r}
+# download jsonlite to parse json files
+library(jsonlite)
+url<-"https://api.crossref.org/works/10.1111/j.1469-8137.2011.03773.x"
+result<-fromJSON(url)
+```
+
+`result` is a list containing a variety of information
+```{r}
+names(result)
+```
+
+`result$message$reference` is a data frame of citations containing 17 references that we can extract this. 
+
+```{r}
+references<-as.data.frame(result$message$reference)
+```
+
+This can be easily writen to csv or other formats. 
+
+But we can also make this a function for any DOI of interest. 
+```
+get_work_references<-function(DOI){
+  url<-paste0("https://api.crossref.org/works/",DOI)
+  result<-fromJSON(url)
+  return(as.data.frame(result$message$reference))
+}
+```
+We can save the script above in the R folder to make it part of the package.
+
+Of course, we would want to add more functions in order to make this a useful package.
+
+If we want to run the function, we can use the `source()` function as described above. But as a package this still lack two important pieces:
+
+  1. Documentation for this function (and any other functions we add)
+  2. A library that would let us load all functions using the `library()` function 
+
+## Adding documentation
+
+The first piece of documentation is the DESCRIPTION file. There are several fields to fill in for this.
+
+  1. The __package name__ is already filled automatically. 
+
+  2. We should add a __title__ (ie. This Package Gets References).
+
+  3. Change the `Author` to `Authors@R` and add yourself as the author and creator. 
+
+```
+Authors@R: person("First Name", "Last Name", email="email@email.com", role=c("aut", cre))
+
+# Two authors
+Authors@R: c(person("First Name", "Last Name", email="email@email.com", role=c("aut", cre)),
+             person("Second person name", "second person last name", email="email@email.com", role="aut"))
+
+```
+  4. Write a description: 
+
+        Interfacing with Crossref's API to get citation information using DOI. 
+        This package uses jsonlite and contains only one function.
+        etc...
+
+  5. Choose one of the public licenses such as GPL-3, MIT etc. (see [Wikipedia](https://en.wikipedia.org/wiki/Comparison_of_free_and_open-source_software_licenses))
+
+Save the DESCRIPTION file.
+
+## Add a Manual
+
+The `roxygen2` package can be used to make manuals for R packages. This greatly simplifies the writing process, which otherwise would be written in [LaTeX](https://www.latex-project.org/). The `roxygen2` package allows us to make comments directly in the script, and then `roxygen2` automatically generates the manual pages from these comments. 
+
+First, take out any library(*) commands and use packagename::function() for any functions from other libraries. Read R Packages - R code for more details on why. 
+
+When writing your comments, follow this logic:
+
+  + Roxygen2 commands start with `#'`. 
+  + The first line is automatically the title field and should cover only one line. 
+  + The next text paragraph goes into the description. The usage field is automatically generated. 
+  + Use `@param` tags for arguments. (Only 1 in this case). 
+  + Use the next line to write a longer description. 
+  + Use `@return` to write what is expected output and `@example` to write example code that will be run when creating the man page. 
+  + We also want to use a `@export` tag so that the function will be available for use when the library is loaded. 
+  + We need to add details such as description, useage, arguments. 
+  + The script would look something like this: 
+
+```
+#' Takes a DOI and returns references for the object.
+#'
+#' This function queries the Crossref API to obtain a data frame of references for the DOI. We use the paste0 function from base and the fromJSON function from jsonlite.
+#'
+#' @param DOI String. Digital object identifier.
+#'
+#' @return data frame of references.
+#' @example
+#' get_work_references("10.1111/j.1469-8137.2011.03773.x")
+#' @export
+
+get_work_references<-function(DOI){
+  url<-paste0("https://api.crossref.org/works/",DOI)
+  result<-jsonlite::fromJSON(url)
+  return(as.data.frame(result$message$reference))
+}
+
+```
+
+Save the file and use `devtools::document().`
+
+We will now have a NAMESPACE file, and a new file within the man folder. The NAMESPACE file shows the function we have which will be available in the environment when the library is loaded.
+
+Open `get_work_references.Rd` and then click preview to see how it looks.
+
+However, our man page is a bit dull, and lacks the links most pages have. We have to add the links using code. For example, linking the paste0 function will be `\code{\link[base]{paste0}}`. 
+
+Use `document()` again. Now the functions are in monospace font. The actual links only appear when the package is built.
+
+We can use the "CHECK" button on the "Build Pane" to check for any issues in the package. 
+
+We did not import the jsonlite package. To do this, go back to the DESCRIPTION file and add:
+
+``` Imports:
+      jsonlite
+```
+
+Another CHECK will tell you that the package `curl` is required. Add this to the imports as well. 
+
+## Installing the package
+
+Once you pass the check, click "Install and Restart" to install the package. The package should be in your "Packages" pane.
+
+Doing `?get_work_references` will bring up the help page with working links. We can successfully run the example. But if input is not a character, the function doesn't work.
+
+## Input checking
+
+You cannot account for every possible scenario where the function doesn't work. Or there are certain variables you know have to be in a specific form. 
+
+You can add checks for inputs within the function. 
+
+For example, the DOI should be a character string. We can add a test for the input and stop the function with an error if the input isn't a character string.
+
+```
+get_work_references<-function(DOI){
+  if (!is.character(DOI)) stop(" 'DOI' must be a character string")
+  url<-paste0("https://api.crossref.org/works/",DOI)
+  result<-jsonlite::fromJSON(url)
+  return(as.data.frame(result$message$reference))
+}
+
+
+```
+
+
+Reinstall and you have a working package!
+
+
+
+
+References: 
+
+Hadley Wickham, 'R packages' http://r-pkgs.had.co.nz/
+
+Hilary Parker, 'Writing an R package from scratch', https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
