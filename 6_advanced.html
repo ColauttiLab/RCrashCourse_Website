@@ -306,8 +306,8 @@ div.tocify {
         <li><a href="2_qplot.html">qplot()</a></li>
         <li><a href="3_ggplot.html">ggplot()</a></li>
 		<li><a href="4_regex.html">Regex</a></li>
-		<li><a href="5_advanced.html">Data Science</a></li>
-          <li><a href="6_Package_tutorial.html">Advanced</a></li>
+		<li><a href="5_datascience.html">Data Science</a></li>
+          <li><a href="6_advanced.html">Advanced</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -338,9 +338,8 @@ div.tocify {
 <li>Make documentation for the function.</li>
 <li>Installing the package and input checking.</li>
 </ol>
-</div>
-<div id="introduction" class="section level1">
-<h1>Introduction</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
 <p>When should you use a function vs write a package?</p>
 <p>Start with a piece of code, and be sure to add a comment to explain what the code does.</p>
 <pre><code># take x, square it and add one to it
@@ -379,14 +378,15 @@ quartic_plus&lt;-function(x){
   return(y)
 }</code></pre>
 </div>
-<div id="getting-started" class="section level1">
-<h1>Getting started</h1>
+<div id="getting-started" class="section level2">
+<h2>Getting started</h2>
 <p>R Studio makes it easy to create your own packages for R. Once you have installed devtools (see above), create a new R package in R Studio</p>
 <pre><code>File -&gt; New Project -&gt; New Directory -&gt; R Package </code></pre>
 <p>You can also use the “R Package” option but delete the NAMESPACE file as it will be automatically generated later. Give the package a name and then click create.</p>
 <p>RStudio should load and there will be a file structure with several files and two folders, “R” and “man”.</p>
 <p>The “R” folder is for code, and there is a hello.R file in it. Save all of your custom functions here.</p>
 <p>The “man” folder is for manual pages, the documents that show up when you use the ? for help <code>?some_function</code>.</p>
+</div>
 <div id="add-functions" class="section level2">
 <h2>Add functions</h2>
 <p>We are going to make a function to get public references from the Crossref API. Crossref is one of the organizations for Digital Object Identifiers and is frequently the one used for scientific journals. Crossref has “metadata” on digital objects such as type of object, author, dates etc etc.</p>
@@ -507,6 +507,24 @@ get_work_references&lt;-function(DOI){
 
 </code></pre>
 <p>Reinstall and you have a working package!</p>
+</div>
+<div id="make-it-public" class="section level2">
+<h2>Make it public</h2>
+<p>Before going public:</p>
+<ol style="list-style-type: decimal">
+<li>Create a public GitHub repository and push your project</li>
+<li>Flesh out documentation and meta-data</li>
+<li>Error checking with <code>devtools</code> library
+<ul>
+<li><code>spell_check()</code></li>
+<li><code>check_rhub()</code> – use rhub to check for errors. <a href="https://builder.r-hub.io/about.html">More about RHub</a>.</li>
+<li><code>check_win_release()</code> – check for errors on Windows with latest release version of R</li>
+<li><code>check_win_devel()</code> – check for errors on Windows with latest pre-release of R</li>
+<li><code>release()</code> – release to the world!</li>
+</ul></li>
+<li>Tag the latest release on GitHub</li>
+</ol>
+<p>For details on this and more: <a href="http://r-pkgs.had.co.nz/release.html" class="uri">http://r-pkgs.had.co.nz/release.html</a></p>
 <p>References:</p>
 <p>Hadley Wickham, ‘R packages’ <a href="http://r-pkgs.had.co.nz/" class="uri">http://r-pkgs.had.co.nz/</a></p>
 <p>Hilary Parker, ‘Writing an R package from scratch’, <a href="https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/" class="uri">https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/</a></p>

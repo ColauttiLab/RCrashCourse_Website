@@ -1,11 +1,262 @@
 ---
-title: "R Package Tutorial"
+title: |-
+  R Crash Course \
+   Part 6 -- Advanced Topics
 author: Yihan Wu & Rob Colautti
 ---
 
-# Custom Functions
+***
 
-# Custom R Package
+# 1. R Markdown
+
+In RStudio: File->New->R Markdown
+Choose html or Word (trivial to switch later)
+PDF requires LaTeX
+
+> NOTE: If you don't see an option for R Markdown, you may need to install it:
+
+```{r,eval=FALSE}
+install.packages("rmarkdown")
+```
+
+
+Very few elements are needed for a basic markdown file
+
+## YAML Header 
+
+This generated automatically when you make a new .Rmd file in RStudio. 
+```{r,eval=FALSE}
+---
+title: R Crash Course
+author: "Rob Colautti"
+date: "Thursday, February 18, 2016"
+output: word_document
+---
+```
+
+## Basic elements:
+
+embed R code inline using \` characters: \``embedded code`\`
+
+Or block code using:
+
+\`\`\`\{r\}
+```{r,eval=FALSE}
+block code
+```
+\`\`\`
+
+For formatting text, see:
+
+http://rmarkdown.rstudio.com/authoring_basics.html
+
+A quick cheat-sheet is nice to have printed out for reference:
+
+https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
+
+## Updates:
+
+Update to latest version of rmarkdown
+```{r, eval=FALSE}
+devtools::install_github("rstudio/rmarkdown")
+```
+
+## Options for header
+```{r eval=FALSE}
+output:
+  html_document: # Add options for html output
+    toc: true # Add table of contents (TOC)
+    number_sections: true # Add section numbers
+    toc_float: # Have TOC floating at the side, rather than at the beginning
+      collapsed: false # Expand subsections
+```
+
+## Content as tabs
+```{r eval=FALSE}
+## Quarterly Results {.tabset}
+
+### By Product
+
+(tab content)
+
+### By Region
+
+(tab content)
+```
+
+Looks like this:
+
+## Quarterly Results {.tabset}
+
+### By Product
+
+(tab content)
+
+### By Region
+
+(tab content)
+
+
+## Equations
+
+Insert equations using LaTeX. Here is a handy [cheat sheet](./latexsheet.pdf)
+
+For example:
+```{r eval=FALSE}
+$$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k$$ 
+$$\sum_{n=1}^{\infty} 2^{-n} = 1$$ 
+```
+
+$$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k$$ 
+
+$$\sum_{n=1}^{\infty} 2^{-n} = 1$$ 
+
+Or inline:
+
+```{r eval=FALSE}
+Product $\prod_{i=a}^{b} f(i)$ inside text
+```
+
+Product $\prod_{i=a}^{b} f(i)$ inline with text
+
+***
+
+# 2. Custom Functions
+
+## General form:
+```{r,eval=FALSE}
+functionName<-function(var1=Default1,var2=Default2){
+  ## Meat and potatoes script
+}
+```
+
+## Example function
+User inputs two objects; the function outputs a list of functions applied to the inputs
+```{r}
+my.function<-function(var1=0,var2=0){
+  # You can make new variables within a function
+  add<-var1+var2
+  subt<-var1-var2
+  mult<-var1*var2
+  div<-var1/var2  
+  outlist<-list(input1=var1,input2=var2,addition=add,subtraction=subt,multiplication=mult,division=div)
+  # So far, everything is contained within the function. 
+  # Use return() to generate output
+  return(outlist)
+}
+```
+Note: Nothing output when the funciton is run. This just loads the function into memory.
+
+### Run the function
+```{r}
+my.function(var1=10,var2=0.1)
+my.function(var1=c(1:10),var2=c(10:1))
+```
+
+#### Protip #1:
+Consider annotating long or complex script with cat() to help with troubleshooting
+
+Note: \n = new line
+```{r}
+my.function<-function(var1=0,var2=0,verbose=FALSE){
+  cat("\nInput variables:\nvar1 =",var1,"\nvar2 =",var2,"\n")
+  cat("\nCalculating functions...\n")
+  cat("\nAdding...\n")    
+
+  add<-var1+var2
+  
+  cat("\nSubtracting...\n")
+
+  subt<-var1-var2
+  
+  cat("\nMultiplying...\n")
+  
+  mult<-var1*var2
+  
+  cat("\nDividing...\n")
+  
+  div<-var1/var2  
+  
+  cat("\nGenerating output...\n\n")
+  
+  outlist<-list(input1=var1,input2=var2,addition=add,subtraction=subt,multiplication=mult,division=div)
+
+  return(outlist)
+}
+
+## Run
+my.function(var1=10,var2=0.1)
+```
+
+#### Better yet, make it an option:
+```{r}
+my.function<-function(var1=0,var2=0,verbose=FALSE){
+  if (verbose==T){
+    cat("\nInput variables:\nvar1 =",var1,"\nvar2 =",var2,"\n")
+    cat("\nCalculating functions...\n")
+    cat("\nAdding...\n")    
+  }
+  
+  add<-var1+var2
+  
+  if (verbose==T){
+    cat("\nSubtracting...\n")
+  }
+  
+  subt<-var1-var2
+  
+  if (verbose==T){
+    cat("\nMultiplying...\n")
+  }
+  
+  mult<-var1*var2
+  
+  if (verbose==T){
+    cat("\nDividing...\n")
+  }
+  
+  div<-var1/var2  
+  
+  if (verbose==T){
+    cat("\nGenerating output...\n")
+  }
+  
+  outlist<-list(input1=var1,input2=var2,addition=add,subtraction=subt,multiplication=mult,division=div)
+
+  return(outlist)
+}
+
+# Run
+my.function(var1=10,var2=0.1,verbose=FALSE)
+my.function(var1=10,var2=0.1,verbose=TRUE)
+```
+
+
+#### Protip #2:
+If you have a custom function, theme, script, etc., that you use repeatedly:
+
+  1. Save in a separate file
+  
+  * e.g. make new "myfunction.R" file containing just my.function
+  
+  2. Load using `source("PathName.FileName.R")`
+
+  * e.g. `source("C:/Users/Colautti/Documents/RFunctions/myfunction.R")` if save
+
+#### Protip #3:
+We have already been using functions that somebody else wrote in R.
+
+To see 'under the hood' type a function without the bracktes:
+
+```{r}
+my.function
+library(ggplot2)
+qplot
+```
+
+*** 
+
+# 3. Custom R Package
 
 Most of the general content can be found in Hadley Wickham's [R Packages book](http://r-pkgs.had.co.nz/). It goes into detail on almost everything you would need to know to make a package. 
 

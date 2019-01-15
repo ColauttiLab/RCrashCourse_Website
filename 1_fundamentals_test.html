@@ -306,8 +306,8 @@ div.tocify {
         <li><a href="2_qplot.html">qplot()</a></li>
         <li><a href="3_ggplot.html">ggplot()</a></li>
 		<li><a href="4_regex.html">Regex</a></li>
-		<li><a href="5_advanced.html">Functions<br>&amp; R Markdown</a></li>
-          <li><a href="Package_tutorial.html">Make Your Own<br>Packages</a></li>
+		<li><a href="5_datascience.html">Data Science</a></li>
+          <li><a href="6_advanced.html">Advanced</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -412,29 +412,29 @@ what can you use instead of <code>|</code> to check for a value in a large numbe
 Uniform distribution
 <div class="fold s">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">runif</span>(<span class="dv">10</span>,<span class="dt">min=</span><span class="dv">0</span>,<span class="dt">max=</span><span class="dv">1</span>) </code></pre></div>
-<pre><code>##  [1] 0.495529568 0.633343884 0.960522431 0.003800493 0.391253901
-##  [6] 0.106122630 0.200390417 0.460215609 0.350966865 0.243174366</code></pre>
+<pre><code>##  [1] 0.9282246 0.2731035 0.4938674 0.6419035 0.3337663 0.6223071 0.3908238
+##  [8] 0.2222283 0.6462298 0.5125661</code></pre>
 </div>
 Normal distribution with a mean of 10 and standard deviation of 5
 <div class="fold s">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rnorm</span>(<span class="dv">10</span>,<span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span><span class="dv">1</span>)</code></pre></div>
-<pre><code>##  [1]  1.85930059 -0.98977985  0.83615181 -1.51384345 -0.32006504
-##  [6]  0.69983535  0.07408616  0.30143572  0.21371264  1.15386225</code></pre>
+<pre><code>##  [1] -2.1486141  0.3181598 -1.5390610 -1.1295641  1.2771537  0.2720528
+##  [7] -0.5674905 -0.5105677  1.1465444  0.1107510</code></pre>
 </div>
 Poisson distribution with a lambda of 100
 <div class="fold s">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rpois</span>(<span class="dv">10</span>,<span class="dt">lambda=</span><span class="dv">10</span>)</code></pre></div>
-<pre><code>##  [1] 10 10 14  6  5  8  7 15 13 14</code></pre>
+<pre><code>##  [1] 12  9  6 11 16 16 10 10 13 13</code></pre>
 </div>
 Bernoulli variable (Binomial distribution) to model a coin toss (one coin, 10 separate trials)
 <div class="fold s">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rbinom</span>(<span class="dv">10</span>,<span class="dt">size=</span><span class="dv">1</span>,<span class="dt">prob=</span><span class="fl">0.5</span>)</code></pre></div>
-<pre><code>##  [1] 0 0 1 1 1 1 1 1 0 0</code></pre>
+<pre><code>##  [1] 0 1 1 1 1 0 0 1 0 1</code></pre>
 </div>
 Bernoulli variable (Binomial distribution) to model the number of Adenine nucleotides found in a stretch of 100bp of DNA (assuming equal representation of the 4 base pairs) – repeated for 10 independent strands of DNA
 <div class="fold s">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rbinom</span>(<span class="dv">10</span>,<span class="dt">size=</span><span class="dv">100</span>,<span class="dt">prob=</span><span class="fl">0.25</span>)</code></pre></div>
-<pre><code>##  [1] 24 27 17 18 22 31 26 19 29 27</code></pre>
+<pre><code>##  [1] 27 26 21 21 24 18 32 32 30 19</code></pre>
 </div>
 </div>
 <div id="combining-objects" class="section level2">
@@ -646,38 +646,38 @@ MyList</code></pre></div>
 ##  [1]  1  2  3  4  5  6  7  8  9 10
 ## 
 ## $numbers
-##  [1] 0.53175683 0.39417457 0.84868355 0.64926121 0.30816888 0.02854543
-##  [7] 0.12420509 0.56110713 0.58765642 0.55422862</code></pre>
+##  [1] 0.8068943 0.7239132 0.3971138 0.8055119 0.8186781 0.8738399 0.8083557
+##  [8] 0.4589456 0.6983272 0.9340303</code></pre>
 </div>
 Print the <em>numbers</em> element from the MyList list that you created
 <div class="fold s">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MyList<span class="op">$</span>numbers <span class="co"># Use $ to subset by name</span></code></pre></div>
-<pre><code>##  [1] 0.53175683 0.39417457 0.84868355 0.64926121 0.30816888 0.02854543
-##  [7] 0.12420509 0.56110713 0.58765642 0.55422862</code></pre>
+<pre><code>##  [1] 0.8068943 0.7239132 0.3971138 0.8055119 0.8186781 0.8738399 0.8083557
+##  [8] 0.4589456 0.6983272 0.9340303</code></pre>
 </div>
 <p><br></p>
 <p>What’s the difference between <code>$</code>, <code>[]</code> and <code>[[]]</code>?</p>
 What will the ouput look like (predict all 6 before revealing)?
 <div class="fold o">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MyList<span class="op">$</span>numbers</code></pre></div>
-<pre><code>##  [1] 0.53175683 0.39417457 0.84868355 0.64926121 0.30816888 0.02854543
-##  [7] 0.12420509 0.56110713 0.58765642 0.55422862</code></pre>
+<pre><code>##  [1] 0.8068943 0.7239132 0.3971138 0.8055119 0.8186781 0.8738399 0.8083557
+##  [8] 0.4589456 0.6983272 0.9340303</code></pre>
 </div>
 <div class="fold o">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MyList[<span class="dv">3</span>]</code></pre></div>
 <pre><code>## $numbers
-##  [1] 0.53175683 0.39417457 0.84868355 0.64926121 0.30816888 0.02854543
-##  [7] 0.12420509 0.56110713 0.58765642 0.55422862</code></pre>
+##  [1] 0.8068943 0.7239132 0.3971138 0.8055119 0.8186781 0.8738399 0.8083557
+##  [8] 0.4589456 0.6983272 0.9340303</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span><span class="op">*</span>MyList[<span class="dv">3</span>]</code></pre></div>
 <pre><code>## Error in 2 * MyList[3]: non-numeric argument to binary operator</code></pre>
 </div>
 <div class="fold o">
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MyList[[<span class="dv">3</span>]]</code></pre></div>
-<pre><code>##  [1] 0.53175683 0.39417457 0.84868355 0.64926121 0.30816888 0.02854543
-##  [7] 0.12420509 0.56110713 0.58765642 0.55422862</code></pre>
+<pre><code>##  [1] 0.8068943 0.7239132 0.3971138 0.8055119 0.8186781 0.8738399 0.8083557
+##  [8] 0.4589456 0.6983272 0.9340303</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span><span class="op">*</span>MyList[[<span class="dv">3</span>]]</code></pre></div>
-<pre><code>##  [1] 1.06351366 0.78834913 1.69736709 1.29852242 0.61633777 0.05709087
-##  [7] 0.24841018 1.12221426 1.17531283 1.10845725</code></pre>
+<pre><code>##  [1] 1.6137886 1.4478263 0.7942275 1.6110237 1.6373563 1.7476798 1.6167113
+##  [8] 0.9178913 1.3966544 1.8680605</code></pre>
 </div>
 Describe the above in words:
 <div class="fold s">
