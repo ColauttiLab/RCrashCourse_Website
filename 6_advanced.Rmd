@@ -1,11 +1,11 @@
 ---
 title: "R Package Tutorial"
-author: |-
-  Written by Yihan Wu \
-    Edited by Rob Colautti
-date: "March 15, 2018"
-output: html_document
+author: Yihan Wu & Rob Colautti
 ---
+
+# Custom Functions
+
+# Custom R Package
 
 Most of the general content can be found in Hadley Wickham's [R Packages book](http://r-pkgs.had.co.nz/). It goes into detail on almost everything you would need to know to make a package. 
 
@@ -25,7 +25,7 @@ Tutorial objectives:
   2) Make documentation for the function.
   3) Installing the package and input checking. 
 
-# Introduction
+## Introduction
 
 When should you use a function vs write a package?
 
@@ -78,7 +78,7 @@ quartic_plus<-function(x){
 }
 ```
 
-# Getting started
+## Getting started
 
 R Studio makes it easy to create your own packages for R. Once you have installed devtools (see above), create a new R package in R Studio
 
@@ -263,9 +263,23 @@ get_work_references<-function(DOI){
 
 ```
 
-
 Reinstall and you have a working package!
 
+## Make it public
+
+Before going public:
+
+  1. Create a public GitHub repository and push your project
+  2. Flesh out documentation and meta-data
+  3. Error checking with `devtools` library
+    * `spell_check()`
+    * `check_rhub()` -- use rhub to check for errors. [More about RHub](https://builder.r-hub.io/about.html). 
+    * `check_win_release()` -- check for errors on Windows with latest release version of R
+    * `check_win_devel()` -- check for errors on Windows with latest pre-release of R
+    * `release()` -- release to the world!
+  4. Tag the latest release on GitHub
+
+For details on this and more:  http://r-pkgs.had.co.nz/release.html
 
 
 
