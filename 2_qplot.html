@@ -622,11 +622,8 @@ theme_pubworthy &lt;-<span class="st"> </span><span class="cf">function</span> (
 </ul></li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pdf</span>(<span class="st">&quot;SileneHist.pdf&quot;</span>) <span class="co"># 1. Create and open a file</span>
-  <span class="kw">qplot</span>(<span class="dt">x=</span>Silene,<span class="dt">data=</span>MyData,<span class="dt">facets=</span>Taxon<span class="op">~</span>Nutrients) <span class="co"># 2. Write the graph info</span></code></pre></div>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dev.off</span>() <span class="co"># 3. Close the file</span></code></pre></div>
-<pre><code>## png 
-##   2</code></pre>
+  <span class="kw">qplot</span>(<span class="dt">x=</span>Silene,<span class="dt">data=</span>MyData,<span class="dt">facets=</span>Taxon<span class="op">~</span>Nutrients) <span class="co"># 2. Write the graph info</span>
+<span class="kw">dev.off</span>() <span class="co"># 3. Close the file</span></code></pre></div>
 <p>Note how the qplot command does not open in the plots window</p>
 <p>This is because the info is sent to “SileneHist.pdf” instead</p>
 </div>

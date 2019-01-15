@@ -262,7 +262,7 @@ qplot(x=Silene,data=MyData,facets=Taxon~Nutrients) # Both (2 column stacking)
   3. Close the file 
       + Important: If you don't close the file, it is unusable.
 
-```{r}
+```{r,eval=F}
 pdf("SileneHist.pdf") # 1. Create and open a file
   qplot(x=Silene,data=MyData,facets=Taxon~Nutrients) # 2. Write the graph info
 dev.off() # 3. Close the file
