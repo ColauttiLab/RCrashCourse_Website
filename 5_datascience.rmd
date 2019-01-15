@@ -42,7 +42,7 @@ The book [R for Data Science](http://shop.oreilly.com/product/0636920034407.do) 
 
 > TIP: In general, any book by Hadley Wickham that you come across is worth reading if you want to be proficient in R.
 
-Here we'll be focusing on the `dplyr` package from Wickham et al.
+Here we'll be focusing on the `dplyr` packages from Wickham et al.
 
 # 2. 2D Data Wrangling
 
@@ -87,14 +87,14 @@ names(X)[12]<-"Total_Biomass"
 names(X)
 ```
 
-However, the **tidyr** package has a simple function to do this:
+However, there is a simple function to do this:
+
+## `arrange()` 
 
 ```{r}
 X<-rename(Fallo, Total_Biomass = Total)
 names(X)
 ```
-
-## `arrange()` 
 
 Use the `arrange()` function to sort the *rows* of your data based on the *columns* of your data. For example, let's re-arrange our FallopiaData.csv dataset based on Taxon (a string denoting the species of Fallopia used) and Total (a float denoting the total biomass in each pot).
 

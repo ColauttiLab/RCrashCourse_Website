@@ -359,7 +359,7 @@ Part 5 – Data Science</h1>
 <blockquote>
 <p>TIP: In general, any book by Hadley Wickham that you come across is worth reading if you want to be proficient in R.</p>
 </blockquote>
-<p>Here we’ll be focusing on the <code>dplyr</code> package from Wickham et al.</p>
+<p>Here we’ll be focusing on the <code>dplyr</code> packages from Wickham et al.</p>
 </div>
 </div>
 <div id="d-data-wrangling" class="section level1">
@@ -414,16 +414,16 @@ Part 5 – Data Science</h1>
 ##  [5] &quot;Symphytum&quot;     &quot;Silene&quot;        &quot;Urtica&quot;        &quot;Geranium&quot;     
 ##  [9] &quot;Geum&quot;          &quot;All_Natives&quot;   &quot;Fallopia&quot;      &quot;Total_Biomass&quot;
 ## [13] &quot;Pct_Fallopia&quot;</code></pre>
-<p>However, the <strong>tidyr</strong> package has a simple function to do this:</p>
+<p>However, there is a simple function to do this:</p>
+</div>
+<div id="arrange" class="section level2">
+<h2><code>arrange()</code></h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">rename</span>(Fallo, <span class="dt">Total_Biomass =</span> Total)
 <span class="kw">names</span>(X)</code></pre></div>
 <pre><code>##  [1] &quot;PotNum&quot;        &quot;Scenario&quot;      &quot;Nutrients&quot;     &quot;Taxon&quot;        
 ##  [5] &quot;Symphytum&quot;     &quot;Silene&quot;        &quot;Urtica&quot;        &quot;Geranium&quot;     
 ##  [9] &quot;Geum&quot;          &quot;All_Natives&quot;   &quot;Fallopia&quot;      &quot;Total_Biomass&quot;
 ## [13] &quot;Pct_Fallopia&quot;</code></pre>
-</div>
-<div id="arrange" class="section level2">
-<h2><code>arrange()</code></h2>
 <p>Use the <code>arrange()</code> function to sort the <em>rows</em> of your data based on the <em>columns</em> of your data. For example, let’s re-arrange our FallopiaData.csv dataset based on Taxon (a string denoting the species of Fallopia used) and Total (a float denoting the total biomass in each pot).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">arrange</span>(Fallo, Taxon, Total)
 <span class="kw">head</span>(X)</code></pre></div>
@@ -667,36 +667,36 @@ Vec</code></pre></div>
 Fallo<span class="op">$</span>Total[X]&lt;-<span class="ot">NA</span>
 Fallo<span class="op">$</span>Total</code></pre></div>
 <pre><code>##   [1] 67.06 50.22 61.08 41.71 41.81 48.27 55.42 42.68 53.53 45.89 59.02
-##  [12]    NA    NA 35.97 43.28 52.27 45.92 44.61 59.13 58.97 55.36 31.46
-##  [23] 43.46 44.65 59.69 60.82 57.21 34.09 58.57 66.74 63.18 59.88 54.09
-##  [34]    NA 61.31 53.56 52.66 64.71 61.06 45.34 64.20 57.50 68.55 49.55
-##  [45] 56.70 54.06    NA 74.82 53.71 49.75 58.45 66.06 67.01 70.41 46.63
+##  [12] 57.66 48.98 35.97 43.28 52.27    NA 44.61 59.13 58.97 55.36 31.46
+##  [23] 43.46 44.65    NA 60.82 57.21 34.09 58.57 66.74    NA 59.88 54.09
+##  [34] 55.27 61.31 53.56 52.66 64.71    NA 45.34 64.20 57.50 68.55 49.55
+##  [45] 56.70 54.06 66.60    NA 53.71 49.75 58.45 66.06 67.01 70.41 46.63
 ##  [56] 63.43 77.05 47.50 61.79 54.96 48.99 52.01 55.78 57.18 42.47 46.18
-##  [67] 62.56 54.36 69.54 75.91 56.34 64.97 60.71    NA 41.72 67.44 58.78
-##  [78] 77.74 65.68 58.42 55.35 50.28 55.04 39.56 71.07 45.23 57.20 67.70
-##  [89] 52.46 60.86 62.19 65.53 48.19 60.89 48.13    NA 67.86 56.40 49.13
-## [100] 56.11    NA 69.00    NA 50.73 63.08 60.93 29.54 49.12    NA 31.90
-## [111] 69.88 69.48 47.88 51.42    NA 50.51 54.83 66.80 50.31 56.12 62.96
+##  [67] 62.56 54.36 69.54 75.91 56.34 64.97 60.71 57.80 41.72 67.44 58.78
+##  [78] 77.74 65.68 58.42 55.35 50.28 55.04 39.56 71.07 45.23 57.20    NA
+##  [89] 52.46 60.86 62.19 65.53 48.19 60.89 48.13 60.37 67.86    NA    NA
+## [100] 56.11 49.78 69.00 65.40 50.73 63.08 60.93 29.54 49.12    NA 31.90
+## [111] 69.88    NA 47.88 51.42 58.13 50.51 54.83 66.80 50.31 56.12 62.96
 ## [122] 78.80 64.25</code></pre>
 <p>Use <code>is.na()</code> to check for missing values:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.na</span>(Fallo<span class="op">$</span>Total)</code></pre></div>
 <pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [12]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [34]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [45] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [12] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [23] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+##  [34] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [45] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ##  [56] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [67] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-##  [78] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [89] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [100] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [111] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [67] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [78] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [89] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+## [100] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [111] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ## [122] FALSE FALSE</code></pre>
 <p>Note that the output is a vector of True/False. Each cell corresponds to a value of ‘Total’ with TRUE indicating missing values. This is an example of a boolean variable, which has some handy properties in R.</p>
 <p>First, we can use it as an index. For example, let’s see which pots have missing ‘Total’ values:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Missing&lt;-<span class="kw">is.na</span>(Fallo<span class="op">$</span>Total)
 Fallo<span class="op">$</span>PotNum[Missing]</code></pre></div>
-<pre><code>##  [1]  14  16  41  58  91 117 122 125 132 139</code></pre>
+<pre><code>##  [1]  20  30  38  48  60 107 119 120 132 135</code></pre>
 <p>Another handy trick to count missing values is:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">is.na</span>(Fallo<span class="op">$</span>Total))</code></pre></div>
 <pre><code>## [1] 10</code></pre>
