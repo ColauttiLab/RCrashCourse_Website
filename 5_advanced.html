@@ -116,6 +116,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -307,7 +310,7 @@ div.tocify {
         <li><a href="3_ggplot.html">ggplot()</a></li>
 		<li><a href="4_regex.html">Regex</a></li>
 		<li><a href="5_advanced.html">Functions<br>&amp; R Markdown</a></li>
-          <li><a href="Package_tutorial.html">Make Your Own<br>Packages</a></li>
+          <li><a href="6_Package_tutorial.html">Make Your Own<br>Packages</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -324,6 +327,60 @@ Part 5 – Advanced Techniques</h1>
 </div>
 
 
+<div id="introduction-to-data-science" class="section level1">
+<h1>1. Introduction to Data Science</h1>
+<p>Data Science is a relativley new field of study that merges computer science and statistics with other domains of knowledge (e.g. business, biology, psychology). Data Science as a discipline has grown in popularity in response to the rapid rate of increase in data collection and publication.</p>
+<p>In biology, it can be helpful to think of data science as a continuous life-cycle:</p>
+<div id="data-science-life-cycle" class="section level2">
+<h2>Data Science Life-Cycle</h2>
+<ol style="list-style-type: decimal">
+<li><strong>Hypothesis Generation</strong> – Making observations that lead to testable hypotheses</li>
+<li><strong>Data Collection</strong> – This may involve taking measurements yourself, manually entering data that is not yet in electronic format, requesting data from authors of published studies, or importing data from online sources. Collecting data is a crucial step that is often done poorly. Some tips on this are provided in a <a href="https://www.biorxiv.org/content/early/2018/10/30/457051">paper by Wu et al</a></li>
+<li><strong>Data Cleaning</strong> – Investigate the data for quality assurance, to identify and fix potential errors. Start to visualize the data to look for outliers or nonsensical relationships (or lack thereof).</li>
+<li><strong>Data Exploration</strong> – Try to understand the data, where they come from, and potential limitations on their use. Continue visualizing data; this may cause you to modify your hypotheses slightly.</li>
+<li><strong>Modelling</strong> – Now that hypotheses are clearly defined, apply statistical tests of their validity.</li>
+<li><strong>Report</strong> – Use visualizations along with the results of your statistical tests to summarize your findings.</li>
+<li>Return to step 1.</li>
+</ol>
+<p>In this tutorial, we focus mainly on coding in R for steps 2, 3, and 6. Step 5 requires a firm understanding of statistics. Step 4 is covered in the tutorials on <a href="./2_qplot.html">qplot</a> and <a href="./3_ggplot.html">ggplot</a>. Step 1 is everything covered in a typical degree in the biological sciences.</p>
+<p>Before continuing, you should read the paper by <a href="https://www.biorxiv.org/content/early/2018/10/30/457051">Wu et al</a>. called “baRcodeR with PyTrackDat: Open-source labelling and tracking of biological samples for repeatable science.” Pay particular attention to the ‘<em>Data Standards</em>’ section. The <em>baRcodeR</em> and <em>PyTrackDat</em> programs and their application to current projects may also be of interest.</p>
+</div>
+<div id="further-reading" class="section level2">
+<h2>Further Reading</h2>
+<p>The book <a href="http://shop.oreilly.com/product/0636920034407.do">R for Data Science</a> by Hadley Wickham &amp; Garrett Grolemund is an excellent resource using R in Data Science projects.</p>
+<p>In general, any book by Hadley Wickham is worth reading if you want to learn R.</p>
+</div>
+</div>
+<div id="data-collection-cleaning" class="section level1">
+<h1>2. Data Collection &amp; Cleaning</h1>
+<p>The <code>dplyr</code> library in R has many useful features for importing and reorganizing your data for steps 2, 3 and 4 in the Data Science life-cycle outlined above. Don’t forget to install the <code>dplyr</code> library and load it into memory.</p>
+<p>We’ll work with our FallopiaData.csv dataset, and remind ourselves of the structure of the data</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Fallo&lt;-<span class="kw">read.csv</span>(<span class="st">&quot;FallopiaData.csv&quot;</span>)
+<span class="kw">str</span>(Fallo)</code></pre></div>
+<pre><code>## 'data.frame':    123 obs. of  13 variables:
+##  $ PotNum      : int  1 2 3 5 6 7 8 9 10 11 ...
+##  $ Scenario    : Factor w/ 5 levels &quot;extreme&quot;,&quot;fluctuations&quot;,..: 5 5 5 5 5 5 5 5 5 5 ...
+##  $ Nutrients   : Factor w/ 2 levels &quot;high&quot;,&quot;low&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ Taxon       : Factor w/ 2 levels &quot;bohem&quot;,&quot;japon&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ Symphytum   : num  9.81 8.64 2.65 1.44 9.15 ...
+##  $ Silene      : num  36.4 29.6 36 21.4 23.9 ...
+##  $ Urtica      : num  16.08 5.59 17.09 12.39 5.19 ...
+##  $ Geranium    : num  4.68 5.75 5.13 5.37 0 9.05 3.51 9.64 7.3 6.36 ...
+##  $ Geum        : num  0.12 0.55 0.09 0.31 0.17 0.97 0.4 0.01 0.47 0.33 ...
+##  $ All_Natives : num  67 50.2 61 40.9 38.4 ...
+##  $ Fallopia    : num  0.01 0.04 0.09 0.77 3.4 0.54 2.05 0.26 0 0 ...
+##  $ Total       : num  67.1 50.2 61.1 41.7 41.8 ...
+##  $ Pct_Fallopia: num  0.01 0.08 0.15 1.85 8.13 1.12 3.7 0.61 0 0 ...</code></pre>
+<div id="filter-subset-observations-based-on-value" class="section level2">
+<h2><code>filter()</code> – Subset observations based on value</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Pot1&lt;-<span class="kw">filter</span>(Fallo,PotNum<span class="op">==</span><span class="dv">1</span>)
+<span class="kw">head</span>(Pot1)</code></pre></div>
+<pre><code>##   PotNum Scenario Nutrients Taxon Symphytum Silene Urtica Geranium Geum
+## 1      1      low       low japon      9.81  36.36  16.08     4.68 0.12
+##   All_Natives Fallopia Total Pct_Fallopia
+## 1       67.05     0.01 67.06         0.01</code></pre>
+</div>
+</div>
 <div id="custom-functions" class="section level1">
 <h1>1. Custom functions</h1>
 <div id="general-form" class="section level2">
@@ -599,35 +656,46 @@ Part 5 – Advanced Techniques</h1>
 ##   outlist&lt;-list(input1=var1,input2=var2,addition=add,subtraction=subt,multiplication=mult,division=div)
 ## 
 ##   return(outlist)
-## }</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
-<pre><code>## Warning: package 'ggplot2' was built under R version 3.3.3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qplot</code></pre></div>
-<pre><code>## function (x, y = NULL, ..., data, facets = NULL, margins = FALSE, 
-##     geom = &quot;auto&quot;, xlim = c(NA, NA), ylim = c(NA, NA), log = &quot;&quot;, 
-##     main = NULL, xlab = deparse(substitute(x)), ylab = deparse(substitute(y)), 
-##     asp = NA, stat = NULL, position = NULL) 
+## }
+## &lt;bytecode: 0x7fc3f12c43c0&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+qplot</code></pre></div>
+<pre><code>## function (x, y, ..., data, facets = NULL, margins = FALSE, geom = &quot;auto&quot;, 
+##     xlim = c(NA, NA), ylim = c(NA, NA), log = &quot;&quot;, main = NULL, 
+##     xlab = NULL, ylab = NULL, asp = NA, stat = NULL, position = NULL) 
 ## {
+##     caller_env &lt;- parent.frame()
 ##     if (!missing(stat)) 
 ##         warning(&quot;`stat` is deprecated&quot;, call. = FALSE)
 ##     if (!missing(position)) 
 ##         warning(&quot;`position` is deprecated&quot;, call. = FALSE)
 ##     if (!is.character(geom)) 
 ##         stop(&quot;`geom` must be a character vector&quot;, call. = FALSE)
-##     argnames &lt;- names(as.list(match.call(expand.dots = FALSE)[-1]))
-##     arguments &lt;- as.list(match.call()[-1])
-##     env &lt;- parent.frame()
-##     aesthetics &lt;- compact(arguments[.all_aesthetics])
-##     aesthetics &lt;- aesthetics[!is.constant(aesthetics)]
-##     aes_names &lt;- names(aesthetics)
-##     aesthetics &lt;- rename_aes(aesthetics)
-##     class(aesthetics) &lt;- &quot;uneval&quot;
+##     exprs &lt;- rlang::enquos(x = x, y = y, ...)
+##     is_missing &lt;- vapply(exprs, rlang::quo_is_missing, logical(1))
+##     is_constant &lt;- (!names(exprs) %in% .all_aesthetics) | vapply(exprs, 
+##         rlang::quo_is_call, logical(1), name = &quot;I&quot;)
+##     mapping &lt;- new_aes(exprs[!is_missing &amp; !is_constant], env = parent.frame())
+##     consts &lt;- exprs[is_constant]
+##     aes_names &lt;- names(mapping)
+##     mapping &lt;- rename_aes(mapping)
+##     if (is.null(xlab)) {
+##         xlab &lt;- rlang::quo_name(exprs$x)
+##     }
+##     if (is.null(ylab)) {
+##         if (rlang::quo_is_null(exprs$y)) {
+##             ylab &lt;- &quot;NULL&quot;
+##         }
+##         else {
+##             ylab &lt;- rlang::quo_name(exprs$y)
+##         }
+##     }
 ##     if (missing(data)) {
 ##         data &lt;- data.frame()
 ##         facetvars &lt;- all.vars(facets)
 ##         facetvars &lt;- facetvars[facetvars != &quot;.&quot;]
 ##         names(facetvars) &lt;- facetvars
-##         facetsdf &lt;- as.data.frame(mget(facetvars, envir = env))
+##         facetsdf &lt;- as.data.frame(mget(facetvars, envir = caller_env))
 ##         if (nrow(facetsdf)) 
 ##             data &lt;- facetsdf
 ##     }
@@ -636,24 +704,24 @@ Part 5 – Advanced Techniques</h1>
 ##             geom[geom == &quot;auto&quot;] &lt;- &quot;qq&quot;
 ##         }
 ##         else if (missing(y)) {
-##             x &lt;- eval(aesthetics$x, data, env)
+##             x &lt;- rlang::eval_tidy(mapping$x, data, caller_env)
 ##             if (is.discrete(x)) {
 ##                 geom[geom == &quot;auto&quot;] &lt;- &quot;bar&quot;
 ##             }
 ##             else {
 ##                 geom[geom == &quot;auto&quot;] &lt;- &quot;histogram&quot;
 ##             }
-##             if (missing(ylab)) 
+##             if (is.null(ylab)) 
 ##                 ylab &lt;- &quot;count&quot;
 ##         }
 ##         else {
 ##             if (missing(x)) {
-##                 aesthetics$x &lt;- bquote(seq_along(.(y)), aesthetics)
+##                 mapping$x &lt;- rlang::quo(seq_along(!!mapping$y))
 ##             }
 ##             geom[geom == &quot;auto&quot;] &lt;- &quot;point&quot;
 ##         }
 ##     }
-##     p &lt;- ggplot(data, aesthetics, environment = env)
+##     p &lt;- ggplot(data, mapping, environment = caller_env)
 ##     if (is.null(facets)) {
 ##         p &lt;- p + facet_null()
 ##     }
@@ -666,9 +734,7 @@ Part 5 – Advanced Techniques</h1>
 ##     if (!is.null(main)) 
 ##         p &lt;- p + ggtitle(main)
 ##     for (g in geom) {
-##         params &lt;- arguments[setdiff(names(arguments), c(aes_names, 
-##             argnames))]
-##         params &lt;- lapply(params, eval, parent.frame())
+##         params &lt;- lapply(consts, rlang::eval_tidy)
 ##         p &lt;- p + do.call(paste0(&quot;geom_&quot;, g), params)
 ##     }
 ##     logv &lt;- function(var) var %in% strsplit(log, &quot;&quot;)[[1]]
@@ -688,6 +754,7 @@ Part 5 – Advanced Techniques</h1>
 ##         p &lt;- p + ylim(ylim)
 ##     p
 ## }
+## &lt;bytecode: 0x7fc3f08a4fc8&gt;
 ## &lt;environment: namespace:ggplot2&gt;</code></pre>
 <p><br></p>
 <hr />

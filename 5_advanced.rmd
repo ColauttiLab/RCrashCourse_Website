@@ -5,6 +5,59 @@ title: |-
 author: "Rob Colautti"
 ---
 
+# 1. Introduction to Data Science
+
+Data Science is a relativley new field of study that merges computer science and statistics with other domains of knowledge (e.g. business, biology, psychology). Data Science as a discipline has grown in popularity in response to the rapid rate of increase in data collection and publication. 
+
+In biology, it can be helpful to think of data science as a continuous life-cycle:
+
+## Data Science Life-Cycle
+
+1. **Hypothesis Generation** -- Making observations that lead to testable hypotheses
+2. **Data Collection** -- This may involve taking measurements yourself, manually entering data that is not yet in electronic format, requesting data from authors of published studies, or importing data from online sources. Collecting data is a crucial step that is often done poorly. Some tips on this are provided in a [paper by Wu et al](https://www.biorxiv.org/content/early/2018/10/30/457051)
+3. **Data Cleaning** -- Investigate the data for quality assurance, to identify and fix potential errors. Start to visualize the data to look for outliers or nonsensical relationships (or lack thereof).
+4. **Data Exploration** -- Try to understand the data, where they come from, and potential limitations on their use. Continue visualizing data; this may cause you to modify your hypotheses slightly.
+5. **Modelling** -- Now that hypotheses are clearly defined, apply statistical tests of their validity.
+6. **Report** -- Use visualizations along with the results of your statistical tests to summarize your findings.
+7. Return to step 1.
+
+In this tutorial, we focus mainly on coding in R for steps 2, 3, and 6. Step 5 requires a firm understanding of statistics. Step 4 is covered in the tutorials on [qplot](./2_qplot.html) and [ggplot](./3_ggplot.html). Step 1 is everything covered in a typical degree in the biological sciences. 
+
+Before continuing, you should read the paper by [Wu et al](https://www.biorxiv.org/content/early/2018/10/30/457051). called "baRcodeR with PyTrackDat: Open-source labelling and tracking of biological samples for repeatable science." Pay particular attention to the '*Data Standards*' section. The *baRcodeR* and *PyTrackDat* programs and their application to current projects may also be of interest.
+
+## Further Reading
+
+The book [R for Data Science](http://shop.oreilly.com/product/0636920034407.do) by Hadley Wickham & Garrett Grolemund is an excellent resource using R in Data Science projects. 
+
+In general, any book by Hadley Wickham is worth reading if you want to learn R.
+
+# 2. Data Collection & Cleaning
+
+The `dplyr` library in R has many useful features for importing and reorganizing your data for steps 2, 3 and 4 in the Data Science life-cycle outlined above. Don't forget to install the `dplyr` library and load it into memory.
+
+```{r,echo=F,message=FALSE}
+library(dplyr)
+```
+
+We'll work with our FallopiaData.csv dataset, and remind ourselves of the structure of the data
+
+```{r}
+Fallo<-read.csv("FallopiaData.csv")
+str(Fallo)
+```
+
+## `filter()` -- Subset observations based on value
+
+```{r}
+Pot1<-filter(Fallo,PotNum==1)
+head(Pot1)
+```
+
+
+
+
+
+
 # 1. Custom functions
 
 ## General form:
