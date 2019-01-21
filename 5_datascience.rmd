@@ -5,6 +5,15 @@ title: |-
 author: "Rob Colautti"
 ---
 
+# Setup
+
+Install `dplyr` package before proceeding -- it can take a while to download and install.
+
+```{r, eval=F}
+install.packages("dplyr")
+```
+
+
 # 1. Introduction to Data Science
 
 Data Science is a relativley new field of study that merges computer science and statistics with other domains of knowledge (e.g. business, biology, psychology). Data Science as a discipline has grown in popularity in response to the rapid rate of increase in data collection and publication. 
@@ -87,14 +96,14 @@ names(X)[12]<-"Total_Biomass"
 names(X)
 ```
 
-However, there is a simple function to do this:
-
-## `arrange()` 
-
 ```{r}
 X<-rename(Fallo, Total_Biomass = Total)
 names(X)
 ```
+
+There is also a simple `dplyr` function to do this:
+
+## `arrange()` 
 
 Use the `arrange()` function to sort the *rows* of your data based on the *columns* of your data. For example, let's re-arrange our FallopiaData.csv dataset based on Taxon (a string denoting the species of Fallopia used) and Total (a float denoting the total biomass in each pot).
 
@@ -199,35 +208,72 @@ TrtGrp<-group_by(Fallo,Taxon,Scenario,Nutrients)
 summarize(TrtGrp, Mean=mean(Total), SD=sd(Total))
 ```
 
+## Weighted Mean
+
+In our dataset, the **Taxon** column shows which of two species of *Fallopia* were used in the competition experiments. We might want to take the mean total biomass for each of the two *Fallopia* species:
+
+```{r}
+X<-group_by(Fallo,Taxon)
+summarize(X, Mean=mean(Total), SD=sd(Total))
+```
+
+However, there are other factors in our experiment that may affect biomass. The *Nutrients* column tells us whether pots received high or low nutrients, and this also affects biomass:
+
+```{r}
+X<-group_by(Fallo,Nutrients)
+summarize(X, Mean=mean(Total), SD=sd(Total))
+```
+
+Now imagine if our sampling design is 'unbalanced'. For example, maybe we had some plant mortality or lost some plants to a tornado. If one of the two species in the *Taxon* column had more high-nutrient pots, then it would have a higher mean. BUT, the higher mean is not an effect of the Taxon, but is simply due to the unbalanced nature of the design. To fix this problem, we may want to take a *weighted mean*:
+
+```{r}
+X<-group_by(Fallo,Taxon,Scenario,Nutrients)
+X<-group_by(X,Taxon,Scenario)
+X<-group_by(X,Taxon)
+X<-summarize(X, Mean=mean(Total), SD=sd(Total))
+arrange(X,desc(Mean))
+```
+
 ## `%>%` (pipe)
 
 The combination `%>%` is called 'pipe' for short. Be careful though -- in Unix, 'pipe' is slightly different and uses the vertical line (often shift-backslash): `|`
 
 The pipe is useful to combine operations without creating a whole bunch of new objects. This can save on memory use. 
 
-For example, instead of:
-
-```{r,eval=F}
-X<-group_by(Fallo,Taxon)
-X<-group_by(Fallo,Scenario)
-X<-group_by(X,Nutrients)
-X<-summarize(X, Mean=mean(Total), SD=sd(Total))
-arrange(X,desc(Mean))
-```
-
-We can try:
+For example, we can re-write the weighted mean example using pipes:
 
 ```{r}
 Fallo %>% 
-  group_by(Scenario) %>%
-  group_by(Nutrients) %>%
+  group_by(Taxon,Scenario,Nutrients) %>%
+  group_by(Taxon,Scenario) %>%
+  group_by(Taxon) %>%
   summarize(Mean=mean(Total), SD=sd(Total)) %>%
   arrange(desc(Mean))
 ```
 
-> Question: How are the previous 3 code chuncks similar and how are they different? 
+This also avoids potential for bugs in our program. Imagine if we mis-spelled 'Taxon' in our second line by accidentialy pressing 's' along with 'x'. Compare the output:
 
-> Hint: Look at the outputs carefully; try modifying the code and re-running until you figure it out. 
+```{r,error=T}
+X<-group_by(Fallo,Taxon,Scenario,Nutrients)
+X<-group_by(X,Tasxon,Scenario)
+X<-group_by(X,Taxon)
+X<-summarize(X, Mean=mean(Total), SD=sd(Total))
+arrange(X,desc(Mean))
+```
+
+```{r, error=T}
+Fallo %>% 
+  group_by(Taxon,Scenario,Nutrients) %>%
+  group_by(Tasxon,Scenario) %>%
+  group_by(Taxon) %>%
+  summarize(Mean=mean(Total), SD=sd(Total)) %>%
+  arrange(desc(Mean))
+```
+
+In both cases we get an error, but in one case we still calculate the means and sd of the two species. 
+
+> A bug that produces no output is much less dangerous than an error that gives an output. Why?
+
 
 # 3. Missing Data
 
