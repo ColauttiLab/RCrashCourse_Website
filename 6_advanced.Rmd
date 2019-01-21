@@ -9,57 +9,188 @@ author: Yihan Wu & Rob Colautti
 
 # 1. R Markdown
 
-In RStudio: File->New->R Markdown
-Choose html or Word (trivial to switch later)
-PDF requires LaTeX
+R Markdown is a powerful format for making high-quality reports. You can embed code and all kinds of output, including graphs. Here we'll cover just the basics, but a complete guide to R Markdown is available online from [Yihui Xie, J. J. Allaire and Garrett Grolemund](https://bookdown.org/yihui/rmarkdown/)
 
-> NOTE: If you don't see an option for R Markdown, you may need to install it:
+## Cheat Sheet
+
+There is a very [handy 2-page 'cheat sheet'](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) that you can print out to help you remember some of the main commands. I use R Markdown for all kinds of documents -- including course tutorials like this one -- so I have the 2-page cheat sheet printed out and taped to my wall next to my computer.
+
+## Create
+
+In RStudio: `File->New->R Markdown`
+
+Choose `Document` from the left-hand side menu
+
+Make sure `html` is selected
+
+Then click `OK`
+
+> NOTE: If you don't see a menu option for R Markdown, you may need to install it:
 
 ```{r,eval=FALSE}
 install.packages("rmarkdown")
 ```
 
-
-Very few elements are needed for a basic markdown file
+Very few elements are needed for a basic markdown file, and these are provided when you create a new file:
 
 ## YAML Header 
 
-This generated automatically when you make a new .Rmd file in RStudio. 
+This is generated automatically when you make a new .Rmd file in RStudio. Depending on what options you choose, it might look something like this:
+
 ```{r,eval=FALSE}
 ---
-title: R Crash Course
-author: "Rob Colautti"
-date: "Thursday, February 18, 2016"
-output: word_document
+title: "Untitled"
+author: "Robert I. Colautti"
+date: "January 20, 2019"
+output: html_document
 ---
 ```
+
+
+## Markdown
+
+R Markdown is based on the [markdown language](https://en.wikipedia.org/wiki/Markdown), which was created as a quick and easy way to encode formatted websites in a simple text document. 
+
+R Markdown has a few additions, including the ability to easily incorporate R code, graphs, and equations.
 
 ## Basic elements:
 
-embed R code inline using \` characters: \``embedded code`\`
+### Plain text
 
-Or block code using:
+Plain text is converted into paragraph format. 
+
+Add skip an extra line to start a new paragraph.
+
+### Formatted text
+
+Format text with `*` or `_`
+
+`*italics*` or `_italics_`: *italics*
+
+`**bold**` or `__bold__`: **bold**
+
+Use greater-than sign for block quotes, eg. `> TIP: quote`
+
+> TIP: quote
+
+## Headers
+
+Add headers with up to 6x `#` -- more headers = subheadings:
+
+# `# Header 1`
+
+## `## Header 2`
+
+### `### Header 3`
+
+#### `#### Header 4`
+
+## Other Elements
+
+`super^script` super^script
+
+`--` for short--dash: --
+
+`---` for long --- dash: ---
+
+## Links
+
+Links have a special format. The text you want the user to see goes in square brackets, followed by the file or html link in regular brackets, with no space in between: 
+
+`[Colautti Lab Website](https://colauttilab.github.io/)`:
+
+[Colautti Lab Website](https://colauttilab.github.io/)
+
+You can also use this to link a file in the same project folder:
+
+`[Linked jpeg file](./Rcurve.jpg)`:
+
+[Linked jpeg file](./Rcurve.jpg)
+
+## Images
+
+Or you can embed the image directly by adding an exclamation point. You can leave the linked text blank or keep it to use as a caption.
+
+`![Linked jpeg file](./Rcurve.jpg)`:
+
+![Linked jpeg file](./Rcurve.jpg)
+
+## Lists and tables
+
+Lists are easy to create, simply start a line with `*` or `+` for _unordered_ lists or a number for _ordered_ lists. Add tab characters for sub-lists:
+
+```
++ Unordered list item 1  
+* Item 2  
+    + sub item 2.1  
+    * sub item 2.2  
+* Item 3  
+```
+
++ Unordered list item 1
+* Item 2
+    * sub item 2.1
+    * sub item 2.2
+* Item 3
+
+```
+1. Ordered list item 1  
+2. Item 2  
+    + sub item 2.1  
+    * sub item 2.2  
+3. Item 3  
+```
+
+1. Ordered list item 1  
+2. Item 2  
+    + sub item 2.1  
+    * sub item 2.2  
+3. Item 3 
+
+The fun thing about ordered lists is the numbers you use don't really matter -- R Markdown will automatically start at 1 and increase for each item.
+
+```
+1. Ordered list item 1  
+1. Item 2  
+    + sub item 2.1  
+    * sub item 2.2  
+1. Item 3  
+```
+
+1. Ordered list item 1  
+1. Item 2  
+    + sub item 2.1  
+    * sub item 2.2  
+1. Item 3 
+
+## Embed R Code
+
+Embed R code inline using the back-tick \` character: \``embedded code`\`
+
+Note that the back-tick is not the single quotation mark. It's often on the same key as ~ on North American keyboards.
+
+You can add larger blocks of code (multiple lines) using three back ticks \`  and r in curly brackets. Then add three more tick marks after the code chunk:
 
 \`\`\`\{r\}
-```{r,eval=FALSE}
-block code
-```
+
+code chunk  
+
 \`\`\`
 
-For formatting text, see:
+`Ctl-Alt-i` is a nice shortcut in R Studio for adding code chunks quickly
 
-http://rmarkdown.rstudio.com/authoring_basics.html
+## Embed Graphs
 
-A quick cheat-sheet is nice to have printed out for reference:
+Use R code to embed graphs.
 
-https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
-
-## Updates:
-
-Update to latest version of rmarkdown
-```{r, eval=FALSE}
-devtools::install_github("rstudio/rmarkdown")
+```{r, echo=F}
+library(ggplot2)
 ```
+
+```{r}
+qplot(rnorm(100))
+```
+
 
 ## Options for header
 ```{r eval=FALSE}
