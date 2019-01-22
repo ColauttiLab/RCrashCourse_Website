@@ -98,13 +98,6 @@ qplot(x=Total,data=MyData,binwidth=9)
 qplot(x=Total,data=MyData,binwidth=0.5)
 ```
 
-### *posit =* 
-#### Avoid stacking histogram bars
-```{r}
-qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients)
-qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients,posit="dodge")
-```
-
 ### *size =*
 #### Controls size of points, lines, etc.
 Google "pch shapes in R"
@@ -141,6 +134,13 @@ qplot(x=Total,data=MyData,group=Nutrients,colour=Nutrients)
 #### More useful for histograms
 ```{r}
 qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients)
+```
+
+### *posit =* 
+#### Avoid stacking histogram bars
+```{r}
+qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients)
+qplot(x=Total,data=MyData,group=Nutrients,fill=Nutrients,posit="dodge")
 ```
 
 ### *alpha =*
