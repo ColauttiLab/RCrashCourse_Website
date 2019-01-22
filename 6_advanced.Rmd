@@ -199,32 +199,6 @@ Date  | Length  | Width
 10/09/09 | 15 | 29
 11/09/09 | 16 | 31
 
-### Dynamic tables
-
-Making tables from data is a bit more complicated. For example, if we wanted to summarize the `FallopiaData.csv` data, we could read in the file and then summarize with dplyr as we did in the [Data Science Tutorial](5_datascience.html):
-
-```{r, message=F}
-library(dplyr)
-
-Fallo<-read.csv("FallopiaData.csv")
-
-SumTable<-Fallo %>% 
-  group_by(Taxon,Scenario,Nutrients) %>%
-  summarize(Mean=mean(Total), SD=sd(Total)) %>%
-  arrange(desc(Mean))
-
-print(SumTable)
-```
-
-The output is legible but not very attractive for a final report. To make it look better, we can use the `kable` function from the `knitr` package:
-
-```{r}
-library(knitr)
-kable(SumTable, caption = "Summary Table")
-```
-
-
-
 ## Embed R Code
 
 Embed R code inline using the back-tick \` character: `embedded code`
@@ -249,6 +223,30 @@ You can use different options for your R code chunks, as shown on the cheatsheet
   * `eval=F` -- show the code but don't run it.
   * `include=F` -- run the code but don't show it and and don't produce any output, plots, messages or warnings.
   * `echo=F` -- don't show the code but run it and include any output, plots, messages and warnings.
+
+## Dynamic tables
+
+Making tables from data is a bit more complicated. For example, if we wanted to summarize the `FallopiaData.csv` data, we could read in the file and then summarize with dplyr as we did in the [Data Science Tutorial](5_datascience.html):
+
+```{r, message=F}
+library(dplyr)
+
+Fallo<-read.csv("FallopiaData.csv")
+
+SumTable<-Fallo %>% 
+  group_by(Taxon,Scenario,Nutrients) %>%
+  summarize(Mean=mean(Total), SD=sd(Total)) %>%
+  arrange(desc(Mean))
+
+print(SumTable)
+```
+
+The output is legible but not very attractive for a final report. To make it look better, we can use the `kable` function from the `knitr` package:
+
+```{r}
+library(knitr)
+kable(SumTable, caption = "Summary Table")
+```
 
 
 ## Embed Graphs
