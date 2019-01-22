@@ -5,45 +5,49 @@ title: |-
 author: "Rob Colautti"
 ---
 
-# 1. Overview
+# 1. Getting Started
+Install the `ggplot2` package
 
-We will explore the *ggplot2* package for graphing.
+```{r}
+library(ggplot2)
+```
 
-It was created by the same group that also made:
+The *ggplot2* package includes two main functions, quickplot `qplot()` for fast graphs and the `ggplot()` function for more detailed, customizable graphs.
+
+The package was created by the same group that also made:
 
 *RStudio*, *RMarkdown*, *Shiny*, *ggvis*
 
-and many other cool packages. 
+and many other cool packages. These are available on the RStudio website:
 
 https://www.rstudio.com/products/rpackages/
 
-### ggplot2 Documentation
+### Full ggplot2 Documentation
 
 http://docs.ggplot2.org/current/
 
-***qplot()*** is a quick and simple yet versatile plotting function.
+This tutorial focuses on ***qplot()***, a quick and simple yet versatile plotting function. It is much more intuitive than R's default graphics commands.
 
-It is much more intuitive than R's default graphics commands.
+For more advanced graphics, see the [ggplot tutorial](./3_ggplot.html)
 
 ### General format:
 `qplot(x=my.xVariable, y=my.yVariable, data=my.data.frame)`
 
-# 2. Setup
+## ppt slides
+  1. Graphical concepts
 
-## Load ggplot 2
-If you haven't already installed ggplot2, do it now:
+  2. ggplot grammar
+  
+  3. Explanation of selection meta-analysis data
 
-`install.packages("ggplot2")`
-```{r, echo=FALSE}
-library(ggplot2)
-```
+  4. anatomy of a graph
+  
+  [Slides](Graphics_small.pdf)
+  
+## Data setup
 
-<br>
+We will again be working with the FallopiaData.csv dataset, which can be [downloaded here](FallopiaData.csv), and saved to your project folder to follow along.
 
-## setwd() and import data
-For example, a software carpentry folder in the default directory in Windows 10
-'setwd("C:/Users/Colautti/Documents/SWC")'
-```
 ```{r}
 MyData<-read.csv("FallopiaData.csv",header=T)
 ```

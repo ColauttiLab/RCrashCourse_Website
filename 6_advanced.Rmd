@@ -7,29 +7,41 @@ author: Yihan Wu & Rob Colautti
 
 ***
 
+# Getting Started
+
+Before beginning this tutorial, make sure you have installed these packages:
+
+```{r, eval=F}
+install.packages('rmarkdown')
+install.packages('dplyr')
+install.packages('knitr')
+```
+
 # 1. R Markdown
 
-R Markdown is a powerful format for making high-quality reports. You can embed code and all kinds of output, including graphs. Here we'll cover just the basics, but a complete guide to R Markdown is available online from [Yihui Xie, J. J. Allaire and Garrett Grolemund](https://bookdown.org/yihui/rmarkdown/)
+R Markdown is a powerful format for quickly making high-quality reports of your analysis. You can embed code and all kinds of output, including graphs, and output them to a Word Document, PDF or website. In fact, all of our tutorial webpages are written in R Markdown, including this one!
+
+Here we'll cover just the basics, but a complete guide to R Markdown is available online from [Yihui Xie, J. J. Allaire and Garrett Grolemund](https://bookdown.org/yihui/rmarkdown/). You can also check out the R Markdown documents that we use to make our tutorial websites on our GitHub Pages (the website files have .html extension and the R Markdown files have the same name with .Rmd extensions):
+
+  * [Main Colautti Lab Resources Website](https://colauttilab.github.io/) and [GitHub Repository](https://github.com/ColauttiLab/ColauttiLab.github.io)
+  * [R Tutorials](https://colauttilab.github.io/RCrashCourse/1_fundamentals.html) and [GitHub Repository](https://github.com/ColauttiLab/RCrashCourse)
 
 ## Cheat Sheet
 
 There is a very [handy 2-page 'cheat sheet'](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) that you can print out to help you remember some of the main commands. I use R Markdown for all kinds of documents -- including course tutorials like this one -- so I have the 2-page cheat sheet printed out and taped to my wall next to my computer.
 
+You can also access cheat sheets for R Markdown and several others R Studio also includes a number of cheat sheets under the *Help* menu: `Help -> Cheatsheets`
+
+
 ## Create
 
-In RStudio: `File->New->R Markdown`
+In RStudio: `File-> New-> R Markdown`
 
 Choose `Document` from the left-hand side menu
 
 Make sure `html` is selected
 
 Then click `OK`
-
-> NOTE: If you don't see a menu option for R Markdown, you may need to install it:
-
-```{r,eval=FALSE}
-install.packages("rmarkdown")
-```
 
 Very few elements are needed for a basic markdown file, and these are provided when you create a new file:
 
@@ -87,7 +99,7 @@ Add headers with up to 6x `#` -- more headers = subheadings:
 
 ## Other Elements
 
-`super^script` super^script
+`superscript^2` superscript^2
 
 `--` for short--dash: --
 
@@ -119,7 +131,7 @@ Or you can embed the image directly by adding an exclamation point. You can leav
 
 Lists are easy to create, simply start a line with `*` or `+` for _unordered_ lists or a number for _ordered_ lists. Add tab characters for sub-lists:
 
-```
+```{r, eval=F}
 + Unordered list item 1  
 * Item 2  
     + sub item 2.1  
@@ -133,7 +145,7 @@ Lists are easy to create, simply start a line with `*` or `+` for _unordered_ li
     * sub item 2.2
 * Item 3
 
-```
+```{r, eval=F}
 1. Ordered list item 1  
 2. Item 2  
     + sub item 2.1  
@@ -149,7 +161,7 @@ Lists are easy to create, simply start a line with `*` or `+` for _unordered_ li
 
 The fun thing about ordered lists is the numbers you use don't really matter -- R Markdown will automatically start at 1 and increase for each item.
 
-```
+```{r, eval=F}
 1. Ordered list item 1  
 1. Item 2  
     + sub item 2.1  
@@ -163,21 +175,81 @@ The fun thing about ordered lists is the numbers you use don't really matter -- 
     * sub item 2.2  
 1. Item 3 
 
+Tables are added using vertical pipe `|` to denote columns, and a line of horizontal dashes to separate the title of the table, and dashes with pipes to separate the header row from the rest of the table. For example, this code:
+
+```{r, eval=F}
+Tables 
+-----------------------
+  
+Date  | Length  | Width
+------|---------|------
+09/09/09 | 14 | 27
+10/09/09 | 15 | 29
+11/09/09 | 16 | 31
+```
+
+Produces this output:
+
+Tables 
+-----------------------
+  
+Date  | Length  | Width
+------|---------|------
+09/09/09 | 14 | 27
+10/09/09 | 15 | 29
+11/09/09 | 16 | 31
+
+### Dynamic tables
+
+Making tables from data is a bit more complicated. For example, if we wanted to summarize the `FallopiaData.csv` data, we could read in the file and then summarize with dplyr as we did in the [Data Science Tutorial](5_datascience.html):
+
+```{r, message=F}
+library(dplyr)
+
+Fallo<-read.csv("FallopiaData.csv")
+
+SumTable<-Fallo %>% 
+  group_by(Taxon,Scenario,Nutrients) %>%
+  summarize(Mean=mean(Total), SD=sd(Total)) %>%
+  arrange(desc(Mean))
+
+print(SumTable)
+```
+
+The output is legible but not very attractive for a final report. To make it look better, we can use the `kable` function from the `knitr` package:
+
+```{r}
+library(knitr)
+kable(SumTable, caption = "Summary Table")
+```
+
+
+
 ## Embed R Code
 
-Embed R code inline using the back-tick \` character: \``embedded code`\`
+Embed R code inline using the back-tick \` character: `embedded code`
 
 Note that the back-tick is not the single quotation mark. It's often on the same key as ~ on North American keyboards.
 
 You can add larger blocks of code (multiple lines) using three back ticks \`  and r in curly brackets. Then add three more tick marks after the code chunk:
 
-\`\`\`\{r\}
 
-code chunk  
-
-\`\`\`
+```{r, eval=F}
+#     ```{r}
+#      <<your code goes here>>
+#     ```
+```
 
 `Ctl-Alt-i` is a nice shortcut in R Studio for adding code chunks quickly
+
+### Suppress code
+
+You can use different options for your R code chunks, as shown on the cheatsheet. Three main ones are:
+
+  * `eval=F` -- show the code but don't run it.
+  * `include=F` -- run the code but don't show it and and don't produce any output, plots, messages or warnings.
+  * `echo=F` -- don't show the code but run it and include any output, plots, messages and warnings.
+
 
 ## Embed Graphs
 
@@ -187,7 +259,7 @@ Use R code to embed graphs.
 library(ggplot2)
 ```
 
-```{r}
+```{r, message=F}
 qplot(rnorm(100))
 ```
 
@@ -208,11 +280,11 @@ output:
 
 ### By Product
 
-(tab content)
+(Product tab content)
 
 ### By Region
 
-(tab content)
+(Region tab content)
 ```
 
 Looks like this:
@@ -221,34 +293,36 @@ Looks like this:
 
 ### By Product
 
-(tab content)
+(Product tab content)
 
 ### By Region
 
-(tab content)
+(Region tab content)
 
 
 ## Equations
 
 Insert equations using LaTeX. Here is a handy [cheat sheet](./latexsheet.pdf)
 
-For example:
-```{r eval=FALSE}
-$$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k$$ 
-$$\sum_{n=1}^{\infty} 2^{-n} = 1$$ 
-```
+Use single dollar signs for in-line equations, like \$Y ~ X\$, which will print as $Y ~ X$
+
+Use double dollar signs on a new line for full-line equations, for example:
+
+\$\$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k\$\$ 
+
+will produce:
 
 $$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k$$ 
 
-$$\sum_{n=1}^{\infty} 2^{-n} = 1$$ 
+and 
 
-Or inline:
+\$\$sum_{n=1}^{\infty} 2^{-n} = 1\$\$ 
 
-```{r eval=FALSE}
-Product $\prod_{i=a}^{b} f(i)$ inside text
-```
+will produce: 
 
-Product $\prod_{i=a}^{b} f(i)$ inline with text
+$$sum_{n=1}^{\infty} 2^{-n} = 1$$
+
+Notice the use of special characters with the backslash `\` character, along with subscripts `_` and superscripts `_` with the super/subscripted text in curly brackets `{}`
 
 ***
 

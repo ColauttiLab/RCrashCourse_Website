@@ -324,35 +324,38 @@ Part 2 – <em>qplot()</em></h1>
 </div>
 
 
-<div id="overview" class="section level1">
-<h1>1. Overview</h1>
-<p>We will explore the <em>ggplot2</em> package for graphing.</p>
-<p>It was created by the same group that also made:</p>
+<div id="getting-started" class="section level1">
+<h1>1. Getting Started</h1>
+<p>Install the <code>ggplot2</code> package</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
+<p>The <em>ggplot2</em> package includes two main functions, quickplot <code>qplot()</code> for fast graphs and the <code>ggplot()</code> function for more detailed, customizable graphs.</p>
+<p>The package was created by the same group that also made:</p>
 <p><em>RStudio</em>, <em>RMarkdown</em>, <em>Shiny</em>, <em>ggvis</em></p>
-<p>and many other cool packages.</p>
+<p>and many other cool packages. These are available on the RStudio website:</p>
 <p><a href="https://www.rstudio.com/products/rpackages/" class="uri">https://www.rstudio.com/products/rpackages/</a></p>
-<div id="ggplot2-documentation" class="section level3">
-<h3>ggplot2 Documentation</h3>
+<div id="full-ggplot2-documentation" class="section level3">
+<h3>Full ggplot2 Documentation</h3>
 <p><a href="http://docs.ggplot2.org/current/" class="uri">http://docs.ggplot2.org/current/</a></p>
-<p><strong><em>qplot()</em></strong> is a quick and simple yet versatile plotting function.</p>
-<p>It is much more intuitive than R’s default graphics commands.</p>
+<p>This tutorial focuses on <strong><em>qplot()</em></strong>, a quick and simple yet versatile plotting function. It is much more intuitive than R’s default graphics commands.</p>
+<p>For more advanced graphics, see the <a href="./3_ggplot.html">ggplot tutorial</a></p>
 </div>
 <div id="general-format" class="section level3">
 <h3>General format:</h3>
 <p><code>qplot(x=my.xVariable, y=my.yVariable, data=my.data.frame)</code></p>
 </div>
+<div id="ppt-slides" class="section level2">
+<h2>ppt slides</h2>
+<ol style="list-style-type: decimal">
+<li><p>Graphical concepts</p></li>
+<li><p>ggplot grammar</p></li>
+<li><p>Explanation of selection meta-analysis data</p></li>
+<li><p>anatomy of a graph</p></li>
+</ol>
+<p><a href="Graphics_small.pdf">Slides</a></p>
 </div>
-<div id="setup" class="section level1">
-<h1>2. Setup</h1>
-<div id="load-ggplot-2" class="section level2">
-<h2>Load ggplot 2</h2>
-<p>If you haven’t already installed ggplot2, do it now:</p>
-<p><code>install.packages(&quot;ggplot2&quot;)</code></p>
-<p><br></p>
-</div>
-<div id="setwd-and-import-data" class="section level2">
-<h2>setwd() and import data</h2>
-<p>For example, a software carpentry folder in the default directory in Windows 10 ‘setwd(“C:/Users/Colautti/Documents/SWC”)’ ```</p>
+<div id="data-setup" class="section level2">
+<h2>Data setup</h2>
+<p>We will again be working with the FallopiaData.csv dataset, which can be <a href="FallopiaData.csv">downloaded here</a>, and saved to your project folder to follow along.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MyData&lt;-<span class="kw">read.csv</span>(<span class="st">&quot;FallopiaData.csv&quot;</span>,<span class="dt">header=</span>T)</code></pre></div>
 <p><br></p>
 <hr />
