@@ -306,7 +306,9 @@ Use single dollar signs for in-line equations, like \$Y ~ X\$, which will print 
 
 Use double dollar signs on a new line for full-line equations, for example:
 
-\$\$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k\$\$ 
+```{r,eval=F}
+$$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k$$ 
+```
 
 will produce:
 
@@ -314,7 +316,9 @@ $$\idotsint_V \mu(u_1,\dots,u_k) \,du_1 \dots du_k$$
 
 and 
 
-\$\$sum_{n=1}^{\infty} 2^{-n} = 1\$\$ 
+```{r, eval=F}
+$$sum_{n=1}^{\infty} 2^{-n} = 1$$
+```
 
 will produce: 
 
