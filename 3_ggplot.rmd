@@ -5,38 +5,147 @@ title: |-
 author: "Rob Colautti"
 ---
 
-# Getting Started
-Install the `ggplot2` package
-
-```{r}
+```{r,echo=F}
 library(ggplot2)
+# Clean theme for presentations & publications used in the Colautti Lab
+CLab <- function (base_size = 12, base_family = "") {
+  theme_classic(base_size = base_size, base_family = base_family) %+replace% 
+    theme(
+      axis.text = element_text(colour = "black"),
+      axis.title.x = element_text(size=18),
+      axis.text.x = element_text(size=12),
+      axis.title.y = element_text(size=18,angle=90),
+      axis.text.y = element_text(size=12),
+      axis.ticks = element_blank(), 
+      panel.background = element_rect(fill="white"),
+      panel.border = element_blank(),
+      plot.title=element_text(face="bold", size=24),
+      legend.position="none"
+    ) 
+}
 ```
 
 
-# 1. Setup
+# Getting Started
 
-## ppt slides
-  1. Graphical concepts
+Before following this tutorial, you should be familiar with the [qplot() tutorial]().
 
-  2. ggplot grammar
-  
-  3. Explanation of selection meta-analysis data
-
-  4. anatomy of a graph
-  
-  [Slides](Graphics_small.pdf)
-  
+This [ggplot cheat sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) is a downloadable pdf that provides a good summary and quick-reference guide.
 
 <br>
 
-## Import data
+# Graphical concepts
+
+Begin with [this presentation](https://colauttilab.github.io/RCrashCourse/Graphics_small.pdf) 
+
+# Rules of thumb
+
+Published graphs in professional journals can vary depending on format and discipline, but there are a number of useful 'rules of thumb' to keep in mind. These are not hard and fast rules but helpful for new researchers who aren't sure how or where to start.
+
+## 1. Minimize 'ink'
+
+In the old days, when most papers were actually printed and mailed to journal subscribers, black ink was expensive and printing in colour was very expensive. Printing is still expensive but of course most research articles are available online where there is no additional cost to colour or extra ink. However, the concept of minimizing ink (or pixels) can go a long way toward keeping a graph free from clutter and unnecessary distraction.
+
+## 2. Use space wisely
+
+Empty space is not necessarily bad, but ask yourself if it is necessary and what you want the reader to take away. Consider the next two graphs:
+
+```{r, echo=F}
+Y<-rnorm(100)+60
+X<-rbinom(100,1,0.5)
+Y<-Y+(10*X)
+X<-as.factor(X)
+qplot(X,Y) + CLab()
+```
+> Above: Y-axis scaled to the data
+
+```{r, echo=F}
+qplot(X,Y) + scale_y_continuous(limits=c(0,max(100))) + CLab()
+```
+> Above: Y-axis scaled between 0 and 100
+
+
+What are the benefits/drawbacks of scaling the axes? When might you choose to use one over ther other?
+
+
+## 3. Choose a colour palette
+
+Colour has three basic components
+
+  a. Hue -- the amount of red vs green vs blue light
+  b. Saturation -- how vivid the colour is 
+  c. Brightness -- the amount of white (vs black) in the colour
+  
+In R these can be easily defined with the `rgb()` function. For example:
+
+`rgb(1,0,0)` -- a saturated red
+`rgb(0.1,0,0)` -- a dark red (low brightness, low saturation)
+`rgb(1,0.9,0.9)` -- a light red (high brightness, low saturation)
+
+Don't underestimate the impact of choosing a good colour palette, especially for presentations. Colour theory can get a bit overwhelming but here are a few good websites to help:
+
+  * Quickly generate your own palette using [coolors](https://coolors.co)
+  * Use a colour wheel to find complementary colours using [Adobe](https://color.adobe.com/create)
+  * Browse some pre-made palettes or create one from a picture [colorfavs](http://www.colorfavs.com)
+
+## 4. Colours have meaning
+
+What's wrong with this graph? 
+
+```{r, echo=F}
+X<-rnorm(100)
+Y<-X+seq_along(X)
+D<-data.frame(Lat=X,Long=Y,Temp=Y/3)
+qplot(Lat,Long,colour=Temp, data=D) + scale_color_gradient(high="blue", low="red") + CLab()
+```
+
+Humans naturally associate colours with particular feelings. Be mindful of these associations when choosing a colour palette
+
+Another important consideration is that not everyone sees colour the same way. About 5% to 10% of the population has colour blindness. In order to make colour graphs readable to everyone, you can use different 
+
+## 5. Use high contrast
+
+Colours that are too similar will be hard to distinguish
+
+```{r, echo=F}
+X<-rnorm(100)
+Y<-X+seq_along(X)
+D<-data.frame(Lat=X,Long=Y,Precip=rnorm(100))
+qplot(Lat,Long,colour=Precip, data=D) + scale_color_gradient(high="#56B4E9", low="#56B499") + CLab()
+```
+
+## 6. Keep ielevant information
+
+Make sure to include proper axis **labels** (i.e. names) and **tick marks** (i.e. numbers or categories showing the different values). These labels, along with the figure caption, should act as a stand-alone unit. The reader should be able to understand the figure without having to read through the rest of the paper.
+
+## 7. Choose the right graph
+
+Often the same data can be presented in different ways but some are easier to interpret than others. Think carefully about the story you want to present and the main ideas you want your reader to get from your figures. Look at these two graphs that show the same data and see which one is more intuitive
+
+```{r}
+X<-rnorm(100)
+Y<-X+rnorm(100)
+qplot(c(X,Y),fill=c(rep("X",100),rep("Y",100)),posit="dodge") + CLab()
+qplot(X,Y) + CLab()
+```
+
+
+# Example
+
+To get to know ggplot better, let's do a step-by-step example of a figure built for a [paper by Colautti & Lau](https://doi.org/10.1111/mec.13162) in the journal Molecular Ecology (2015)
+
+## 1. Setup
+
+### Import data
 
 Download selection dataset from Colautti & Lau (2015) -- this data is archived on Dryad:
 
-http://datadryad.org/
+https://datadryad.org/stash/dataset/doi:10.5061/dryad.gt678
+
+Extract the file called `Selection_Data.csv` and save it to your working directory. Then use `read.csv` to import the dataset:
 
 ```{r}
-SelData<-read.csv("http://datadryad.org/bitstream/handle/10255/dryad.82839/Selection_Data.csv?sequence=1",header=T)
+SelData<-read.csv("Selection_Data.csv",header=T)
 ```
 
 #### Change column names 
@@ -80,9 +189,11 @@ SelData<-SelData[!is.na(SelData$s),]
 
 <br>
 
-# 2. *ggplot()*  vs  *qplot()*
+## 2. *ggplot()*  vs  *qplot()*
 
-## Histogram
+We can create the same graph using qplot and ggplot, just the syntax changes:
+
+### Histogram
 #### qplot
 ```{r, error=TRUE}
 BarPlot<-qplot(s, data=SelData, fill=Native, geom="bar")
@@ -134,7 +245,7 @@ BivPlot + geom_smooth(method="lm",size=2,aes(group=Native,colour=Native))
 
 <br>
 
-# 3. Full ggplot
+## 3. Full ggplot
 Recreate the selection histograms from Colautti & Lau:
 
   1. Create separate data for native vs. introduced species
@@ -143,21 +254,21 @@ Recreate the selection histograms from Colautti & Lau:
   
   3. Plot all of the components on a single graph
 
-## 1. Separate data
+### 3.1. Separate data
 ```{r}
 NatSVals<-SelData$s[SelData$Native=="yes"] # s values for Native species
 IntSVals<-SelData$s[SelData$Native=="no"] # s values for Introduced species
 ```
 
-## 2. Bootstrap
-### 2a. Setup
+### 3.2. Bootstrap
+#### 3.2a. Setup
 ```{r}
 IterN<-100 # Number of iterations
 NatSims<-{} # Dummy objects to hold output
 IntSims<-{}
 ```
 
-### 2b. For loop
+#### 3.2b. For loop
   * Sample, with replacement and calculate average
   
   * Store average in NatSims or IntSims
@@ -169,7 +280,7 @@ for (i in 1:IterN){
 }
 ```
 
-### 2c. Calculate 95% confidence intervals
+#### 3.2c. Calculate 95% confidence intervals
 
 Sort from low to high
 ```{r}
@@ -185,7 +296,7 @@ CIs<-c(sort(NatSims)[round(IterN*0.025,0)], # Native, lower 2.5%
        sort(IntSims)[round(IterN*0.975,0)]) # Intro, upper 97.5%
 ```
 
-### 3. Plot components
+### 3.3. Plot components
 
 #### Combine output for plotting
 ```{r}
@@ -217,7 +328,7 @@ print(p) # labels added, truncated x-axis
 
 <br>
 
-# 4. Custom theme
+## 4. Custom theme
 Customize various aspects such as font size, line widths, colours, etc.
 ```{r}
 theme_custom<-function(base_size = 24, base_family = ""){
@@ -240,16 +351,16 @@ p + theme_custom()
 
 <br>
 
-# 5. Multi-graph
+## 5. Multi-graph
 
-## Setup
+### Setup
 Install 'gridExtra' if you haven't already
 `install.packages("gridExtra")`
 ```{r}
 library(gridExtra)
 ```
 
-## grid.arrange()
+### grid.arrange()
 #### Combine multiple plots
 Prints graphs in rows, then columns, from top left to bottom right
 
@@ -267,7 +378,7 @@ BivPlot<-BivPlot + theme_custom()
 grid.arrange(HistPlot,BivPlot,BarPlot,HistPlot,nrow=2)
 ```
 
-## viewport & newpage
+### viewport & newpage
 
 Install 'gridExtra' if you haven't already
 `install.packages("grid")`
@@ -297,7 +408,7 @@ print(BivPlot, vp = viewport(layout.pos.row = 1:2, layout.pos.col = 3:4))
 
 <br>
 
-# 6. Reference
+## 6. Reference
 The comprehensive source for ggplot by Hadley Wickham:
 
 http://link.springer.com/book/10.1007%2F978-0-387-98141-3
