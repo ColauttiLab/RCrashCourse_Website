@@ -91,11 +91,13 @@ Add headers with up to 6x `#` -- more headers = subheadings:
 
 # `# Header 1`
 
-## `## Header 2`
+## `## Sub-Header = Header 2`
 
-### `### Header 3`
+### `### Sub-Sub Header = Header 3`
 
-#### `#### Header 4`
+#### `#### Sub-Sub-Sub Header = Header 4`
+
+# 1. Markdown (cont'd)
 
 ## Other Elements
 
@@ -322,9 +324,9 @@ $$sum_{n=1}^{\infty} 2^{-n} = 1$$
 
 will produce: 
 
-$$sum_{n=1}^{\infty} 2^{-n} = 1$$
+$$\sum_{n=1}^{\infty} 2^{-n} = 1$$
 
-Notice the use of special characters with the backslash `\` character, along with subscripts `_` and superscripts `_` with the super/subscripted text in curly brackets `{}`
+Notice the use of special characters with the backslash `\`, along with subscripts `_` and superscripts `_` with the super/subscripted text in curly brackets `{}`
 
 ***
 
