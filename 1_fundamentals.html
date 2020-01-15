@@ -27,7 +27,7 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -58,7 +58,29 @@ code > span.an { color: #008000; } /* Annotation */
 code > span.cv { color: #008000; } /* CommentVar */
 code > span.at { } /* Attribute */
 code > span.in { color: #008000; } /* Information */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -116,8 +138,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -133,7 +161,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -153,6 +180,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -174,18 +238,77 @@ $(document).ready(function () {
 });
 </script>
 
-
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -328,7 +451,7 @@ Part 1 – Fundamentals</h1>
 <div id="reference" class="section level1">
 <h1>Reference</h1>
 <p>Webpages (from R markdown) available at:</p>
-<p><a href="http://post.queensu.ca/~rc91/R/" class="uri">http://post.queensu.ca/~rc91/R/</a></p>
+<p><a href="https://colauttilab.github.io/RCrashCourse/1_fundamentals.html" class="uri">https://colauttilab.github.io/RCrashCourse/1_fundamentals.html</a></p>
 <p>All source code and linked files available on GitHub:</p>
 <p><a href="https://github.com/ColauttiLab/RCrashCourse" class="uri">https://github.com/ColauttiLab/RCrashCourse</a></p>
 </div>
@@ -462,24 +585,24 @@ Try something new, fail, error correct, repeat</code></pre>
 <h2>Random Numbers</h2>
 <p>Generate some random numbers. Useful for modelling, testing scripts, etc.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">runif</span>(<span class="dv">10</span>,<span class="dt">min=</span><span class="dv">0</span>,<span class="dt">max=</span><span class="dv">1</span>) <span class="co"># random numbers from a uniform distribution (each number equally likely to be chosen)</span></code></pre></div>
-<pre><code>##  [1] 0.66612988 0.61197766 0.66304608 0.31039463 0.07785004 0.72552633
-##  [7] 0.89368873 0.95349289 0.26976681 0.89160122</code></pre>
+<pre><code>##  [1] 0.64485887 0.96596115 0.01690112 0.58730249 0.22571198 0.48638574
+##  [7] 0.56123968 0.37328006 0.40228622 0.55881389</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rnorm</span>(<span class="dv">10</span>,<span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span><span class="dv">1</span>) <span class="co"># random numbers from a normal distribution</span></code></pre></div>
-<pre><code>##  [1]  1.18823221  0.06574333 -1.32420439 -0.11869445  0.06342343
-##  [6] -1.10449912  0.78991346 -0.76708627 -1.13600047 -0.78134683</code></pre>
+<pre><code>##  [1] -1.11279493  0.13504442  0.46589287  1.25704595  0.07757187
+##  [6] -0.46932245  1.27726400  0.74774768 -0.55602319  1.18731750</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rpois</span>(<span class="dv">10</span>,<span class="dt">lambda=</span><span class="dv">10</span>) <span class="co"># poisson distribution</span></code></pre></div>
-<pre><code>##  [1] 12  8 16  6  9  9 10 14  9  8</code></pre>
+<pre><code>##  [1]  8 12 13 11 12  9 12  9 11 13</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rbinom</span>(<span class="dv">10</span>,<span class="dt">size=</span><span class="dv">1</span>,<span class="dt">prob=</span><span class="fl">0.5</span>) <span class="co"># binomial sampling (e.g. 10 coin tosses where heads=1 tails=0)</span></code></pre></div>
-<pre><code>##  [1] 1 1 0 1 1 1 1 1 0 0</code></pre>
+<pre><code>##  [1] 1 1 0 0 1 1 0 0 1 1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rbinom</span>(<span class="dv">10</span>,<span class="dt">size=</span><span class="dv">10</span>,<span class="dt">prob=</span><span class="fl">0.5</span>) <span class="co"># binomial repeated sampling  (e.g. number of heads in 10 coin tosses, repeated 10 times)</span></code></pre></div>
-<pre><code>##  [1] 6 5 5 2 4 3 6 5 4 4</code></pre>
+<pre><code>##  [1] 7 4 6 2 7 4 8 2 5 6</code></pre>
 <p>Fun fact, random numbers generated by a computer are generated by a calculation from a ‘seed’ number, so they are never truly random. They act random because the seed number is typically something like the millionth of a second of the time on your computer’s internal clock.</p>
 <p>It’s not just philosophical, it is also useful for testing and debugging since you can set the seed to generate the same ‘random’ numbers.</p>
 <p>Compare these outputs:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">runif</span>(<span class="dv">5</span>)</code></pre></div>
-<pre><code>## [1] 0.9579668 0.7454049 0.7599380 0.7676680 0.1833533</code></pre>
+<pre><code>## [1] 0.5456981 0.1527453 0.8188918 0.5981055 0.8333076</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">runif</span>(<span class="dv">5</span>)</code></pre></div>
-<pre><code>## [1] 0.4146498 0.6181659 0.9351435 0.1778573 0.3902816</code></pre>
+<pre><code>## [1] 0.28594618 0.08723220 0.04681984 0.32935639 0.88275623</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">3</span>)
 <span class="kw">runif</span>(<span class="dv">5</span>)</code></pre></div>
 <pre><code>## [1] 0.1680415 0.8075164 0.3849424 0.3277343 0.6021007</code></pre>

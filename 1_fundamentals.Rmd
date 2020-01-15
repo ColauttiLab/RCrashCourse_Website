@@ -11,7 +11,7 @@ author: "Rob Colautti"
 
 Webpages (from R markdown) available at:
 
-http://post.queensu.ca/~rc91/R/
+https://colauttilab.github.io/RCrashCourse/1_fundamentals.html
 
 All source code and linked files available on GitHub:
 
