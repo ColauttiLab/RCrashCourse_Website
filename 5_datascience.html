@@ -27,7 +27,7 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -58,7 +58,29 @@ code > span.an { color: #008000; } /* Annotation */
 code > span.cv { color: #008000; } /* CommentVar */
 code > span.at { } /* Attribute */
 code > span.in { color: #008000; } /* Information */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -116,8 +138,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -133,7 +161,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -153,6 +180,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -174,18 +238,77 @@ $(document).ready(function () {
 });
 </script>
 
-
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -326,12 +449,11 @@ Part 5 – Data Science</h1>
 
 <div id="setup" class="section level1">
 <h1>Setup</h1>
-<p>Install <code>dplyr</code> package before proceeding – it can take a while to download and install.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</code></pre></div>
+<p>If you don’t have it installed, then run <code>install.packages(&quot;dplyr&quot;)</code> – it can take a while to download and install.</p>
 </div>
 <div id="introduction-to-data-science" class="section level1">
 <h1>1. Introduction to Data Science</h1>
-<p>Data Science is a relativley new field of study that merges computer science and statistics with other domains of knowledge (e.g. business, biology, psychology). Data Science as a discipline has grown in popularity in response to the rapid rate of increase in data collection and publication.</p>
+<p>Data Science is a relatively new field of study that merges <strong>computer science</strong> and <strong>statistics</strong> to answer questions in other domains (e.g. business, medicine, biology, psychology). Data Science as a discipline has grown in popularity in response to the rapid rate of increase in data collection and publication.</p>
 <p>Data Science often involves ‘Big Data’, which doesn’t have a strict quantitative definition but will usually have one or more of the following characteristics:</p>
 <ol style="list-style-type: decimal">
 <li>High <strong>Volume</strong> – large file sizes with lots of observations.</li>
@@ -370,6 +492,19 @@ Part 5 – Data Science</h1>
 <div id="d-data-wrangling" class="section level1">
 <h1>2. 2D Data Wrangling</h1>
 <p>The <code>dplyr</code> library in R has many useful features for importing and reorganizing your data for steps 2, 3 and 4 in the Data Science Life-Cycle outlined above. Don’t forget to install the <code>dplyr</code> library and load it into memory.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)</code></pre></div>
+<pre><code>## Warning: package 'dplyr' was built under R version 3.5.3</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<blockquote>
+<p>Note: This error message just informs you that <code>dplyr</code> uses function or parameter names that are the same as other base or stats packages in R. These base/stats functions are ‘masked’ meaning that when you run one (e.g. <code>filter</code>) then R will run the <code>dplyr</code> version rather than the stats version.</p>
+</blockquote>
 <p>We’ll work with our FallopiaData.csv dataset, and remind ourselves of the structure of the data</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Fallo&lt;-<span class="kw">read.csv</span>(<span class="st">&quot;FallopiaData.csv&quot;</span>)
 <span class="kw">str</span>(Fallo)</code></pre></div>
@@ -552,9 +687,9 @@ Part 5 – Data Science</h1>
 <h2><code>mutate()</code></h2>
 <p>Suppose we want to make a new column (variable) to our data.frame object (dataset) that is the sum of biomass of Urtica and Geranium only. In base R you would use <code>$</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-Fallo
-X<span class="op">$</span>UrtSil&lt;-X<span class="op">$</span>Urtica<span class="op">+</span>X<span class="op">$</span>Geranium</code></pre></div>
+X<span class="op">$</span>UrtSil&lt;-X<span class="op">$</span>Urtica<span class="op">+</span>X<span class="op">$</span>Silene</code></pre></div>
 <p>In the dplyr package you can use mutate</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">mutate</span>(Fallo, <span class="dt">UrtSil =</span> Urtica <span class="op">+</span><span class="st"> </span>Geranium)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">mutate</span>(Fallo, <span class="dt">UrtSil =</span> Urtica <span class="op">+</span><span class="st"> </span>Silene)
 <span class="kw">head</span>(X)</code></pre></div>
 <pre><code>##   PotNum Scenario Nutrients Taxon Symphytum Silene Urtica Geranium Geum
 ## 1      1      low       low japon      9.81  36.36  16.08     4.68 0.12
@@ -564,12 +699,12 @@ X<span class="op">$</span>UrtSil&lt;-X<span class="op">$</span>Urtica<span class
 ## 5      6      low       low japon      9.15  23.90   5.19     0.00 0.17
 ## 6      7      low       low japon      6.31  24.40   7.00     9.05 0.97
 ##   All_Natives Fallopia Total Pct_Fallopia UrtSil
-## 1       67.05     0.01 67.06         0.01  20.76
-## 2       50.18     0.04 50.22         0.08  11.34
-## 3       60.99     0.09 61.08         0.15  22.22
-## 4       40.94     0.77 41.71         1.85  17.76
-## 5       38.41     3.40 41.81         8.13   5.19
-## 6       47.73     0.54 48.27         1.12  16.05</code></pre>
+## 1       67.05     0.01 67.06         0.01  52.44
+## 2       50.18     0.04 50.22         0.08  35.24
+## 3       60.99     0.09 61.08         0.15  53.12
+## 4       40.94     0.77 41.71         1.85  33.82
+## 5       38.41     3.40 41.81         8.13  29.09
+## 6       47.73     0.54 48.27         1.12  31.40</code></pre>
 <p>This is a lot more readable, especially when you have complicated equations or you want to add lots of new columns.</p>
 <blockquote>
 <p>What if you only wanted to retain the new columns and delete everything else? Try it.</p>
@@ -579,15 +714,15 @@ X<span class="op">$</span>UrtSil&lt;-X<span class="op">$</span>Urtica<span class
 <div id="transmute" class="section level2">
 <h2><code>transmute()</code></h2>
 <p>You can also use <code>transmute()</code> instead of <code>mutate()</code> + <code>select()</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">transmute</span>(Fallo, <span class="dt">UrtSil =</span> Urtica <span class="op">+</span><span class="st"> </span>Geranium)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">transmute</span>(Fallo, <span class="dt">UrtSil =</span> Urtica <span class="op">+</span><span class="st"> </span>Silene)
 <span class="kw">head</span>(X)</code></pre></div>
 <pre><code>##   UrtSil
-## 1  20.76
-## 2  11.34
-## 3  22.22
-## 4  17.76
-## 5   5.19
-## 6  16.05</code></pre>
+## 1  52.44
+## 2  35.24
+## 3  53.12
+## 4  33.82
+## 5  29.09
+## 6  31.40</code></pre>
 </div>
 <div id="summarize-group_by" class="section level2">
 <h2><code>summarize()</code> + <code>group_by()</code></h2>
@@ -595,7 +730,7 @@ X<span class="op">$</span>UrtSil&lt;-X<span class="op">$</span>Urtica<span class
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">TrtGrp&lt;-<span class="kw">group_by</span>(Fallo,Taxon,Scenario,Nutrients)
 <span class="kw">summarize</span>(TrtGrp, <span class="dt">Mean=</span><span class="kw">mean</span>(Total), <span class="dt">SD=</span><span class="kw">sd</span>(Total))</code></pre></div>
 <pre><code>## # A tibble: 10 x 5
-## # Groups:   Taxon, Scenario [?]
+## # Groups:   Taxon, Scenario [10]
 ##    Taxon Scenario     Nutrients  Mean    SD
 ##    &lt;fct&gt; &lt;fct&gt;        &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt;
 ##  1 bohem extreme      high       58.3  7.34
@@ -627,38 +762,54 @@ X<span class="op">$</span>UrtSil&lt;-X<span class="op">$</span>Urtica<span class
 ##   &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt;
 ## 1 high       58.0  9.61
 ## 2 low        49.9  8.66</code></pre>
-<p>Now imagine if our sampling design is ‘unbalanced’. For example, maybe we had some plant mortality or lost some plants to a tornado. If one of the two species in the <em>Taxon</em> column had more high-nutrient pots, then it would have a higher mean. BUT, the higher mean is not an effect of the Taxon, but is simply due to the unbalanced nature of the design. To fix this problem, we may want to take a <em>weighted mean</em>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">group_by</span>(Fallo,Taxon,Scenario,Nutrients)
-X&lt;-<span class="kw">group_by</span>(X,Taxon,Scenario)
-X&lt;-<span class="kw">group_by</span>(X,Taxon)
-X&lt;-<span class="kw">summarize</span>(X, <span class="dt">Mean=</span><span class="kw">mean</span>(Total), <span class="dt">SD=</span><span class="kw">sd</span>(Total))
-<span class="kw">arrange</span>(X,<span class="kw">desc</span>(Mean))</code></pre></div>
-<pre><code>## # A tibble: 2 x 3
-##   Taxon  Mean    SD
-##   &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 japon  56.4 10.4 
-## 2 bohem  56.3  9.54</code></pre>
+<p>Now imagine if our sampling design is ‘unbalanced’. For example, maybe we had some plant mortality or lost some plants to a tornado. If one of the two species in the <em>Taxon</em> column had more high-nutrient pots, then it would have a higher mean. BUT, the higher mean is not an effect of the Taxon, but is simply due to the unbalanced nature of the design. We can simulate this effect by re-shuffling the species names:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RFallo&lt;-Fallo
+<span class="kw">set.seed</span>(<span class="dv">256</span>)
+RFallo<span class="op">$</span>Taxon&lt;-<span class="kw">rbinom</span>(<span class="kw">nrow</span>(RFallo),<span class="dt">size=</span><span class="dv">1</span>,<span class="dt">prob=</span><span class="fl">0.7</span>)
+
+X&lt;-<span class="kw">group_by</span>(RFallo,Taxon)
+<span class="kw">summarize</span>(X, <span class="dt">Mean=</span><span class="kw">mean</span>(Total))</code></pre></div>
+<pre><code>## # A tibble: 2 x 2
+##   Taxon  Mean
+##   &lt;int&gt; &lt;dbl&gt;
+## 1     0  56.1
+## 2     1  56.5</code></pre>
+<p>To fix this problem, we may want to take a <em>weighted mean</em>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X1&lt;-<span class="kw">group_by</span>(RFallo,Taxon,Scenario,Nutrients)
+Y1&lt;-<span class="kw">summarize</span>(X1,<span class="dt">Mean=</span><span class="kw">mean</span>(Total))
+X2&lt;-<span class="kw">group_by</span>(Y1,Taxon,Scenario)
+Y2&lt;-<span class="kw">summarize</span>(X2,<span class="dt">Mean=</span><span class="kw">mean</span>(Mean))
+X3&lt;-<span class="kw">group_by</span>(Y2,Taxon)
+Y3&lt;-<span class="kw">summarize</span>(X3, <span class="dt">Mean=</span><span class="kw">mean</span>(Mean))
+<span class="kw">arrange</span>(Y3,<span class="kw">desc</span>(Mean))</code></pre></div>
+<pre><code>## # A tibble: 2 x 2
+##   Taxon  Mean
+##   &lt;int&gt; &lt;dbl&gt;
+## 1     1  56.6
+## 2     0  55.8</code></pre>
 </div>
 <div id="pipe" class="section level2">
 <h2><code>%&gt;%</code> (pipe)</h2>
 <p>The combination <code>%&gt;%</code> is called ‘pipe’ for short. Be careful though – in Unix, ‘pipe’ is slightly different and uses the vertical line (often shift-backslash): <code>|</code></p>
 <p>The pipe is useful to combine operations without creating a whole bunch of new objects. This can save on memory use.</p>
 <p>For example, we can re-write the weighted mean example using pipes:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Fallo <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(Taxon,Scenario,Nutrients) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(Taxon,Scenario) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(Taxon) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">Mean=</span><span class="kw">mean</span>(Total), <span class="dt">SD=</span><span class="kw">sd</span>(Total)) <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RFallo <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Taxon,Scenario,Nutrients) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">Mean=</span><span class="kw">mean</span>(Total)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Taxon,Scenario) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">Mean=</span><span class="kw">mean</span>(Mean)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Taxon) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">Mean=</span><span class="kw">mean</span>(Mean)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Mean))</code></pre></div>
-<pre><code>## # A tibble: 2 x 3
-##   Taxon  Mean    SD
-##   &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 japon  56.4 10.4 
-## 2 bohem  56.3  9.54</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   Taxon  Mean
+##   &lt;int&gt; &lt;dbl&gt;
+## 1     1  56.6
+## 2     0  55.8</code></pre>
 <p>This also avoids potential for bugs in our program. Imagine if we mis-spelled ‘Taxon’ in our second line by accidentialy pressing ‘s’ along with ‘x’. Compare the output:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">group_by</span>(Fallo,Taxon,Scenario,Nutrients)
 X&lt;-<span class="kw">group_by</span>(X,Tasxon,Scenario)</code></pre></div>
-<pre><code>## Error in grouped_df_impl(data, unname(vars), drop): Column `Tasxon` is unknown</code></pre>
+<pre><code>## Error: Column `Tasxon` is unknown</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">group_by</span>(X,Taxon)
 X&lt;-<span class="kw">summarize</span>(X, <span class="dt">Mean=</span><span class="kw">mean</span>(Total), <span class="dt">SD=</span><span class="kw">sd</span>(Total))
 <span class="kw">arrange</span>(X,<span class="kw">desc</span>(Mean))</code></pre></div>
@@ -673,7 +824,7 @@ X&lt;-<span class="kw">summarize</span>(X, <span class="dt">Mean=</span><span cl
 <span class="st">  </span><span class="kw">group_by</span>(Taxon) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">Mean=</span><span class="kw">mean</span>(Total), <span class="dt">SD=</span><span class="kw">sd</span>(Total)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Mean))</code></pre></div>
-<pre><code>## Error in grouped_df_impl(data, unname(vars), drop): Column `Tasxon` is unknown</code></pre>
+<pre><code>## Error: Column `Tasxon` is unknown</code></pre>
 <p>In both cases we get an error, but in one case we still calculate the means and sd of the two species.</p>
 <blockquote>
 <p>A bug that produces no output is much less dangerous than an error that gives an output. Why?</p>
@@ -713,40 +864,40 @@ Vec</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X&lt;-<span class="kw">round</span>(<span class="kw">runif</span>(<span class="dv">10</span>,<span class="dt">min=</span><span class="dv">1</span>,<span class="dt">max=</span><span class="kw">nrow</span>(Fallo)),<span class="dv">0</span>)
 Fallo<span class="op">$</span>Total[X]&lt;-<span class="ot">NA</span>
 Fallo<span class="op">$</span>Total</code></pre></div>
-<pre><code>##   [1] 67.06 50.22 61.08 41.71 41.81 48.27 55.42 42.68 53.53 45.89 59.02
+<pre><code>##   [1] 67.06 50.22 61.08 41.71 41.81 48.27 55.42 42.68    NA 45.89 59.02
 ##  [12] 57.66 48.98 35.97 43.28 52.27 45.92 44.61 59.13 58.97 55.36 31.46
-##  [23] 43.46 44.65 59.69 60.82 57.21 34.09 58.57 66.74 63.18 59.88 54.09
-##  [34] 55.27 61.31 53.56 52.66 64.71 61.06 45.34 64.20    NA 68.55 49.55
-##  [45] 56.70 54.06 66.60 74.82 53.71 49.75 58.45 66.06 67.01 70.41 46.63
-##  [56] 63.43 77.05    NA 61.79 54.96 48.99 52.01 55.78 57.18    NA 46.18
-##  [67] 62.56 54.36 69.54 75.91 56.34    NA    NA 57.80 41.72 67.44 58.78
-##  [78]    NA 65.68    NA 55.35 50.28    NA 39.56 71.07 45.23 57.20 67.70
-##  [89] 52.46 60.86 62.19 65.53    NA 60.89 48.13 60.37 67.86 56.40 49.13
-## [100] 56.11 49.78 69.00 65.40 50.73 63.08 60.93 29.54 49.12 68.73 31.90
-## [111] 69.88 69.48 47.88 51.42 58.13 50.51 54.83 66.80    NA 56.12 62.96
+##  [23] 43.46 44.65 59.69 60.82 57.21 34.09 58.57 66.74 63.18    NA 54.09
+##  [34] 55.27 61.31 53.56 52.66 64.71 61.06 45.34 64.20 57.50 68.55 49.55
+##  [45] 56.70 54.06 66.60 74.82 53.71 49.75 58.45 66.06 67.01 70.41    NA
+##  [56] 63.43 77.05 47.50 61.79 54.96 48.99 52.01    NA 57.18 42.47 46.18
+##  [67] 62.56 54.36 69.54 75.91 56.34 64.97 60.71 57.80 41.72 67.44 58.78
+##  [78]    NA    NA 58.42 55.35    NA 55.04 39.56 71.07 45.23 57.20 67.70
+##  [89] 52.46 60.86    NA 65.53 48.19 60.89 48.13 60.37 67.86 56.40 49.13
+## [100] 56.11 49.78 69.00 65.40 50.73 63.08 60.93    NA 49.12 68.73 31.90
+## [111] 69.88 69.48 47.88 51.42 58.13 50.51 54.83 66.80 50.31 56.12 62.96
 ## [122] 78.80 64.25</code></pre>
 <p>Use <code>is.na()</code> to check for missing values:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.na</span>(Fallo<span class="op">$</span>Total)</code></pre></div>
-<pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+<pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
 ##  [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
-##  [45] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-##  [56] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
-##  [67] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
-##  [78]  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
-##  [89] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-## [100] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [111] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+##  [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+##  [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [45] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [56] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+##  [67] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [78]  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [89] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [100] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [111] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ## [122] FALSE FALSE</code></pre>
 <p>Note that the output is a vector of True/False. Each cell corresponds to a value of ‘Total’ with TRUE indicating missing values. This is an example of a boolean variable, which has some handy properties in R.</p>
 <p>First, we can use it as an index. For example, let’s see which pots have missing ‘Total’ values:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Missing&lt;-<span class="kw">is.na</span>(Fallo<span class="op">$</span>Total)
 Fallo<span class="op">$</span>PotNum[Missing]</code></pre></div>
-<pre><code>##  [1]  52  72  80  88  90  95  97 101 113 144</code></pre>
+<pre><code>## [1]  10  39  68  78  95  96 100 111 129</code></pre>
 <p>Another handy trick to count missing values is:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">is.na</span>(Fallo<span class="op">$</span>Total))</code></pre></div>
-<pre><code>## [1] 10</code></pre>
+<pre><code>## [1] 9</code></pre>
 <p>This takes advantage of the fact that the boolean TRUE/FALSE variable is equivalent to the binary 1/0 values.</p>
 </div>
 </div>

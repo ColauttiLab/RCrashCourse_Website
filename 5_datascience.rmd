@@ -7,16 +7,11 @@ author: "Rob Colautti"
 
 # Setup
 
-Install `dplyr` package before proceeding -- it can take a while to download and install.
-
-```{r, eval=F}
-install.packages("dplyr")
-```
-
+If you don't have it installed, then run `install.packages("dplyr")` -- it can take a while to download and install.
 
 # 1. Introduction to Data Science
 
-Data Science is a relativley new field of study that merges computer science and statistics with other domains of knowledge (e.g. business, biology, psychology). Data Science as a discipline has grown in popularity in response to the rapid rate of increase in data collection and publication. 
+Data Science is a relatively new field of study that merges **computer science** and **statistics** to answer questions in other domains  (e.g. business, medicine, biology, psychology). Data Science as a discipline has grown in popularity in response to the rapid rate of increase in data collection and publication. 
 
 Data Science often involves 'Big Data', which doesn't have a strict quantitative definition but will usually have one or more of the following characteristics:
 
@@ -57,9 +52,11 @@ Here we'll be focusing on the `dplyr` packages from Wickham et al.
 
 The `dplyr` library in R has many useful features for importing and reorganizing your data for steps 2, 3 and 4 in the Data Science Life-Cycle outlined above. Don't forget to install the `dplyr` library and load it into memory.
 
-```{r,echo=F,message=FALSE}
+```{r}
 library(dplyr)
 ```
+
+> Note: This error message just informs you that `dplyr` uses function or parameter names that are the same as other base or stats packages in R. These base/stats functions are 'masked' meaning that when you run one (e.g. `filter`) then R will run the `dplyr` version rather than the stats version.
 
 We'll work with our FallopiaData.csv dataset, and remind ourselves of the structure of the data
 
@@ -174,13 +171,13 @@ Suppose we want to make a new column (variable) to our data.frame object (datase
 
 ```{r}
 X<-Fallo
-X$UrtSil<-X$Urtica+X$Geranium
+X$UrtSil<-X$Urtica+X$Silene
 ```
 
 In the dplyr package you can use mutate
 
 ```{r}
-X<-mutate(Fallo, UrtSil = Urtica + Geranium)
+X<-mutate(Fallo, UrtSil = Urtica + Silene)
 head(X)
 ```
 
@@ -195,7 +192,7 @@ Which functions did you use?
 You can also use `transmute()` instead of `mutate()` + `select()`
 
 ```{r}
-X<-transmute(Fallo, UrtSil = Urtica + Geranium)
+X<-transmute(Fallo, UrtSil = Urtica + Silene)
 head(X)
 ```
 
@@ -224,14 +221,29 @@ X<-group_by(Fallo,Nutrients)
 summarize(X, Mean=mean(Total), SD=sd(Total))
 ```
 
-Now imagine if our sampling design is 'unbalanced'. For example, maybe we had some plant mortality or lost some plants to a tornado. If one of the two species in the *Taxon* column had more high-nutrient pots, then it would have a higher mean. BUT, the higher mean is not an effect of the Taxon, but is simply due to the unbalanced nature of the design. To fix this problem, we may want to take a *weighted mean*:
+Now imagine if our sampling design is 'unbalanced'. For example, maybe we had some plant mortality or lost some plants to a tornado. If one of the two species in the *Taxon* column had more high-nutrient pots, then it would have a higher mean. BUT, the higher mean is not an effect of the Taxon, but is simply due to the unbalanced nature of the design. We can simulate this effect by re-shuffling the species names:
 
 ```{r}
-X<-group_by(Fallo,Taxon,Scenario,Nutrients)
-X<-group_by(X,Taxon,Scenario)
-X<-group_by(X,Taxon)
-X<-summarize(X, Mean=mean(Total), SD=sd(Total))
-arrange(X,desc(Mean))
+RFallo<-Fallo
+set.seed(256)
+RFallo$Taxon<-rbinom(nrow(RFallo),size=1,prob=0.7)
+
+X<-group_by(RFallo,Taxon)
+summarize(X, Mean=mean(Total))
+```
+
+
+
+To fix this problem, we may want to take a *weighted mean*:
+
+```{r}
+X1<-group_by(RFallo,Taxon,Scenario,Nutrients)
+Y1<-summarize(X1,Mean=mean(Total))
+X2<-group_by(Y1,Taxon,Scenario)
+Y2<-summarize(X2,Mean=mean(Mean))
+X3<-group_by(Y2,Taxon)
+Y3<-summarize(X3, Mean=mean(Mean))
+arrange(Y3,desc(Mean))
 ```
 
 ## `%>%` (pipe)
@@ -243,11 +255,13 @@ The pipe is useful to combine operations without creating a whole bunch of new o
 For example, we can re-write the weighted mean example using pipes:
 
 ```{r}
-Fallo %>% 
-  group_by(Taxon,Scenario,Nutrients) %>%
-  group_by(Taxon,Scenario) %>%
-  group_by(Taxon) %>%
-  summarize(Mean=mean(Total), SD=sd(Total)) %>%
+RFallo %>% 
+  group_by(Taxon,Scenario,Nutrients) %>% 
+  summarize(Mean=mean(Total)) %>% 
+  group_by(Taxon,Scenario) %>% 
+  summarize(Mean=mean(Mean)) %>% 
+  group_by(Taxon) %>% 
+  summarize(Mean=mean(Mean)) %>% 
   arrange(desc(Mean))
 ```
 
