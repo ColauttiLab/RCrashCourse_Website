@@ -171,6 +171,7 @@ c(1,2,5,"string")
 -1:1
 ```
 
+
 <br>
 
 *** 
@@ -215,11 +216,13 @@ A one-dimensional array of cells
 
 Ordered from 1 to ?
 
-Can be all the same type or a mix
+Items must all be of the same type. If you mix numbers and text, then the whole vector will be formatted as text. 
 ```{r}
 Xvec<-c(X,1:10,"E", "Computational Biology", 100:90)
 Xvec
 ```
+
+> Protip: A common problem when importing data to R occurs when a column of numeric data includes at least one text value (e.g.  "missing" or "< 1"). R will treat the entire column as text rather than numeric values. Watch for this when working with real data!
 
 ### Subset a vector with square brackets [loc]
 
@@ -459,6 +462,22 @@ print(MyData$Total)
 
 
 # 5. Summary statistics
+
+Make a vector containing unique values
+```{r}
+unique(MyData$Nutrients)
+```
+
+Find duplicated values
+```{r}
+duplicated(MyData$Nutrients)
+```
+
+The `duplicated` function returns a logical vector of TRUE (duplicated) and FALSE (not duplicated). A logic vector can be used to subset data
+```{r}
+MyData$Nutrients[duplicated(MyData$Nutrients)]
+```
+
 Calculate means of Total column for each level of Nutrients column
 ```{r}
 aggregate(MyData$Total,list(MyData$Nutrients),mean) 
@@ -543,6 +562,34 @@ for (i in 1:length(Xvec)){
 }
 ```
 
+Counter variables can be very useful to help keep track of loops:
+
+```{r}
+count1<-1
+count10<-1
+
+for(i in 1:10){
+  print(count1)
+  print(count10)
+  count1<-count1+1
+  count10<-count10*10
+}
+```
+
+Just think carefully about whether you want to update at the beginning of the loop, at the end, or somewhere in between.
+```{r}
+countbefore<-1
+countafter<-1
+for(i in 1:10){
+  countbefore<-countbefore+1
+  print(countbefore)
+  print(countafter)
+  countafter<-countafter+1
+}
+```
+
+
+
 ### **`while(){}`**
 ```{r}
 count<-0
@@ -557,4 +604,6 @@ while (count < X){
 Are you ready to test your knowledge?
 
 If so, click [HERE](./1_fundamentals_test.html)
+
+
 
