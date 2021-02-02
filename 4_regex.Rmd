@@ -152,18 +152,30 @@ sub("\\w+","*","...which 1-100 words get replaced?")
 gsub("\\w+","*","...which 1-100 words get replaced?")
 ```
 
-
-## `?` is a 'lazy' search (find the first occurrance)
+## `?` is a 'lazy' search (match the shortest possible)
 ```{r}
 sub("\\w?","*","...which 1-100 words get replaced?")
 gsub("\\w?","*","...which 1-100 words get replaced?")
 ```
 
-## `*` is a 'greedy' search (find the last occurrence)
+## `*` is a 'greedy' search (match the largest possible)
 ```{r}
 sub("\\w*","*","...which 1-100 words get replaced?")
 gsub("\\w*","*","...which 1-100 words get replaced?")
 ```
+
+> NOTE: `?` and `*` can include matches with a length of zero, whereas `+` matches 1 or more. This can be tricky to think about.
+
+## Combine `?` with `+` 
+
+This can avoid zero matches. Compare with above.
+
+```{r}
+sub("\\w+?","*","...which 1-100 words get replaced?")
+gsub("\\w+?","*","...which 1-100 words get replaced?")
+```
+
+> Try using `+*`. Why do you get an error message?
 
 ## `{n,m}` = between n to m matches
 ```{r}

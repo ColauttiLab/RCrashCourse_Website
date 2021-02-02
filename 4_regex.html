@@ -559,19 +559,33 @@ Part 4 – Regular Expressions in R</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;...* *-* * * *?&quot;</code></pre>
 </div>
-<div id="is-a-lazy-search-find-the-first-occurrance" class="section level2">
-<h2><code>?</code> is a ‘lazy’ search (find the first occurrance)</h2>
+<div id="is-a-lazy-search-match-the-shortest-possible" class="section level2">
+<h2><code>?</code> is a ‘lazy’ search (match the shortest possible)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w?&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;*...which 1-100 words get replaced?&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w?&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;*.*.*.***** *-*** ***** *** ********?*&quot;</code></pre>
 </div>
-<div id="is-a-greedy-search-find-the-last-occurrence" class="section level2">
-<h2><code>*</code> is a ‘greedy’ search (find the last occurrence)</h2>
+<div id="is-a-greedy-search-match-the-largest-possible" class="section level2">
+<h2><code>*</code> is a ‘greedy’ search (match the largest possible)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w*&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;*...which 1-100 words get replaced?&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w*&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;*.*.*.* *-* * * *?*&quot;</code></pre>
+<blockquote>
+<p>NOTE: <code>?</code> and <code>*</code> can include matches with a length of zero, whereas <code>+</code> matches 1 or more. This can be tricky to think about.</p>
+</blockquote>
+</div>
+<div id="combine-with" class="section level2">
+<h2>Combine <code>?</code> with <code>+</code></h2>
+<p>This can avoid zero matches. Compare with above.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+?&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;...*hich 1-100 words get replaced?&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">w+?&quot;</span>,<span class="st">&quot;*&quot;</span>,<span class="st">&quot;...which 1-100 words get replaced?&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;...***** *-*** ***** *** ********?&quot;</code></pre>
+<blockquote>
+<p>Try using <code>+*</code>. Why do you get an error message?</p>
+</blockquote>
 </div>
 <div id="nm-between-n-to-m-matches" class="section level2">
 <h2><code>{n,m}</code> = between n to m matches</h2>
@@ -805,42 +819,42 @@ Seq&lt;-<span class="kw">gsub</span>(<span class="st">&quot;[</span><span class=
 <p>Imagine you have a repeated measures design. 3 transects (A-C) and 3 positions along each transect (1-3)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect&lt;-<span class="kw">data.frame</span>(<span class="dt">Species=</span><span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,<span class="dt">A1=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">A2=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">A3=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">B1=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">B2=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">B3=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">C1=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">C2=</span><span class="kw">rnorm</span>(<span class="dv">20</span>),<span class="dt">C3=</span><span class="kw">rnorm</span>(<span class="dv">20</span>))
 <span class="kw">head</span>(Transect)</code></pre></div>
-<pre><code>##   Species         A1         A2         A3           B1          B2         B3
-## 1       1 -1.1958600  0.5867707 -0.4332461  0.009940671 -2.09737466  0.4418234
-## 2       2  0.5521323 -1.1675391 -1.0697466 -0.444512837  0.07703272 -1.0671791
-## 3       3 -1.7376673  1.1127259  0.6836733 -0.713672117 -0.32344542 -1.1965268
-## 4       4 -0.0556925  0.5952025 -1.1184970 -0.459528134  2.03296091  0.4977011
-## 5       5  0.2562351 -1.1874791  0.2055097 -0.275756570 -0.04643472 -1.2027157
-## 6       6  0.4502429 -0.6916061  0.4123386 -0.134628115  1.27287133  0.8883268
-##            C1         C2          C3
-## 1  0.68084080  1.2635518 -0.65403413
-## 2 -1.06406816  0.4447297 -0.04043249
-## 3  0.09682417  0.7065794  0.22140926
-## 4  0.05209084 -1.0705411 -0.61150665
-## 5  2.52327437  0.6195064 -0.67908150
-## 6 -0.24368304  1.6545421  1.64659307</code></pre>
+<pre><code>##   Species         A1         A2         A3          B1          B2          B3
+## 1       1  1.5852527 -1.7118215  0.1315180 -1.25970481 -1.71707228  0.27023213
+## 2       2 -0.6833612  0.8336825  0.3020021  0.95783973  0.22462958  1.14878150
+## 3       3 -1.0990091  0.9970184  1.3132812 -0.02178986 -0.12308990 -0.34947461
+## 4       4 -0.6054431  1.0642055 -0.9017364  0.99177162  0.05038996  0.09468226
+## 5       5 -1.6521671 -1.2759982  0.5011124 -0.51877263  0.35847560  1.32638093
+## 6       6 -0.8921513  0.8814574  0.2310697 -0.69225032  0.88390178 -0.25892253
+##           C1         C2         C3
+## 1  0.1981781 -1.0689448 -0.5741541
+## 2  0.1952018 -1.3640377 -1.8287735
+## 3  0.6007535 -0.1715270  1.3517691
+## 4 -1.6314605  0.5988421  1.4950844
+## 5 -1.3176196  1.2024980 -0.8909600
+## 6 -0.4575981  0.4832103 -0.3347335</code></pre>
 <p>You want to look at only transect A for the first 3 species</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="kw">grep</span>(<span class="st">&quot;A&quot;</span>,<span class="kw">names</span>(Transect))]</code></pre></div>
-<pre><code>##           A1         A2         A3
-## 1 -1.1958600  0.5867707 -0.4332461
-## 2  0.5521323 -1.1675391 -1.0697466
-## 3 -1.7376673  1.1127259  0.6836733</code></pre>
+<pre><code>##           A1         A2        A3
+## 1  1.5852527 -1.7118215 0.1315180
+## 2 -0.6833612  0.8336825 0.3020021
+## 3 -1.0990091  0.9970184 1.3132812</code></pre>
 <p>Or look at the first position of each transect for the first 3 species</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="kw">grep</span>(<span class="st">&quot;1&quot;</span>,<span class="kw">names</span>(Transect))]</code></pre></div>
-<pre><code>##           A1           B1          C1
-## 1 -1.1958600  0.009940671  0.68084080
-## 2  0.5521323 -0.444512837 -1.06406816
-## 3 -1.7376673 -0.713672117  0.09682417</code></pre>
+<pre><code>##           A1          B1        C1
+## 1  1.5852527 -1.25970481 0.1981781
+## 2 -0.6833612  0.95783973 0.1952018
+## 3 -1.0990091 -0.02178986 0.6007535</code></pre>
 <p>Or rows with species IDs containing the number 2</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Transect[<span class="kw">grep</span>(<span class="st">&quot;2&quot;</span>,Transect<span class="op">$</span>Species),]</code></pre></div>
-<pre><code>##    Species         A1          A2         A3         B1         B2         B3
-## 2        2  0.5521323 -1.16753909 -1.0697466 -0.4445128 0.07703272 -1.0671791
-## 12      12 -2.9210349 -0.06817951  0.8013229  2.7093284 1.29732198  0.1322429
-## 20      20 -1.1766419 -1.32988359  1.4096157 -1.1107941 0.32453644  0.6044543
-##            C1         C2          C3
-## 2  -1.0640682  0.4447297 -0.04043249
-## 12 -1.0947892 -0.2835864 -1.11432190
-## 20  0.9805692 -0.7013737  0.58932742</code></pre>
+<pre><code>##    Species         A1         A2         A3         B1         B2         B3
+## 2        2 -0.6833612  0.8336825  0.3020021  0.9578397  0.2246296  1.1487815
+## 12      12 -0.7013855 -1.2796345 -1.0773872 -1.1332326  1.1128409 -0.3975694
+## 20      20  0.8156091  1.7184481  1.2812306  0.7651353 -0.8621570 -0.2287431
+##            C1         C2         C3
+## 2   0.1952018 -1.3640377 -1.8287735
+## 12 -1.4447452 -0.7306905  2.3629325
+## 20  0.7280297 -1.6565661 -0.8025305</code></pre>
 </div>
 <div id="practice-exercises" class="section level1">
 <h1>PRACTICE EXERCISES</h1>
