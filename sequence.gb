@@ -1,0 +1,55 @@
+LOCUS       AF206955                1740 bp    DNA     linear   PLN 18-APR-2003
+DEFINITION  Lythrum salicaria 18S ribosomal RNA gene, complete sequence.
+ACCESSION   AF206955
+VERSION     AF206955.1
+KEYWORDS    .
+SOURCE      Lythrum salicaria
+  ORGANISM  Lythrum salicaria
+            Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
+            Spermatophyta; Magnoliopsida; eudicotyledons; Gunneridae;
+            Pentapetalae; rosids; malvids; Myrtales; Lythraceae; Lythrum.
+REFERENCE   1  (bases 1 to 1740)
+  AUTHORS   Soltis,P.S., Soltis,D.E. and Chase,M.W.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (19-NOV-1999) School of Biological Sciences, Washington
+            State University, Pullman, WA 99164-4236, USA
+FEATURES             Location/Qualifiers
+     source          1..1740
+                     /organism="Lythrum salicaria"
+                     /mol_type="genomic DNA"
+                     /db_xref="taxon:13129"
+                     /note="Lythrum salicaria L."
+     rRNA            1..1740
+                     /product="18S ribosomal RNA"
+ORIGIN      
+        1 gtcatatgct tgtctcaaag attaagccat gcatgtgtaa gtatgaacaa attcagactg
+       61 tgaaactgcg aatggctcat taaatcagtt atagtttgtt tgatggtatc tgctactcgg
+      121 ataaccgtag taattctaga gctaatacgt gcaacaaacc ccgacttctg gaagggacgc
+      181 atttattaga taaaaggtcg acgcgggctt tgcccgatgc tctgatgatt catgataact
+      241 tgacggatcg cacggccatc gtgccggcga cgcatcattc aaatttctgc cctatcaact
+      301 ttcgatggta ggatagtggc ctaccatggt gtttacgggt aacggagaat tagggttcga
+      361 ttccggagag ggagcctgag aaacggctac cacatccaag gaaggcagca ggcgcgcaaa
+      421 ttacccaatc ctgacacggg gaggtagtga caataaataa caatactggg ctctttgagt
+      481 ctggtaattg gaatgagtac aatctaaatc ccttaacgag gatccattgg agggcaagtc
+      541 tggtgccagc agccgcggta attccagctc caatagcgta tatttaagtt gttgcagtta
+      601 aaaagctcgt agttggacct tgggttgggt cgaccggtcc gcctttggtg tgcaccgatc
+      661 ggctcgtccc ttctaccggc gatgcgcgcc tggccttaat tggccgggtc gttcctccgg
+      721 tgctgttact ttgaagaaat tagagtgctc aaagcaagca ttagctatga atacattagc
+      781 atgggataac attataggat tccgatccta ttatgttggc cttcgggatc ggagtaatga
+      841 ttaacaggga cagtcggggg cattcgtatt tcatagtcag aggtgaaatt cttggattta
+      901 tgaaagacga acaactgcga aagcatttgc caaggatgtt ttcattaatc aagaacgaaa
+      961 gttgggggct cgaagacgat cagataccgt cctagtctca accataaacg atgccgacca
+     1021 gggatcagcg aatgttactt ttaggacttc gctggcacct tatgagaaat caaagttttt
+     1081 gggttccggg gggagtatgg tcgcaaggct gaaacttaaa ggaattgacg gaagggcacc
+     1141 accaggagtg gagcctgcgg cttaatttga ctcaacacgg ggaaacttac caggtccaga
+     1201 catagtaagg attgacagac tgagagctct ttcttgattc tatgggtggt ggtgcatggc
+     1261 cgttcttagt tggtggagcg atttgtctgg ttaattccgt taacgaacga gacctcagcc
+     1321 tgctaactag ctatgtggag gtacacctcc acggccagct tcttagaggg actatggccg
+     1381 cttaggccaa ggaagtttga ggcaataaca ggtctgtgat gcccttagat gttctgggcc
+     1441 gcacgcgcgc tacactgatg tattcaacga gtctatagcc ttggccgaca ggcccgggta
+     1501 atctttgaaa tttcatcgtg atggggatag atcattgcaa ttgttggtct tcaacgagga
+     1561 attcctagta agcgcgagtc atcagctcgc gttgactacg tccctgccct ttgtacacac
+     1621 cgcccgtcgc tcctaccgat tgaatggtcc ggtgaaatgt tcggatcgcg gcgacgtggg
+     1681 cgcttcgtcg ccgacgacgt cgcgagaagt ccattgaacc ttatcattta gaggaaggag
+//
+

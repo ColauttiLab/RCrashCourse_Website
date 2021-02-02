@@ -243,103 +243,55 @@ gsub("(\\w)(\\w)(\\w+)","\\2\\1\\3","...which 1-100 words get replaced?")
 
 # 8. 'Scraping' data from online sources
 
-Use `readLines` with `curl()` to 'scrape' data from the internet, then `grep()` and `gsub()` into useful structure:
+Use `readLines` with `curl()` to 'scrape' data from the internet, then `grep()` and `gsub()` into useful structure.
+
 ```{r}
-library(curl)
+library(curl) 
 Prot<-readLines(curl("http://www.rcsb.org/pdb/files/1ema.pdb"))
 Prot[grep("TITLE",Prot)]
 ```
 
+> HINT: You may have to use install.packages("curl") the first time you run this, if you don't already have it installed.
 
 # EXAMPLE 1: Genbank Record
-Download the [Lythrum 18S rRNA gene](https://www.ncbi.nlm.nih.gov/nuccore/7595475/) as a text file, and read it into an object called Lythrum.18S
-```{r,echo=F}
-Lythrum.18S<-"LOCUS       AF206955                1740 bp    DNA     linear   PLN 18-APR-2003
-DEFINITION  Lythrum salicaria 18S ribosomal RNA gene, complete sequence.
-ACCESSION   AF206955
-VERSION     AF206955.1  GI:7595475
-KEYWORDS    .
-SOURCE      Lythrum salicaria
-  ORGANISM  Lythrum salicaria
-            Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
-            Spermatophyta; Magnoliophyta; eudicotyledons; Gunneridae;
-            Pentapetalae; rosids; malvids; Myrtales; Lythraceae; Lythrum.
-REFERENCE   1  (bases 1 to 1740)
-  AUTHORS   Soltis,P.S., Soltis,D.E. and Chase,M.W.
-  TITLE     Direct Submission
-  JOURNAL   Submitted (19-NOV-1999) School of Biological Sciences, Washington
-            State University, Pullman, WA 99164-4236, USA
-FEATURES             Location/Qualifiers
-     source          1..1740
-                     /organism=\"Lythrum salicaria\"
-                     /mol_type=\"genomic DNA\"
-                     /db_xref=\"taxon:13129\"
-                     /note=\"Lythrum salicaria L.\"
-     rRNA            1..1740
-                     /product=\"18S ribosomal RNA\"
-ORIGIN      
-        1 gtcatatgct tgtctcaaag attaagccat gcatgtgtaa gtatgaacaa attcagactg
-       61 tgaaactgcg aatggctcat taaatcagtt atagtttgtt tgatggtatc tgctactcgg
-      121 ataaccgtag taattctaga gctaatacgt gcaacaaacc ccgacttctg gaagggacgc
-      181 atttattaga taaaaggtcg acgcgggctt tgcccgatgc tctgatgatt catgataact
-      241 tgacggatcg cacggccatc gtgccggcga cgcatcattc aaatttctgc cctatcaact
-      301 ttcgatggta ggatagtggc ctaccatggt gtttacgggt aacggagaat tagggttcga
-      361 ttccggagag ggagcctgag aaacggctac cacatccaag gaaggcagca ggcgcgcaaa
-      421 ttacccaatc ctgacacggg gaggtagtga caataaataa caatactggg ctctttgagt
-      481 ctggtaattg gaatgagtac aatctaaatc ccttaacgag gatccattgg agggcaagtc
-      541 tggtgccagc agccgcggta attccagctc caatagcgta tatttaagtt gttgcagtta
-      601 aaaagctcgt agttggacct tgggttgggt cgaccggtcc gcctttggtg tgcaccgatc
-      661 ggctcgtccc ttctaccggc gatgcgcgcc tggccttaat tggccgggtc gttcctccgg
-      721 tgctgttact ttgaagaaat tagagtgctc aaagcaagca ttagctatga atacattagc
-      781 atgggataac attataggat tccgatccta ttatgttggc cttcgggatc ggagtaatga
-      841 ttaacaggga cagtcggggg cattcgtatt tcatagtcag aggtgaaatt cttggattta
-      901 tgaaagacga acaactgcga aagcatttgc caaggatgtt ttcattaatc aagaacgaaa
-      961 gttgggggct cgaagacgat cagataccgt cctagtctca accataaacg atgccgacca
-     1021 gggatcagcg aatgttactt ttaggacttc gctggcacct tatgagaaat caaagttttt
-     1081 gggttccggg gggagtatgg tcgcaaggct gaaacttaaa ggaattgacg gaagggcacc
-     1141 accaggagtg gagcctgcgg cttaatttga ctcaacacgg ggaaacttac caggtccaga
-     1201 catagtaagg attgacagac tgagagctct ttcttgattc tatgggtggt ggtgcatggc
-     1261 cgttcttagt tggtggagcg atttgtctgg ttaattccgt taacgaacga gacctcagcc
-     1321 tgctaactag ctatgtggag gtacacctcc acggccagct tcttagaggg actatggccg
-     1381 cttaggccaa ggaagtttga ggcaataaca ggtctgtgat gcccttagat gttctgggcc
-     1441 gcacgcgcgc tacactgatg tattcaacga gtctatagcc ttggccgaca ggcccgggta
-     1501 atctttgaaa tttcatcgtg atggggatag atcattgcaa ttgttggtct tcaacgagga
-     1561 attcctagta agcgcgagtc atcagctcgc gttgactacg tccctgccct ttgtacacac
-     1621 cgcccgtcgc tcctaccgat tgaatggtcc ggtgaaatgt tcggatcgcg gcgacgtggg
-     1681 cgcttcgtcg ccgacgacgt cgcgagaagt ccattgaacc ttatcattta gaggaaggag
-//"
-```
 
-The 18S Sequence for Lythrum salicaria (from Genbank)
-```{r,echo=FALSE}
-cat(Lythrum.18S)
-```
+In this example, we'll work with a download of the 18S rRNA gene from *Lythrum salicaria* You  manually:
 
-Remember our `\\n` newline? Let's use it to delete everything after the first line
+  1. Open [Lythrum 18S rRNA gene](https://www.ncbi.nlm.nih.gov/nuccore/7595475/) in a web browser
+  2. Look for as a 'Send To:' button and choose 'File'
+  3. Choose GenBank format and save to your computer (e.g. you current project folder for this tutorial)
+  4. You should have a file called `sequence.gb` -- this is just a text file with the `.gb` extention to tell you it's a genbank layout.
+  5. Import the file into R as an object using the `scan` function
+
 ```{r}
-gsub("\\n.*","",Lythrum.18S)
+Lythrum.18S<-scan("./sequence.gb",what="character",sep="\n")
 ```
 
-Or use the field names to isolate them:
+The 18S gene s equence for *Lythrum salicaria* (from Genbank)
 ```{r}
-gsub(".*ORIGIN","",Lythrum.18S)
+print(Lythrum.18S)
 ```
 
-The output is a bit messy because R is printing the newline character \\n instead of adding a new line. 
+Notice that each line is read in as a separate cell in a vector, with sequences beginning with a number ending with 1. We can take advantage of this to extract just the sequence data
 
-You can use the cat() function to make it look better:
+Use `.*` with `()` to delete everything before the DNA sequence
 ```{r}
-cat(gsub(".*ORIGIN","",Lythrum.18S))
+Seq<-gsub(".*(1 [gatc])","",paste(Lythrum.18S))
+paste(Seq,collapse="")
 ```
 
-Let's clean up the sequence. An easy way is to make an object and do it in steps
+Use the `.*` and space with `+` to eliminate all text before the sequence :
+
 ```{r}
-# Isolate the lines containing sequence
-Seq<-gsub(".*ORIGIN","",Lythrum.18S)
-print(Seq)
-# Remove line numbers, newline characters, spaces and /
-Seq<-gsub("[\n0-9 /]+","",Seq) ## Note the single \ in this case since it is inside the square brackets
-print(Seq)
+Seq<-gsub(".*ORIGIN +","",paste(Seq,collapse=""))
+Seq
+```
+
+Elimminate spaces and the two `//` at the end
+
+```{r}
+Seq<-gsub(" |//","",Seq)
+Seq
 ```
 
 Capital letters look nicer, but requires a PERL qualifier `\\U` that is not standard in R
