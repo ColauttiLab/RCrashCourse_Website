@@ -363,9 +363,8 @@ my.function(var1=c(1:10),var2=c(10:1))
 ```
 
 #### Protip #1:
-Consider annotating long or complex script with cat() to help with troubleshooting
+Consider annotating long or complex script with `cat()` to help with troubleshooting. The `cat` function is similar to `print` but lets you print directly to screen rather than passing through a data object. Note that `\n` is a 'new line` character; try removing them and compare the output.
 
-Note: \n = new line
 ```{r}
 my.function<-function(var1=0,var2=0,verbose=FALSE){
   cat("\nInput variables:\nvar1 =",var1,"\nvar2 =",var2,"\n")
