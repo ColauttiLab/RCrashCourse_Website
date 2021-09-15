@@ -5,32 +5,23 @@ title: |-
 author: "Rob Colautti"
 ---
 
-```{r,echo=F}
-library(ggplot2)
-# Clean theme for presentations & publications used in the Colautti Lab
-CLab <- function (base_size = 12, base_family = "") {
-  theme_classic(base_size = base_size, base_family = base_family) %+replace% 
-    theme(
-      axis.text = element_text(colour = "black"),
-      axis.title.x = element_text(size=18),
-      axis.text.x = element_text(size=12),
-      axis.title.y = element_text(size=18,angle=90),
-      axis.text.y = element_text(size=12),
-      axis.ticks = element_blank(), 
-      panel.background = element_rect(fill="white"),
-      panel.border = element_blank(),
-      plot.title=element_text(face="bold", size=24),
-      legend.position="none"
-    ) 
-}
-```
-
-
 # Getting Started
 
 Before following this tutorial, you should be familiar with the [qplot() tutorial]().
 
 This [ggplot cheat sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) is a downloadable pdf that provides a good summary and quick-reference guide.
+
+Load the ggplot2 library and a custom theme
+
+```{r}
+library(ggplot2)
+source("http://bit.ly/theme_pub")
+theme_set(theme_pub())
+```
+
+The `source` function loads an external file, in this case from the internet. The file is just a .R file with a custom function defining different aspects of the graph (e.g. text size, line width, etc.) You can open the link in a web browser or download and open in a text editor to see the file.
+
+The `theme_set()` command sets our custom theme (`theme_pub`) to the default plotting theme. Since the theme is a function in R, we need the extra brackets: `theme_pub()`
 
 <br>
 
@@ -55,18 +46,18 @@ Y<-rnorm(100)+60
 X<-rbinom(100,1,0.5)
 Y<-Y+(10*X)
 X<-as.factor(X)
-qplot(X,Y) + CLab()
+qplot(X,Y)
 ```
+
 > Above: Y-axis scaled to the data
 
 ```{r, echo=F}
-qplot(X,Y) + scale_y_continuous(limits=c(0,max(100))) + CLab()
+qplot(X,Y) + scale_y_continuous(limits=c(0,max(100)))
 ```
+
 > Above: Y-axis scaled between 0 and 100
 
-
 What are the benefits/drawbacks of scaling the axes? When might you choose to use one over ther other?
-
 
 ## 3. Choose a colour palette
 
@@ -96,7 +87,7 @@ What's wrong with this graph?
 X<-rnorm(100)
 Y<-X+seq_along(X)
 D<-data.frame(Lat=X,Long=Y,Temp=Y/3)
-qplot(Lat,Long,colour=Temp, data=D) + scale_color_gradient(high="blue", low="red") + CLab()
+qplot(Lat,Long,colour=Temp, data=D) + scale_color_gradient(high="blue", low="red")
 ```
 
 Humans naturally associate colours with particular feelings. Be mindful of these associations when choosing a colour palette
@@ -111,10 +102,10 @@ Colours that are too similar will be hard to distinguish
 X<-rnorm(100)
 Y<-X+seq_along(X)
 D<-data.frame(Lat=X,Long=Y,Precip=rnorm(100))
-qplot(Lat,Long,colour=Precip, data=D) + scale_color_gradient(high="#56B4E9", low="#56B499") + CLab()
+qplot(Lat,Long,colour=Precip, data=D) + scale_color_gradient(high="#56B4E9", low="#56B499")
 ```
 
-## 6. Keep ielevant information
+## 6. Keep relevant information
 
 Make sure to include proper axis **labels** (i.e. names) and **tick marks** (i.e. numbers or categories showing the different values). These labels, along with the figure caption, should act as a stand-alone unit. The reader should be able to understand the figure without having to read through the rest of the paper.
 
@@ -125,14 +116,14 @@ Often the same data can be presented in different ways but some are easier to in
 ```{r}
 X<-rnorm(100)
 Y<-X+rnorm(100)
-qplot(c(X,Y),fill=c(rep("X",100),rep("Y",100)),posit="dodge") + CLab()
-qplot(X,Y) + CLab()
+qplot(c(X,Y),fill=c(rep("X",100),rep("Y",100)),posit="dodge")
+qplot(X,Y)
 ```
 
 
 # Example
 
-To get to know ggplot better, let's do a step-by-step example of a figure built for a [paper by Colautti & Lau](https://doi.org/10.1111/mec.13162) in the journal Molecular Ecology (2015)
+To get to know ggplot better, let's do a step-by-step example of a figure published in a [paper by Colautti & Lau](https://doi.org/10.1111/mec.13162) in the journal Molecular Ecology (2015)
 
 ## 1. Setup
 
@@ -148,40 +139,70 @@ Extract the file called `Selection_Data.csv` and save it to your working directo
 SelData<-read.csv("Selection_Data.csv",header=T)
 ```
 
-#### Change column names 
+#### Change column names
+
 To make them more intuitive in R
+
 ```{r}
 names(SelData)<-c("Collector","Author","Year","Journal","Vol","Species","Native","N","Fitness.measure","Trait","s","s.SE","s.P","B","B.SE","B.P")
 ```
 
 #### Replace s with its absolute value 
+
 We are interested in magnitude, not direction in the meta-analysis
+
 ```{r}
 SelData$s<-abs(SelData$s)
 ```
 
 #### Add random variables
+
 We'll use these later to explore some additionall ggplot options
+
 ```{r}
 SelData$Rpoint<-rnorm(nrow(SelData)) # Random, normally distributed
 SelData$Rgroup<-sample(c(0,1),nrow(SelData),replace=T) # Random binary value
 ```
 
 #### A quick look at the data
+
 ```{r}
 head(SelData)
 ```
 
 #### One more thing...
+
 Note the missing data (denoted NA)
+
 ```{r, eval=FALSE}
 print(SelData$s)
 ```
 
 We can subset to remove mising data
+
 ```{r}
 SelData<-SelData[!is.na(SelData$s),]
 ```
+
+Recall from the intro tutorial that `!` means 'not' or 'invert'
+
+similarly, we could use `filter` from dplyr
+
+```{r, eval=F}
+library(dplyr)
+SelData<-SelData %>%
+  filter(!is.na(s))
+```
+
+
+dplyr also has a convenient `drop_na` function in the `tidyr` package
+
+```{r, eval=F}
+library(tidyr)
+SelData<-SelData %>%
+  drop_na(s)
+```
+
 
 <br>
 
@@ -194,47 +215,65 @@ SelData<-SelData[!is.na(SelData$s),]
 We can create the same graph using qplot and ggplot, just the syntax changes:
 
 ### Histogram
+
 #### qplot
+
 ```{r, error=TRUE}
 BarPlot<-qplot(s, data=SelData, fill=Native, geom="bar")
 print(BarPlot)
 ```
 
 #### ggplot
+
 ```{r, error=TRUE}
 BarPlot <-ggplot(aes(s, fill=Native), data=SelData) 
 print(BarPlot)
 ```
+
 No layers! We only loaded in the data info for plotting
 
 We have to specify which geom(s) we want
+
 ```{r}
 BarPlot<- BarPlot + geom_bar() # info from ggplot() passed to geom_bar()
 BarPlot
 ```
 
 Explore the components of our BarPlot object:
+
 ```{r}
 summary(BarPlot)
 ```
 
 For more information on geom_bar()
+
 ```{r, eval=FALSE}
 ?geom_bar
 ```
 
 ### Bivariate geom
+
 ```{r}
 BivPlot<-ggplot(data=SelData, aes(x=s, y=Rpoint)) + geom_point()
 print(BivPlot)
 ```
 
+Looks like a classic log-normal variable, so let's log-transform x
+
+```{r}
+BivPlot<-ggplot(data=SelData, aes(x=log(s+1), y=Rpoint)) + geom_point()
+print(BivPlot)
+```
+
+
 Add linear regression
+
 ```{r}
 BivPlot + geom_smooth(method="lm",colour="steelblue",size=2)
 ```
 
 Add separate regression lines for each group
+
 ```{r}
 BivPlot + geom_smooth(method="lm",size=2,aes(group=Native,colour=Native))
 ```
@@ -246,6 +285,7 @@ BivPlot + geom_smooth(method="lm",size=2,aes(group=Native,colour=Native))
 <br>
 
 ## 3. Full ggplot
+
 Recreate the selection histograms from Colautti & Lau:
 
   1. Create separate data for native vs. introduced species
@@ -255,13 +295,16 @@ Recreate the selection histograms from Colautti & Lau:
   3. Plot all of the components on a single graph
 
 ### 3.1. Separate data
+
 ```{r}
 NatSVals<-SelData$s[SelData$Native=="yes"] # s values for Native species
 IntSVals<-SelData$s[SelData$Native=="no"] # s values for Introduced species
 ```
 
 ### 3.2. Bootstrap
+
 #### 3.2a. Setup
+
 ```{r}
 IterN<-100 # Number of iterations
 NatSims<-{} # Dummy objects to hold output
@@ -269,6 +312,7 @@ IntSims<-{}
 ```
 
 #### 3.2b. For loop
+
   * Sample, with replacement and calculate average
   
   * Store average in NatSims or IntSims
@@ -283,12 +327,14 @@ for (i in 1:IterN){
 #### 3.2c. Calculate 95% confidence intervals
 
 Sort from low to high
+
 ```{r}
 NatSims<-sort(NatSims)
 IntSims<-sort(IntSims)
 ```
 
 Calculate 95%iles from simulations
+
 ```{r}
 CIs<-c(sort(NatSims)[round(IterN*0.025,0)], # Native, lower 2.5%
        sort(NatSims)[round(IterN*0.975,0)], # Native, upper 97.5%
@@ -299,9 +345,11 @@ CIs<-c(sort(NatSims)[round(IterN*0.025,0)], # Native, lower 2.5%
 ### 3.3. Plot components
 
 #### Combine output for plotting
+
 ```{r}
 HistData<-data.frame(s=SelData$s,Native=SelData$Native)
 ```
+
 *NOTE:* This creates a 'stacked' dataset for plotting
 
 ```{r}
@@ -329,20 +377,28 @@ print(p) # labels added, truncated x-axis
 <br>
 
 ## 4. Custom theme
-Customize various aspects such as font size, line widths, colours, etc.
-```{r}
-theme_custom<-function(base_size = 24, base_family = ""){
-  theme_bw(base_size = base_size, base_family = base_family) %+replace% 
-    theme(axis.text = element_text(size = rel(0.8),colour="black"),
-          axis.ticks = element_line(colour = "black"), 
-          legend.position = "none",
-          panel.border = element_rect(fill = NA, colour = NA), 
-          panel.grid.major = element_line(colour = NA,size = 0), 
-          panel.grid.minor = element_line(colour = NA,size = 0), 
-          axis.line = element_line(colour ="black")
-    )
+
+You can customize various aspects such as font size, line widths, colours, etc.
+
+This is already done in the custom theme at http://bit.ly/theme_pub. However, you could save this (or the text below) as a file called "MyTheme.R" in your project directory. Then you could edit the paremeters and use `source("MyTheme.R")` at the beginning of your code/markdown/notebook to load your own theme.
+
+```{r, eval=F}
+# Clean theme for presentations & publications used in the Colautti Lab
+theme_pub <- function (base_size = 12, base_family = "") {
+  theme_classic(base_size = base_size, base_family = base_family) %+replace% 
+    theme(
+      axis.text = element_text(colour = "black"),
+      axis.title.x = element_text(size=16, margin=margin(t=5)),
+      axis.text.x = element_text(size=10),
+      axis.title.y = element_text(size=16,angle=90, margin=margin(r=5)),
+      axis.text.y = element_text(size=10),
+      axis.ticks = element_blank(), 
+      panel.background = element_rect(fill="white"),
+      panel.border = element_blank(),
+      plot.title=element_text(face="bold", size=20),
+      legend.position="none"
+    ) 
 }
-p + theme_custom()
 ```
 
 <br>
@@ -353,9 +409,12 @@ p + theme_custom()
 
 ## 5. Multi-graph
 
+In the qplot tutorial, we looked at facets. Facets allow us to plot the same graph types but separated by category. Sometimes you might want to produce a multi-panel figure with different plots in each panel. There is a package for that...
+
 ### Setup
-Install 'gridExtra' if you haven't already
-`install.packages("gridExtra")`
+
+Install 'gridExtra' with `install.packages("gridExtra")`
+
 ```{r}
 library(gridExtra)
 ```
@@ -365,29 +424,38 @@ library(gridExtra)
 Prints graphs in rows, then columns, from top left to bottom right
 
 Use ***nrow =*** and ***ncol =*** to control layout 
-```{r}
+
+```{r, warning=F, message=F}
 grid.arrange(p,BivPlot,BarPlot,ncol=1)
 grid.arrange(p,BivPlot,BarPlot,nrow=2)
 ```
 
+> Note: You might get some warnings based on missing values or wrong binwidth. You will also see some weird things with different text sizes in the graphs. Normally, you would want to fix these for a final published figure but here we are just focused on showing what is possible with the layouts.
+
 Apply consistent formatting
-```{r}
-HistPlot<-p + theme_custom()
-BarPlot<-BarPlot + theme_custom()
-BivPlot<-BivPlot + theme_custom()
+
+```{r, warning=F, message=F}
+HistPlot<-p 
+BarPlot<-BarPlot 
+BivPlot<-BivPlot 
 grid.arrange(HistPlot,BivPlot,BarPlot,HistPlot,nrow=2)
 ```
 
 ### viewport & newpage
 
+What if we want to have graphs of different sizes? Or what if we want one figure to be inside another? We can make some even more advanced graphs using the `grid` package. F
+
+
 Install 'gridExtra' if you haven't already
 `install.packages("grid")`
+
 ```{r}
 library(grid)
 ```
 
 Control layout as a custom grid
-```{r}
+
+```{r, warning=F, message=F}
 grid.newpage() # Open a new page on grid device
 pushViewport(viewport(layout = grid.layout(3, 2))) # Create 3x2 grid layout
 print(HistPlot, vp = viewport(layout.pos.row = 3, layout.pos.col = 1:2)) # Add fig in row 3 and across columns 1:2
@@ -396,7 +464,8 @@ print(BarPlot, vp = viewport(layout.pos.row = 1:2, layout.pos.col = 2))
 ```
 
 Use viewport to add insets
-```{r}
+
+```{r, warning=F, message=F}
 HistPlot
 pushViewport(viewport(layout = grid.layout(4, 4))) # Create 4x4 grid layout (number of cells, will determine size/location of graph)
 print(BivPlot, vp = viewport(layout.pos.row = 1:2, layout.pos.col = 3:4))
@@ -409,6 +478,7 @@ print(BivPlot, vp = viewport(layout.pos.row = 1:2, layout.pos.col = 3:4))
 <br>
 
 ## 6. Reference
+
 The comprehensive source for ggplot by Hadley Wickham:
 
 http://link.springer.com/book/10.1007%2F978-0-387-98141-3
